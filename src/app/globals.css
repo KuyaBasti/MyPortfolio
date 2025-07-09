@@ -1,0 +1,374 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+@custom-variant light (&:where(.light, .light *));
+
+:root, .dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+}
+
+.light {
+  --background: #ffffff;
+  --foreground: #0a0a0a;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: 'ClashDisplay-Regular', Arial, Helvetica, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+@font-face {
+  font-family: 'ClashDisplay-Light';
+  src: url('../fonts/ClashDisplay-Light.woff2') format('woff2'),
+        url('../fonts/ClashDisplay-Light.woff') format('woff'),
+        url('../fonts/ClashDisplay-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'ClashDisplay-Regular';
+  src: url('../fonts/ClashDisplay-Regular.woff2') format('woff2'),
+        url('../fonts/ClashDisplay-Regular.woff') format('woff'),
+        url('../fonts/ClashDisplay-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'ClashDisplay-Semibold';
+  src: url('../fonts/ClashDisplay-Semibold.woff2') format('woff2'),
+        url('../fonts/ClashDisplay-Semibold.woff') format('woff'),
+        url('../fonts/ClashDisplay-Semibold.ttf') format('truetype');
+  font-weight: 600;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Fira Code';
+  src: url('../fonts/FiraCode-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+}
+
+/* Wave Gradient Backgrounds */
+.wave-gradient-base {
+  background: linear-gradient(320.54deg, #1a0033 0%, #2d1b69 30%, #4a0e4e 60%, #5e0202 100%);
+  background-size: 200% 200%;
+  animation: baseGradientShift 33s ease-in-out infinite;
+  transition: all 1s ease;
+}
+
+.light .wave-gradient-base {
+  background: linear-gradient(320.54deg, #fef2f2 0%, #fef3c7 25%, #ecfdf5 40%, #eff6ff 65%, #fdf4ff 80%, #fef2f2 100%);
+  background-size: 200% 200%;
+  animation: baseGradientShift 33s ease-in-out infinite;
+}
+
+.wave-layer-1 {
+  background: linear-gradient(135deg, 
+    rgba(147, 51, 234, 0.08) 0%, 
+    rgba(88, 28, 135, 0.06) 30%, 
+    rgba(124, 58, 237, 0.05) 60%, 
+    rgba(147, 51, 234, 0.08) 100%);
+  animation: slowOscillation1 38s ease-in-out infinite;
+  filter: blur(120px);
+}
+
+.light .wave-layer-1 {
+  background: linear-gradient(135deg, 
+    rgba(244, 114, 182, 0.08) 0%, 
+    rgba(236, 72, 153, 0.06) 30%, 
+    rgba(219, 39, 119, 0.05) 60%, 
+    rgba(244, 114, 182, 0.08) 100%);
+}
+
+.wave-layer-2 {
+  background: linear-gradient(45deg, 
+    rgba(99, 102, 241, 0.06) 0%, 
+    rgba(139, 92, 246, 0.05) 25%, 
+    rgba(147, 51, 234, 0.07) 50%, 
+    rgba(124, 58, 237, 0.04) 75%, 
+    rgba(99, 102, 241, 0.06) 100%);
+  animation: slowOscillation2 34s ease-in-out infinite reverse;
+  filter: blur(140px);
+}
+
+.light .wave-layer-2 {
+  background: linear-gradient(45deg, 
+    rgba(251, 146, 60, 0.06) 0%, 
+    rgba(249, 115, 22, 0.05) 25%, 
+    rgba(245, 101, 101, 0.07) 50%, 
+    rgba(251, 113, 133, 0.04) 75%, 
+    rgba(251, 146, 60, 0.06) 100%);
+}
+
+.wave-layer-3 {
+  background: linear-gradient(225deg, 
+    rgba(126, 34, 206, 0.05) 0%, 
+    rgba(147, 51, 234, 0.04) 40%, 
+    rgba(88, 28, 135, 0.06) 70%, 
+    rgba(126, 34, 206, 0.05) 100%);
+  animation: slowOscillation3 46s ease-in-out infinite;
+  filter: blur(100px);
+}
+
+.light .wave-layer-3 {
+  background: linear-gradient(225deg, 
+    rgba(34, 197, 94, 0.05) 0%, 
+    rgba(16, 185, 129, 0.04) 40%, 
+    rgba(6, 182, 212, 0.06) 70%, 
+    rgba(34, 197, 94, 0.05) 100%);
+}
+
+/* Base Gradient Movement Animation */
+@keyframes baseGradientShift {
+  0%, 100% { 
+    background-position: 0% 0%;
+  }
+  25% { 
+    background-position: 100% 0%;
+  }
+  50% { 
+    background-position: 100% 100%;
+  }
+  75% { 
+    background-position: 0% 100%;
+  }
+}
+
+/* Wave Animation Keyframes */
+@keyframes slowOscillation1 {
+  0%, 100% { 
+    transform: translateX(0%) translateY(0%) scale(1) rotate(0deg);
+    opacity: 0.8;
+  }
+  25% { 
+    transform: translateX(-6%) translateY(4%) scale(1.05) rotate(1deg);
+    opacity: 0.6;
+  }
+  50% { 
+    transform: translateX(4%) translateY(-6%) scale(0.95) rotate(-1deg);
+    opacity: 0.9;
+  }
+  75% { 
+    transform: translateX(-3%) translateY(2%) scale(1.02) rotate(0.5deg);
+    opacity: 0.7;
+  }
+}
+
+@keyframes slowOscillation2 {
+  0%, 100% { 
+    transform: translateX(0%) translateY(0%) scale(1) rotate(0deg);
+    opacity: 0.7;
+  }
+  20% { 
+    transform: translateX(5%) translateY(-3%) scale(1.08) rotate(-0.8deg);
+    opacity: 0.9;
+  }
+  40% { 
+    transform: translateX(-4%) translateY(6%) scale(0.92) rotate(1.2deg);
+    opacity: 0.5;
+  }
+  60% { 
+    transform: translateX(7%) translateY(-4%) scale(1.03) rotate(-0.5deg);
+    opacity: 0.8;
+  }
+  80% { 
+    transform: translateX(-2%) translateY(3%) scale(0.98) rotate(0.8deg);
+    opacity: 0.6;
+  }
+}
+
+@keyframes slowOscillation3 {
+  0%, 100% { 
+    transform: translateX(0%) translateY(0%) scale(1) rotate(0deg);
+    opacity: 0.6;
+  }
+  30% { 
+    transform: translateX(-5%) translateY(7%) scale(1.1) rotate(1.5deg);
+    opacity: 0.8;
+  }
+  70% { 
+    transform: translateX(6%) translateY(-5%) scale(0.9) rotate(-1deg);
+    opacity: 0.4;
+  }
+}
+
+.hamburger {
+  padding: 15px 15px;
+  display: inline-block;
+  cursor: pointer;
+  transition-property: opacity, filter;
+  transition-duration: 0.15s;
+  transition-timing-function: linear;
+  font: inherit;
+  color: inherit;
+  text-transform: none;
+  background-color: transparent;
+  border: 0;
+  margin: 0;
+  overflow: visible;
+}
+.hamburger-box {
+  width: 40px;
+  height: 24px;
+  display: inline-block;
+  position: relative;
+}
+.hamburger-inner {
+  display: block;
+  top: 50%;
+  margin-top: -2px;
+}
+.hamburger-inner, .hamburger-inner::before, .hamburger-inner::after {
+  width: 40px;
+  height: 4px;
+  border-radius: 4px;
+  position: absolute;
+  transition-property: transform;
+  transition-duration: 0.15s;
+  transition-timing-function: ease;
+}
+.hamburger-inner::before, .hamburger-inner::after {
+  content: "";
+  display: block;
+  background-color: inherit;
+}
+.hamburger-inner::before {
+  top: -10px;
+}
+.hamburger-inner::after {
+  bottom: -10px;
+}
+.hamburger--squeeze .hamburger-inner {
+  transition-duration: 0.075s;
+  transition-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+}
+.hamburger--squeeze .hamburger-inner::before {
+  transition: top 0.075s 0.12s ease, opacity 0.075s ease;
+}
+.hamburger--squeeze .hamburger-inner::after {
+  transition: bottom 0.075s 0.12s ease, transform 0.075s cubic-bezier(0.55, 0.055, 0.675, 0.19);
+}
+.hamburger--squeeze.is-active .hamburger-inner {
+  transform: rotate(45deg);
+  transition-delay: 0.12s;
+  transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+.hamburger--squeeze.is-active .hamburger-inner::before {
+  top: 0;
+  opacity: 0;
+  transition: top 0.075s ease, opacity 0.075s 0.12s ease;
+}
+.hamburger--squeeze.is-active .hamburger-inner::after {
+  bottom: 0;
+  transform: rotate(-90deg);
+  transition: bottom 0.075s ease, transform 0.075s 0.12s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+/* Original gradient-dance for TextDecoder */
+.gradient-dance {
+  background: linear-gradient(50deg, #22c55e, #6366f1, #3b82f6, #06b6d4, #a78bfa, #ec4899, #fbbf24, #ef4444, #8b5cf6);
+  background-size: 200% 200%;
+  background-position: 50% 25%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: circularDance 10s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes circularDance {
+  0%, 100% {
+      background-position: 50% 25%;
+      background-size: 200% 200%;
+  }
+  10% {
+      background-position: 75% 35%;
+      background-size: 230% 230%;
+  }
+  20% {
+      background-position: 90% 55%;
+      background-size: 250% 250%;
+  }
+  30% {
+      background-position: 85% 75%;
+      background-size: 230% 230%;
+  }
+  40% {
+      background-position: 65% 90%;
+      background-size: 210% 210%;
+  }
+  50% {
+      background-position: 35% 85%;
+      background-size: 240% 240%;
+  }
+  60% {
+      background-position: 15% 65%;
+      background-size: 260% 260%;
+  }
+  70% {
+      background-position: 10% 45%;
+      background-size: 230% 230%;
+  }
+  80% {
+      background-position: 25% 25%;
+      background-size: 210% 210%;
+  }
+  90% {
+      background-position: 40% 15%;
+      background-size: 220% 220%;
+  }
+}
+
+/* Aurora animation for AuroraText component */
+@keyframes gradientDance {
+  0%, 100% {
+      background-position: 50% 25%;
+      background-size: 200% 200%;
+  }
+  10% {
+      background-position: 75% 35%;
+      background-size: 230% 230%;
+  }
+  20% {
+      background-position: 90% 55%;
+      background-size: 250% 250%;
+  }
+  30% {
+      background-position: 85% 75%;
+      background-size: 230% 230%;
+  }
+  40% {
+      background-position: 65% 90%;
+      background-size: 210% 210%;
+  }
+  50% {
+      background-position: 35% 85%;
+      background-size: 240% 240%;
+  }
+  60% {
+      background-position: 15% 65%;
+      background-size: 260% 260%;
+  }
+  70% {
+      background-position: 10% 45%;
+      background-size: 230% 230%;
+  }
+  80% {
+      background-position: 25% 25%;
+      background-size: 210% 210%;
+  }
+  90% {
+      background-position: 40% 15%;
+      background-size: 220% 220%;
+  }
+}
+
+.animate-gradient-dance {
+  animation: gradientDance 10s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
