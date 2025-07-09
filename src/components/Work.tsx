@@ -36,7 +36,7 @@ const workData = [
                 {/* Main descriptor */}
                 <div className="mb-4">
                     <p className="text-gray-300 text-sm">
-                        Developing autonomous systems under <span className="text-blue-400 font-medium">Prof. Shima Nazari's CORE Lab</span>, focused on F1Tenth racing competition
+                        Developing autonomous systems under <span className="text-blue-400 font-medium">Prof. Shima Nazari&apos;s CORE Lab</span>, focused on F1Tenth racing competition
                     </p>
                 </div>
 
@@ -147,7 +147,7 @@ const workData = [
 
                 <div className="mb-4">
                     <p className="text-gray-300 text-sm">
-                        Collaborated in <span className="text-blue-400 font-medium">Prof. Douglas Joksch's lab</span> to develop kinematic robotic arm for automated motion control
+                        Collaborated in <span className="text-blue-400 font-medium">Prof. Douglas Joksch&apos;s lab</span> to develop kinematic robotic arm for automated motion control
                     </p>
                 </div>
 

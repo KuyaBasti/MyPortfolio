@@ -39,8 +39,8 @@ export default function Contact() {
                         Get In Touch
                     </h2>
                     <p className="text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
-                        I'm always interested in new opportunities and collaborations. 
-                        Feel free to reach out if you'd like to discuss embedded systems, 
+                        I&apos;m always interested in new opportunities and collaborations. 
+                        Feel free to reach out if you&apos;d like to discuss embedded systems, 
                         robotics, or any exciting projects!
                     </p>
                 </div>
@@ -167,11 +167,11 @@ export default function Contact() {
                 >
                     <div className="max-w-2xl mx-auto p-6 rounded-xl bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 border border-blue-200 dark:border-blue-800">
                         <h3 className="text-lg font-semibold text-neutral-800 dark:text-white mb-2">
-                            Let's Build Something Amazing Together
+                            Let&apos;s Build Something Amazing Together
                         </h3>
                         <p className="text-neutral-600 dark:text-neutral-400 mb-4">
-                            Whether it's autonomous systems, embedded firmware, or innovative robotics projects, 
-                            I'm excited to collaborate and create cutting-edge solutions.
+                            Whether it&apos;s autonomous systems, embedded firmware, or innovative robotics projects, 
+                            I&apos;m excited to collaborate and create cutting-edge solutions.
                         </p>
                         <div className="flex flex-wrap justify-center gap-3">
                             <a

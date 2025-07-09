@@ -189,7 +189,7 @@ export default function SkillsSection() {
                                 </div>
                                 
                                 <div className="grid grid-cols-2 gap-3 w-full">
-                                    {selectedCategory.skills.map((skill, index) => (
+                                    {selectedCategory.skills.map((skill) => (
                                         <div 
                                             key={skill}
                                             className="flex items-center space-x-2 p-2 bg-neutral-50 dark:bg-neutral-800 rounded-lg"
