@@ -67,7 +67,7 @@ const workData = [
             </div>
         ),
         logo: "/sss.png",
-        logoAlt: "UC Davis",
+        logoAlt: "Space and Satellite Systems",
         content: (
             <div>
                 <div className="mb-4">
