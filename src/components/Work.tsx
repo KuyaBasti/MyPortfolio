@@ -66,7 +66,7 @@ const workData = [
                 <div className="text-4xl font-black">2023</div>
             </div>
         ),
-        logo: "/ucdavis.png",
+        logo: "/sss.png",
         logoAlt: "UC Davis",
         content: (
             <div>
