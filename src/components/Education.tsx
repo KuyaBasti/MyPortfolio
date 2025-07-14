@@ -36,7 +36,7 @@ const educationData = [
                     <p className="text-gray-300 text-sm">
                         <span className="text-green-400 font-medium">3.5 GPA</span> in Computer Science and Engineering Department
                         <br />
-                        Expected Graduation: June 2025
+                        Graduated: June 2025
                     </p>
                 </div>
 
