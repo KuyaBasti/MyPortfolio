@@ -8,8 +8,8 @@ const workData = [
                 <div className="text-4xl font-black">2025</div>
             </div>
         ),
-        logo: "/ucdavis.png",
-        logoAlt: "UC Davis",
+        logo: "/corelab.png",
+        logoAlt: "CORE Lab",
         content: (
             <div>
                 {/* Always visible: Company, Position, Dates, Location */}
