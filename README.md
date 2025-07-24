@@ -8,6 +8,61 @@ I'm John Sebastian Solon, a Computer Science and Engineering student at UC Davis
 
 The site features smooth animations, responsive design, and modern web development practices. Built from scratch to demonstrate both technical skills and attention to detail.
 
+## File Structure
+
+```
+MyPortfolio/
+├── public/                     # Static assets
+│   ├── corelab.png            # CORE Lab logo
+│   ├── sss.png                # Project images
+│   ├── ucdavis.png            # UC Davis logo
+│   ├── yubacollege.png        # Yuba College logo
+│   └── *.svg                  # Icon assets
+├── src/
+│   ├── app/                   # Next.js App Router
+│   │   ├── favicon.ico
+│   │   ├── globals.css        # Global styles
+│   │   ├── layout.tsx         # Root layout
+│   │   └── page.tsx           # Home page
+│   ├── components/            # React components
+│   │   ├── About.tsx          # About section
+│   │   ├── AboutHero.tsx      # Hero section for about
+│   │   ├── Contact.tsx        # Contact form
+│   │   ├── Education.tsx      # Education timeline
+│   │   ├── Home.tsx           # Landing section
+│   │   ├── Navbar.tsx         # Navigation component
+│   │   ├── Projects.tsx       # Projects showcase
+│   │   ├── SkillSection.tsx   # Skills & technologies
+│   │   ├── Work.tsx           # Work experience
+│   │   └── ui/                # Reusable UI components
+│   │       ├── AnimatedCard.tsx      # Animated card component
+│   │       ├── Button.tsx            # Custom button
+│   │       ├── FlipText.tsx          # Text flip animation
+│   │       ├── FloatingNavbar.tsx    # Floating navigation
+│   │       ├── Gradient.tsx          # Gradient backgrounds
+│   │       ├── IconCloud.tsx         # 3D icon cloud
+│   │       ├── TacetMark.tsx         # Decorative marks
+│   │       ├── TextDecoder.tsx       # Text decoder effect
+│   │       ├── TextGenerate.tsx      # Text generation effect
+│   │       ├── TextHover.tsx         # Text hover effects
+│   │       ├── TextSlider.tsx        # Text sliding animation
+│   │       └── Timeline.tsx          # Timeline component
+│   ├── fonts/                 # Custom fonts
+│   │   ├── ClashDisplay-*     # Clash Display font family
+│   │   └── FiraCode-Regular.ttf # Code font
+│   ├── hooks/                 # Custom React hooks
+│   │   ├── useActive.ts       # Active section detection
+│   │   └── useMouse.ts        # Mouse position tracking
+│   └── lib/
+│       └── utils.ts           # Utility functions
+├── eslint.config.mjs          # ESLint configuration
+├── next.config.ts             # Next.js configuration
+├── package.json               # Dependencies & scripts
+├── postcss.config.mjs         # PostCSS configuration
+├── tsconfig.json              # TypeScript configuration
+└── README.md                  # Project documentation
+```
+
 ## Experience & Projects Featured
 
 - **Davis Autonomous Race Car (DARC)**: Real-time navigation systems using ROS2 on Nvidia Jetson Xavier NX with LiDAR and computer vision
