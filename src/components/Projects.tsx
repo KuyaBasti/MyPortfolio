@@ -47,17 +47,22 @@ const projectsData = [
         category: "Machine Learning"
     },
     {
-        title: "Aggie Reminder",
-        description: "Volunteer Management Web App for administrators",
-        technologies: ["Node.js", "HTML/CSS", "JavaScript", "SendGrid", "Google Apps Script"],
+        title: "Aggie Reminder - Volunteer Management System",
+        description: "Comprehensive volunteer management system with automated reminders, admin dashboard, and Google Apps Script integration",
+        technologies: ["Node.js", "Express.js", "PostgreSQL", "SendGrid API", "Google Apps Script", "HTML/CSS", "JavaScript", "Knex.js", "Excel Integration"],
         link: null,
         github: null,
         details: [
-            "Developed web application for Aggie House administrators to manage volunteer hours",
-            "Built Node.js server with frontend using HTML, CSS, and JavaScript",
-            "Integrated SendGrid API for automated email notifications",
-            "Implemented Google Apps Script automation for event reminders",
-            "Created automated reminder logic triggered two days before scheduled events"
+            "Built comprehensive volunteer management system for HackDavis 2024 to help administrators efficiently manage schedules and track work hours",
+            "Developed full-stack web application with Node.js/Express backend and responsive frontend using HTML5, CSS3, and JavaScript",
+            "Integrated PostgreSQL database with Knex.js query builder for robust data persistence and volunteer information management", 
+            "Implemented SendGrid Email API for automated reminder notifications and seamless volunteer communication",
+            "Created Google Apps Script automation system with time-driven triggers for smart scheduling and reminder delivery",
+            "Designed admin dashboard with intuitive interface for managing volunteers, tracking hours, and monitoring attendance",
+            "Built Excel file integration system using XLSX library for importing and processing volunteer data spreadsheets",
+            "Engineered automated reminder logic that sends notifications 2 days before scheduled events using Google Sheets API",
+            "Implemented user authentication system with login/registration functionality and session management",
+            "Developed responsive web interface with CORS support and cross-platform compatibility for volunteer management"
         ],
         category: "Full-Stack Development"
     }
