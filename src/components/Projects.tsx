@@ -7,17 +7,22 @@ import { X, ExternalLink, Github } from "lucide-react";
 
 const projectsData = [
     {
-        title: "DUAL! Inspired Game",
-        description: "Two-player multiplayer game using CC3200 microcontrollers",
-        technologies: ["C/C++", "CC3200", "UART", "I2C", "AWS IoT", "Lambda"],
+        title: "DUAL! - Embedded Systems Multiplayer Game",
+        description: "Sophisticated multiplayer arcade game on CC3200 microcontrollers with synchronized gameplay through UART communication, motion controls, and AWS cloud integration",
+        technologies: ["C/C++", "CC3200 ARM Cortex-M4", "UART Protocol", "I2C Communication", "SPI Interface", "AWS IoT", "Flask Server", "Adafruit GFX", "Real-time Systems", "Code Composer Studio"],
         link: "https://dihan922.github.io/dual-webpage/",
-        github: null,
+        github: "https://github.com/KuyaBasti/DUAL-Game",
         details: [
-            "Designed two-player multiplayer game using CC3200 microcontrollers and OLED displays",
-            "Implemented tilt-based ship movement using I2C-connected accelerometers",
-            "Integrated AWS IoT and Lambda functions for live cloud-connected scoring",
-            "Developed complete game states: setup, gameplay, scoring, and rematches",
-            "Troubleshot complex hardware/software issues including UART/I2C conflicts"
+            "Developed sophisticated two-player multiplayer arcade game on CC3200 microcontrollers with OLED displays, inspired by the mobile game DUAL",
+            "Implemented accelerometer-based ship control via I2C interface for intuitive tilt-based gameplay mechanics",
+            "Engineered real-time UART communication protocol for seamless cross-device game state synchronization between players",
+            "Designed comprehensive user input system with IR sensor circuits featuring multi-tap functionality for username entry",
+            "Integrated AWS IoT connectivity with Flask backend for real-time score transmission and cloud-based leaderboard management",
+            "Optimized custom Adafruit GFX graphics implementation for high-performance embedded display rendering",
+            "Achieved low-latency input processing and responsive controls essential for competitive multiplayer gaming",
+            "Developed complete game architecture including setup, gameplay, scoring, and rematch functionality",
+            "Implemented robust hardware abstraction layer managing SPI displays, I2C accelerometers, UART communication, and IR sensors",
+            "Created professional embedded systems project with full documentation, hardware setup guides, and deployment instructions"
         ],
         category: "Embedded Systems"
     },
