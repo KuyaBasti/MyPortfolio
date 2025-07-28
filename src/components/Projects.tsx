@@ -51,7 +51,7 @@ const projectsData = [
         description: "Comprehensive volunteer management system with automated reminders, admin dashboard, and Google Apps Script integration",
         technologies: ["Node.js", "Express.js", "PostgreSQL", "SendGrid API", "Google Apps Script", "HTML/CSS", "JavaScript", "Knex.js", "Excel Integration"],
         link: null,
-        github: null,
+        github: "https://github.com/KuyaBasti/Aggie-Reminder-",
         details: [
             "Built comprehensive volunteer management system for HackDavis 2024 to help administrators efficiently manage schedules and track work hours",
             "Developed full-stack web application with Node.js/Express backend and responsive frontend using HTML5, CSS3, and JavaScript",
