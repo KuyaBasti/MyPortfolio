@@ -8,7 +8,7 @@ import { X, ExternalLink, Github } from "lucide-react";
 const projectsData = [
     {
         title: "DUAL! - Embedded Systems Multiplayer Game",
-        description: "Sophisticated multiplayer arcade game on CC3200 microcontrollers with synchronized gameplay through UART communication, motion controls, and AWS cloud integration",
+        description: "Multiplayer arcade game on CC3200 microcontrollers with real-time UART communication and motion controls",
         technologies: ["C/C++", "CC3200 ARM Cortex-M4", "UART Protocol", "I2C Communication", "SPI Interface", "AWS IoT", "Flask Server", "Adafruit GFX", "Real-time Systems", "Code Composer Studio"],
         link: "https://dihan922.github.io/dual-webpage/",
         github: "https://github.com/KuyaBasti/DUAL-Game",
