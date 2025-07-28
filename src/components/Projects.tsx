@@ -27,17 +27,22 @@ const projectsData = [
         category: "Embedded Systems"
     },
     {
-        title: "Machine Learning Algorithm",
-        description: "Salary prediction model using demographic and professional data",
-        technologies: ["Python", "Machine Learning", "PCA", "Random Forest", "Neural Networks"],
+        title: "Salary Prediction Machine Learning Model",
+        description: "Comprehensive ML project predicting salaries using demographic and professional factors with interactive web interface",
+        technologies: ["Python", "scikit-learn", "Flask", "Neural Networks", "Random Forest", "PCA", "Pandas", "NumPy", "HTML/CSS", "Jupyter Notebook"],
         link: null,
-        github: null,
+        github: "https://github.com/KuyaBasti/SalaryPredictionModel",
         details: [
-            "Built salary prediction model using 6,684 records with demographic attributes",
-            "Applied one-hot encoding and Principal Component Analysis (PCA) for dimensionality reduction",
-            "Implemented feature selection and Z-score normalization for data preprocessing",
-            "Compared Linear Regression, Polynomial Regression, Neural Networks, and Random Forest",
-            "Achieved best performance with Random Forest (R² = 0.848, MSE ≈ 4.22e+08)"
+            "Built comprehensive salary prediction system using 6,684 records across demographics, job categories, and geographic regions",
+            "Implemented multiple ML algorithms: Linear Regression, Polynomial Regression, Multi-Layer Perceptron Neural Networks, and Random Forest",
+            "Developed complete data preprocessing pipeline with one-hot encoding, PCA dimensionality reduction, and feature scaling",
+            "Created interactive Flask web application with responsive design for real-time salary predictions",
+            "Achieved optimal performance with Random Forest model (R² = 0.848, MSE ≈ 4.22e+08) across 8 predictive features",
+            "Engineered robust model persistence system using pickle files for quick deployment and scalability",
+            "Analyzed salary trends across countries and demographic factors",
+            "Implemented comprehensive model evaluation framework comparing MSE and R² scores across all algorithms",
+            "Designed professional web interface with form validation and clean UI for user-friendly predictions",
+            "Created complete academic documentation including research paper for ECS 171 Machine Learning course"
         ],
         category: "Machine Learning"
     },
