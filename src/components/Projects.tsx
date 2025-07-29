@@ -125,6 +125,26 @@ const projectsData = [
             "Created extensive debugging framework with UART console output, signal timing analysis, and comprehensive troubleshooting documentation"
         ],
         category: "Embedded Systems"
+    },
+    {
+        title: "IR Signal Decoder - Device-to-Device Messaging",
+        description: "Peer-to-peer text messaging system using IR remotes and CC3200 microcontrollers with UART inter-device communication",
+        technologies: ["C", "CC3200 Microcontroller", "UART Protocol", "IR Signal Processing", "Message Protocol Design", "SPI Display", "Multi-device Networking", "Real-time Communication", "Embedded Graphics"],
+        link: null,
+        github: "https://github.com/KuyaBasti/IRSignalDecoder",
+        details: [
+            "Engineered peer-to-peer text messaging system enabling direct communication between multiple CC3200 microcontroller units via UART protocol",
+            "Developed comprehensive NEC IR protocol decoder with T9-style text input system supporting standard TV remote controls for message composition",
+            "Implemented robust UART-based communication protocol with structured message packets, error detection, and device identification for multi-unit networks",
+            "Created complete messaging interface featuring message composition, editing, transmission, reception, and history management with visual feedback",
+            "Built sophisticated state machine managing menu navigation, input modes, message flow, and inter-device communication with responsive user interface",
+            "Designed custom message protocol with packet structure including sender identification, message types, payload length, and checksum validation",
+            "Optimized OLED graphics system with multi-line text display, automatic word wrapping, scrollable message lists, and color-coded status indicators",
+            "Implemented dual UART functionality supporting both debug console output and inter-device communication with proper flow control and buffering",
+            "Created comprehensive device calibration system for IR remote auto-detection, button mapping, and multi-device network configuration",
+            "Built extensive API framework with modular functions for IR decoding, message processing, display management, and UART communication"
+        ],
+        category: "Embedded Systems"
     }
 ];
 
