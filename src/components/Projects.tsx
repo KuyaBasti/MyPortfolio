@@ -85,6 +85,26 @@ const projectsData = [
             "Created educational robotics platform demonstrating practical applications of kinematics, control theory, and embedded programming"
         ],
         category: "Embedded Systems"
+    },
+    {
+        title: "High-Performance DNS Resolver",
+        description: "Thread-safe DNS resolver in Go with recursive resolution, intelligent caching, and comprehensive protocol support",
+        technologies: ["Go", "Concurrent Programming", "DNS Protocol", "Hash-Partitioned Cache", "RWMutex", "Network Programming", "Security", "Performance Optimization"],
+        link: null,
+        github: "https://github.com/KuyaBasti/DNSResolver",
+        details: [
+            "Built high-performance DNS resolver from scratch in Go featuring recursive resolution starting from root servers with comprehensive record support",
+            "Implemented thread-safe design using RWMutex for concurrent operations and hash-partitioned cache system to reduce lock contention",
+            "Engineered intelligent caching system with TTL-based expiration, algorithmic attack prevention through random seeding, and O(1) average lookup time",
+            "Developed comprehensive DNS protocol support for A, AAAA, NS, CNAME, SOA, and PTR records with automatic CNAME chain resolution",
+            "Created robust security features including recursion loop prevention, cache poisoning protection, and input validation for domain sanitization",
+            "Designed scalable architecture with connection pooling for nameserver communications and smart retry logic with exponential backoff",
+            "Implemented advanced error handling with comprehensive response codes (NXDOMAIN, SERVFAIL, etc.) and proper TTL enforcement",
+            "Built comprehensive test suite with performance benchmarks, bulk lookup testing (13MB dataset), and cache performance validation",
+            "Optimized for production use with configurable cache units, server communication pools, and linear scaling with concurrent domains",
+            "Created extensive documentation with API reference, performance characteristics analysis, and troubleshooting guides"
+        ],
+        category: "Systems Programming"
     }
 ];
 
@@ -92,7 +112,7 @@ export default function Projects() {
     const [selectedProject, setSelectedProject] = useState<typeof projectsData[0] | null>(null);
     const [filter, setFilter] = useState<string>("All");
 
-    const categories = ["All", "Embedded Systems", "Machine Learning", "Full-Stack Development"];
+    const categories = ["All", "Embedded Systems", "Machine Learning", "Full-Stack Development", "Systems Programming"];
     const filteredProjects = filter === "All" 
         ? projectsData 
         : projectsData.filter(project => project.category === filter);
