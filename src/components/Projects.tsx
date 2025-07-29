@@ -65,6 +65,26 @@ const projectsData = [
             "Developed responsive web interface with CORS support and cross-platform compatibility for volunteer management"
         ],
         category: "Full-Stack Development"
+    },
+    {
+        title: "Robotic Arm Drawing System",
+        description: "C++ implementation of 2-link planar robotic arm with G-code interpretation for precision drawing operations",
+        technologies: ["C++", "Inverse Kinematics", "G-code Parser", "RS-232 Serial", "Visual Studio", "Servo Control", "Real-time Systems", "CNC Programming"],
+        link: null,
+        github: "https://github.com/KuyaBasti/RoboticArm",
+        details: [
+            "Developed comprehensive C++ robotic arm control system capable of interpreting standard CNC G-code commands for precision drawing operations",
+            "Implemented real-time inverse kinematics algorithms using trigonometric relationships to convert Cartesian coordinates into joint angles",
+            "Built complete G-code parser supporting standard CNC commands (G00, G01, G02, G03) with linear and circular arc interpolation",
+            "Engineered RS-232 serial communication interface for direct servo motor control with 0.12° angular resolution",
+            "Designed modular system architecture with separate modules for parsing, mathematics, motion planning, and hardware control",
+            "Created smooth interpolation algorithms for linear movements and circular arcs with configurable step sizes and precision control",
+            "Developed robust motion planning system with workspace analysis, singularity detection, and collision avoidance",
+            "Implemented hardware abstraction layer for multi-motor control (shoulder, elbow, tool) with calibration and positioning systems",
+            "Built comprehensive debugging and troubleshooting framework with performance analysis and accuracy validation",
+            "Created educational robotics platform demonstrating practical applications of kinematics, control theory, and embedded programming"
+        ],
+        category: "Embedded Systems"
     }
 ];
 
