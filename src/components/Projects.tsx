@@ -105,6 +105,26 @@ const projectsData = [
             "Created extensive documentation with API reference, performance characteristics analysis, and troubleshooting guides"
         ],
         category: "Systems Programming"
+    },
+    {
+        title: "IR Signal AWS - Remote Text Messaging System",
+        description: "Advanced IR remote-based text messaging system for CC3200 with T9 input, OLED display, and AWS cloud integration",
+        technologies: ["C", "CC3200 Microcontroller", "IR Protocol (NEC)", "AWS IoT", "SSL/TLS", "SPI Communication", "GPIO Interrupts", "T9 Text Input", "Adafruit GFX", "Real-time Graphics"],
+        link: null,
+        github: "https://github.com/KuyaBasti/IRSignalAWS",
+        details: [
+            "Developed innovative IR remote control text messaging system transforming standard TV remotes into IoT text input devices with cloud connectivity",
+            "Implemented GPIO interrupt-driven NEC IR protocol decoder with precise timing analysis and multi-tap T9-style character input system",
+            "Engineered real-time OLED graphics system using SSD1351 driver with 128x128 color display featuring dynamic text composition and visual feedback",
+            "Integrated secure AWS cloud communication via HTTPS with SSL/TLS encryption, JSON message formatting, and automated cloud transmission",
+            "Created sophisticated state management system handling multi-tap timing, caps lock mode, message buffering, and character selection with 1.5-second timeouts",
+            "Built comprehensive pin multiplexing system managing SPI display communication, GPIO IR signal capture, and UART debugging interfaces",
+            "Optimized embedded graphics performance with custom font rendering, real-time display updates under 50ms, and memory-efficient text processing",
+            "Implemented robust error handling for WiFi connectivity, SSL certificate validation, IR signal interference, and display initialization failures",
+            "Designed modular architecture with separate components for IR processing, graphics rendering, network communication, and user interface management",
+            "Created extensive debugging framework with UART console output, signal timing analysis, and comprehensive troubleshooting documentation"
+        ],
+        category: "Embedded Systems"
     }
 ];
 
