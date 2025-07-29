@@ -145,6 +145,26 @@ const projectsData = [
             "Built extensive API framework with modular functions for IR decoding, message processing, display management, and UART communication"
         ],
         category: "Embedded Systems"
+    },
+    {
+        title: "Parallel Edge Detection - High-Performance Computing",
+        description: "Advanced image processing pipeline with multiple parallelization strategies: OpenMP, Intel SIMD intrinsics, and CUDA GPU acceleration",
+        technologies: ["C++20", "CUDA", "OpenMP", "Intel SIMD (AVX)", "CMake", "Google Test", "Computer Vision", "Parallel Computing", "GPU Programming", "Performance Optimization"],
+        link: null,
+        github: "https://github.com/KuyaBasti/ParallelEdgeDetection",
+        details: [
+            "Built high-performance edge detection pipeline implementing multiple parallelization strategies achieving 15x speedup with CUDA GPU acceleration",
+            "Developed comprehensive C++20 class hierarchy with sequential baseline, OpenMP multi-threading, and CUDA GPU implementations for performance comparison",
+            "Implemented advanced computer vision algorithms including 5x5 Gaussian blur filtering, Sobel gradient calculation, and hysteresis threshold edge linking",
+            "Engineered CUDA GPU implementation with optimized memory coalescing, shared memory tile-based convolution, and texture memory for maximum throughput",
+            "Created OpenMP parallel implementation utilizing Intel SIMD intrinsics (AVX/AVX2) for 8x vectorized float processing and dynamic load balancing",
+            "Designed cross-platform CMake build system supporting multiple compilers (GCC, Clang, MSVC) with optional CUDA integration and build configurations",
+            "Built comprehensive testing framework using Google Test with extensive coverage for image I/O, algorithm accuracy, and performance benchmarking",
+            "Optimized memory access patterns and zero-copy operations minimizing CPU-GPU transfers while maintaining numerical precision and algorithm correctness",
+            "Implemented complete command-line interface and programmatic API supporting multiple image formats via STB library with customizable processing parameters",
+            "Created detailed performance analysis demonstrating scalability across different hardware configurations with benchmark results and optimization techniques"
+        ],
+        category: "Parallel Programming"
     }
 ];
 
@@ -152,7 +172,7 @@ export default function Projects() {
     const [selectedProject, setSelectedProject] = useState<typeof projectsData[0] | null>(null);
     const [filter, setFilter] = useState<string>("All");
 
-    const categories = ["All", "Embedded Systems", "Machine Learning", "Full-Stack Development", "Systems Programming"];
+    const categories = ["All", "Embedded Systems", "Machine Learning", "Full-Stack Development", "Systems Programming", "Parallel Programming"];
     const filteredProjects = filter === "All" 
         ? projectsData 
         : projectsData.filter(project => project.category === filter);
