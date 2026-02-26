@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Option C - Minimal Editorial</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #fafaf8; color: #1a1a1a; font-family: 'Inter', sans-serif; min-height: 100vh; }
+
+  .nav { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 28px 40px; }
+  .nav-logo { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 600; }
+  .nav-links { display: flex; gap: 32px; }
+  .nav-links a { text-decoration: none; color: #888; font-size: 14px; font-weight: 400; transition: color 0.2s; }
+  .nav-links a:hover { color: #1a1a1a; }
+
+  .hero { max-width: 1100px; margin: 0 auto; padding: 100px 40px 80px; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+  .hero-text h1 { font-family: 'Playfair Display', serif; font-size: 64px; font-weight: 700; line-height: 1.1; letter-spacing: -1px; margin-bottom: 24px; }
+  .hero-text .subtitle { font-size: 18px; color: #666; line-height: 1.7; margin-bottom: 32px; }
+  .hero-text .meta { display: flex; gap: 32px; padding-top: 24px; border-top: 1px solid #e0e0e0; }
+  .hero-text .meta-item .label { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: #999; margin-bottom: 4px; }
+  .hero-text .meta-item .value { font-size: 15px; font-weight: 500; }
+
+  .hero-visual { background: #f0eeeb; border-radius: 16px; height: 400px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+  .hero-visual .circle { width: 200px; height: 200px; border-radius: 50%; border: 2px solid #ddd; position: absolute; }
+  .hero-visual .circle:nth-child(1) { width: 280px; height: 280px; border-color: #ccc; }
+  .hero-visual .circle:nth-child(2) { width: 180px; height: 180px; border-color: #bbb; }
+  .hero-visual .center-text { font-family: 'Playfair Display', serif; font-size: 28px; color: #333; z-index: 1; }
+
+  .divider { max-width: 1100px; margin: 0 auto; padding: 0 40px; }
+  .divider hr { border: none; border-top: 1px solid #e0e0e0; }
+
+  .section { max-width: 1100px; margin: 0 auto; padding: 64px 40px; }
+  .section-label { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: #999; margin-bottom: 32px; }
+
+  .projects-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  .project-card { border: 1px solid #e8e8e8; border-radius: 12px; overflow: hidden; transition: box-shadow 0.3s; background: #fff; }
+  .project-card:hover { box-shadow: 0 8px 30px rgba(0,0,0,0.06); transform: translateY(-4px); }
+
+  @keyframes slideIn { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  .hero-text { animation: slideIn 0.8s ease both; }
+  .hero-visual { animation: slideIn 0.8s ease 0.2s both; }
+  .project-card { animation: slideIn 0.6s ease both; }
+  .project-card:nth-child(1) { animation-delay: 0.1s; }
+  .project-card:nth-child(2) { animation-delay: 0.2s; }
+  .project-card:nth-child(3) { animation-delay: 0.3s; }
+  .project-card:nth-child(4) { animation-delay: 0.4s; }
+  .hero-visual .circle { animation: spin 30s linear infinite; }
+  .hero-visual .circle:nth-child(2) { animation: spin 20s linear infinite reverse; }
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  html { scroll-behavior: smooth; }
+  .project-img { height: 180px; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 20px; color: #666; }
+  .project-img.robotics { background: linear-gradient(135deg, #e8f5e9 0%, #e3f2fd 100%); }
+  .project-img.embedded { background: linear-gradient(135deg, #fce4ec 0%, #f3e5f5 100%); }
+  .project-img.fullstack { background: linear-gradient(135deg, #fff3e0 0%, #fce4ec 100%); }
+  .project-img.ml { background: linear-gradient(135deg, #e3f2fd 0%, #e8eaf6 100%); }
+  .project-body { padding: 20px; }
+  .project-body .category { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #999; margin-bottom: 6px; }
+  .project-body h3 { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 600; margin-bottom: 8px; }
+  .project-body p { font-size: 14px; color: #777; line-height: 1.6; }
+
+  .exp-list { display: flex; flex-direction: column; }
+  .exp-entry { display: grid; grid-template-columns: 200px 1fr; gap: 40px; padding: 32px 0; border-bottom: 1px solid #eee; }
+  .exp-entry:last-child { border-bottom: none; }
+  .exp-date { font-size: 13px; color: #999; padding-top: 4px; }
+  .exp-content h3 { font-family: 'Playfair Display', serif; font-size: 20px; margin-bottom: 4px; }
+  .exp-content .role { font-size: 14px; color: #888; margin-bottom: 10px; }
+  .exp-content p { font-size: 14px; color: #666; line-height: 1.6; }
+
+  .contact-section { text-align: center; padding: 80px 40px; }
+  .contact-section h2 { font-family: 'Playfair Display', serif; font-size: 36px; margin-bottom: 16px; }
+  .contact-section p { color: #888; font-size: 16px; margin-bottom: 28px; }
+  .contact-links { display: flex; justify-content: center; gap: 24px; }
+  .contact-links a { color: #1a1a1a; text-decoration: none; font-size: 14px; font-weight: 500; padding: 10px 24px; border: 1px solid #ddd; border-radius: 8px; transition: all 0.2s; }
+  .contact-links a:hover { background: #1a1a1a; color: #fff; }
+</style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-logo">John Sebastian Solon</div>
+    <div class="nav-links">
+      <a href="#">About</a>
+      <a href="#">Projects</a>
+      <a href="#">Experience</a>
+      <a href="#">Contact</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-text">
+      <h1>Software meets hardware.</h1>
+      <p class="subtitle">I'm a Computer Science & Engineering student at UC Davis who builds across the entire stack — full-stack web applications, embedded firmware, autonomous robotics, and computer vision systems.</p>
+      <div class="meta">
+        <div class="meta-item">
+          <div class="label">Education</div>
+          <div class="value">UC Davis · CSE</div>
+        </div>
+        <div class="meta-item">
+          <div class="label">Focus</div>
+          <div class="value">Full-Stack & Embedded</div>
+        </div>
+        <div class="meta-item">
+          <div class="label">Research</div>
+          <div class="value">CORE Lab</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="center-text">JS</div>
+    </div>
+  </section>
+
+  <div class="divider"><hr></div>
+
+  <section class="section">
+    <div class="section-label">Selected Projects</div>
+    <div class="projects-grid">
+      <div class="project-card">
+        <div class="project-img robotics">DARC · F1Tenth</div>
+        <div class="project-body">
+          <div class="category">Robotics · Computer Vision</div>
+          <h3>Autonomous Race Car</h3>
+          <p>Real-time navigation with ROS2, LiDAR, and multi-sensor fusion on Nvidia Jetson Xavier NX.</p>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-img embedded">NASA · CubeSat</div>
+        <div class="project-body">
+          <div class="category">Embedded Systems</div>
+          <h3>CubeSatellite Flight Software</h3>
+          <p>Custom RTOS and protocol drivers for satellite communication on STM32.</p>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-img fullstack">Web · API</div>
+        <div class="project-body">
+          <div class="category">Full-Stack Development</div>
+          <h3>Robotic Arm Web Controller</h3>
+          <p>G-Code parsing engine with real-time web dashboard for monitoring and control.</p>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-img ml">ML · Vision</div>
+        <div class="project-body">
+          <div class="category">Machine Learning</div>
+          <h3>Vision Pipeline</h3>
+          <p>Computer vision for dynamic obstacle detection using LangSAM and Intel RealSense.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"><hr></div>
+
+  <section class="section">
+    <div class="section-label">Experience</div>
+    <div class="exp-list">
+      <div class="exp-entry">
+        <div class="exp-date">Jan 2025 — Present</div>
+        <div class="exp-content">
+          <h3>Davis Autonomous Race Car</h3>
+          <div class="role">Software / Robotics Engineer · Davis, CA</div>
+          <p>Developing autonomous navigation systems under Prof. Nazari's CORE Lab for F1Tenth competition. Enhanced real-time navigation, integrated LangSAM/TinySAM, and designed multi-sensor fusion pipelines.</p>
+        </div>
+      </div>
+      <div class="exp-entry">
+        <div class="exp-date">Sep 2024 — Present</div>
+        <div class="exp-content">
+          <h3>NASA CubeSatellite Project</h3>
+          <div class="role">Firmware Developer · Davis, CA</div>
+          <p>Developing flight software with custom RTOS and embedded protocol drivers for satellite communication systems.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact-section">
+    <h2>Let's work together.</h2>
+    <p>I'm open to internships, research collaborations, and interesting projects.</p>
+    <div class="contact-links">
+      <a href="#">Email</a>
+      <a href="#">GitHub</a>
+      <a href="#">LinkedIn</a>
+      <a href="#">Resume</a>
+    </div>
+  </section>
+</body>
+</html>

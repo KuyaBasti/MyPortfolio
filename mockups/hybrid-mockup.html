@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>John Sebastian Solon - Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: #050505; color: #f0f0f0; font-family: 'Sora', sans-serif; overflow-x: hidden; }
+
+  /* ============ NAV ============ */
+  .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 18px 48px; background: rgba(5,5,5,0.7); backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .nav-logo { font-size: 15px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; }
+  .nav-logo .dot { color: #818cf8; }
+  .nav-links { display: flex; gap: 28px; }
+  .nav-links a { color: #555; text-decoration: none; font-size: 13px; letter-spacing: 0.5px; transition: color 0.3s; }
+  .nav-links a:hover { color: #fff; }
+
+  /* ============ HERO (Option D cinematic) ============ */
+  .hero { height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+  .hero-bg { position: absolute; inset: 0; }
+  .hero-bg .orb { position: absolute; border-radius: 50%; filter: blur(120px); }
+  .orb1 { width: 600px; height: 600px; background: radial-gradient(circle, rgba(79,70,229,0.35) 0%, transparent 70%); top: 5%; left: 15%; animation: float1 22s ease-in-out infinite; }
+  .orb2 { width: 500px; height: 500px; background: radial-gradient(circle, rgba(124,58,237,0.3) 0%, transparent 70%); bottom: 10%; right: 10%; animation: float2 28s ease-in-out infinite; }
+  .orb3 { width: 350px; height: 350px; background: radial-gradient(circle, rgba(6,182,212,0.2) 0%, transparent 70%); top: 35%; right: 25%; animation: float3 20s ease-in-out infinite; }
+  .orb4 { width: 250px; height: 250px; background: radial-gradient(circle, rgba(244,114,182,0.15) 0%, transparent 70%); bottom: 30%; left: 30%; animation: float1 25s ease-in-out infinite reverse; }
+  @keyframes float1 { 0%,100% { transform: translate(0,0) scale(1); } 33% { transform: translate(40px,-30px) scale(1.05); } 66% { transform: translate(-20px,20px) scale(0.95); } }
+  @keyframes float2 { 0%,100% { transform: translate(0,0) scale(1); } 33% { transform: translate(-50px,25px) scale(1.08); } 66% { transform: translate(30px,-40px) scale(0.92); } }
+  @keyframes float3 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(35px,45px); } }
+
+  .hero-content { position: relative; z-index: 1; text-align: center; max-width: 820px; padding: 0 24px; }
+  .hero-overline { font-size: 12px; letter-spacing: 5px; text-transform: uppercase; color: #777; margin-bottom: 28px; animation: fadeUp 0.8s ease 0.2s both; }
+  .hero-h1 { font-size: 68px; font-weight: 700; letter-spacing: -3px; line-height: 1.08; margin-bottom: 28px; animation: fadeUp 0.8s ease 0.4s both; }
+  .hero-h1 .gradient { background: linear-gradient(135deg, #60a5fa 0%, #818cf8 40%, #c084fc 70%, #f472b6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero-sub { color: #777; font-size: 17px; line-height: 1.8; max-width: 560px; margin: 0 auto 36px; animation: fadeUp 0.8s ease 0.6s both; }
+  .hero-cta { display: flex; gap: 14px; justify-content: center; animation: fadeUp 0.8s ease 0.8s both; }
+  .btn { padding: 13px 30px; border-radius: 50px; font-size: 13px; font-weight: 500; text-decoration: none; transition: all 0.3s; font-family: 'Sora', sans-serif; letter-spacing: 0.5px; cursor: pointer; }
+  .btn-glow { background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; border: none; box-shadow: 0 0 30px rgba(124,58,237,0.25); }
+  .btn-glow:hover { box-shadow: 0 0 50px rgba(124,58,237,0.45); transform: translateY(-2px); }
+  .btn-outline { border: 1px solid #2a2a2a; color: #999; background: transparent; }
+  .btn-outline:hover { border-color: #555; color: #fff; }
+
+  .scroll-hint { position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 8px; animation: fadeUp 0.8s ease 1.2s both; }
+  .scroll-hint .line { width: 1px; height: 36px; background: linear-gradient(to bottom, #333, transparent); animation: scrollPulse 2s ease-in-out infinite; }
+  .scroll-hint span { font-size: 10px; letter-spacing: 3px; color: #333; text-transform: uppercase; }
+  @keyframes scrollPulse { 0%,100% { opacity: 0.3; } 50% { opacity: 0.8; } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ============ SECTIONS ============ */
+  .section { max-width: 1100px; margin: 0 auto; padding: 100px 40px; }
+  .section-header { display: flex; align-items: center; gap: 16px; margin-bottom: 48px; }
+  .section-num { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #818cf8; }
+  .section-title { font-size: 28px; font-weight: 600; letter-spacing: -1px; }
+  .section-line { flex: 1; height: 1px; background: linear-gradient(to right, #1a1a1a, transparent); }
+
+  /* ============ BENTO PROJECT GRID ============ */
+  .bento { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .bento-card { background: #0a0a0a; border: 1px solid #151515; border-radius: 18px; overflow: hidden; transition: all 0.4s cubic-bezier(0.4,0,0.2,1); position: relative; }
+  .bento-card:hover { border-color: #2a2a2a; transform: translateY(-6px); box-shadow: 0 24px 60px rgba(0,0,0,0.5); }
+  .bento-card.featured { grid-column: span 2; }
+
+  .card-visual { height: 220px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .featured .card-visual { height: 260px; }
+  .card-body { padding: 22px 24px 24px; }
+  .card-tags { display: flex; gap: 6px; margin-bottom: 10px; }
+  .card-tag { font-size: 10px; padding: 3px 10px; border-radius: 20px; font-weight: 500; letter-spacing: 0.3px; }
+  .tag-robotics { background: rgba(34,197,94,0.1); color: #4ade80; border: 1px solid rgba(34,197,94,0.15); }
+  .tag-embedded { background: rgba(244,114,182,0.1); color: #f472b6; border: 1px solid rgba(244,114,182,0.15); }
+  .tag-fullstack { background: rgba(129,140,248,0.1); color: #818cf8; border: 1px solid rgba(129,140,248,0.15); }
+  .tag-ml { background: rgba(251,191,36,0.1); color: #fbbf24; border: 1px solid rgba(251,191,36,0.15); }
+  .tag-cv { background: rgba(6,182,212,0.1); color: #22d3ee; border: 1px solid rgba(6,182,212,0.15); }
+  .card-body h3 { font-size: 18px; font-weight: 600; letter-spacing: -0.3px; margin-bottom: 6px; }
+  .card-body p { color: #666; font-size: 13px; line-height: 1.55; }
+  .card-tech { display: flex; gap: 6px; margin-top: 12px; flex-wrap: wrap; }
+  .card-tech span { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #444; }
+
+  /* ============ DARC RACECAR ANIMATION ============ */
+  .darc-scene { background: linear-gradient(135deg, #0a1a0a 0%, #0f2b1a 50%, #091a12 100%); width: 100%; height: 100%; position: relative; }
+  .track { position: absolute; bottom: 50px; left: 0; right: 0; height: 3px; }
+  .track-line { position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent 0%, #22c55e 20%, #22c55e 80%, transparent 100%); opacity: 0.3; }
+  .track-dashes { position: absolute; bottom: 12px; left: 0; right: 0; height: 1px; background: repeating-linear-gradient(90deg, transparent 0px, transparent 20px, rgba(34,197,94,0.2) 20px, rgba(34,197,94,0.2) 32px); animation: dashMove 1s linear infinite; }
+  @keyframes dashMove { from { transform: translateX(0); } to { transform: translateX(-52px); } }
+
+  .racecar { position: absolute; bottom: 54px; left: 50%; transform: translateX(-50%); animation: carBounce 1.5s ease-in-out infinite; }
+  .car-body { width: 80px; height: 22px; background: linear-gradient(135deg, #ef4444, #dc2626); border-radius: 4px 12px 2px 2px; position: relative; box-shadow: 0 0 20px rgba(239,68,68,0.3); }
+  .car-body::before { content: ''; position: absolute; top: -8px; left: 20px; width: 30px; height: 10px; background: linear-gradient(135deg, #b91c1c, #991b1b); border-radius: 3px 6px 0 0; }
+  .car-body::after { content: ''; position: absolute; top: -6px; left: 22px; width: 12px; height: 6px; background: rgba(96,165,250,0.4); border-radius: 2px; }
+  .wheel { position: absolute; bottom: -6px; width: 14px; height: 14px; background: #333; border-radius: 50%; border: 2px solid #555; }
+  .wheel-front { right: 8px; }
+  .wheel-rear { left: 8px; }
+  .wheel::after { content: ''; position: absolute; inset: 3px; border-radius: 50%; border: 1px solid #777; animation: wheelSpin 0.3s linear infinite; }
+  @keyframes wheelSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  @keyframes carBounce { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(-2px); } }
+
+  .lidar-sweep { position: absolute; bottom: 70px; left: calc(50% + 35px); width: 120px; height: 80px; overflow: hidden; }
+  .lidar-beam { position: absolute; bottom: 0; left: 0; width: 2px; height: 100%; background: linear-gradient(to top, rgba(34,197,94,0.8), transparent); transform-origin: bottom left; animation: lidarScan 2s ease-in-out infinite; }
+  @keyframes lidarScan { 0% { transform: rotate(-30deg); opacity: 0.8; } 50% { transform: rotate(30deg); opacity: 0.4; } 100% { transform: rotate(-30deg); opacity: 0.8; } }
+  .lidar-dots { position: absolute; bottom: 0; left: 0; right: 0; top: 0; }
+  .lidar-dot { position: absolute; width: 3px; height: 3px; background: #22c55e; border-radius: 50%; opacity: 0; animation: dotPing 2s ease-in-out infinite; }
+  .lidar-dot:nth-child(1) { top: 20%; left: 30%; animation-delay: 0s; }
+  .lidar-dot:nth-child(2) { top: 40%; left: 55%; animation-delay: 0.3s; }
+  .lidar-dot:nth-child(3) { top: 15%; left: 70%; animation-delay: 0.6s; }
+  .lidar-dot:nth-child(4) { top: 55%; left: 40%; animation-delay: 0.9s; }
+  .lidar-dot:nth-child(5) { top: 30%; left: 85%; animation-delay: 1.2s; }
+  @keyframes dotPing { 0%,100% { opacity: 0; transform: scale(0.5); } 50% { opacity: 1; transform: scale(1.5); } }
+
+  .speed-lines { position: absolute; bottom: 60px; left: calc(50% - 80px); }
+  .speed-line { position: absolute; height: 1px; background: linear-gradient(to left, rgba(239,68,68,0.4), transparent); animation: speedTrail 0.8s linear infinite; }
+  .speed-line:nth-child(1) { width: 40px; top: 0; animation-delay: 0s; }
+  .speed-line:nth-child(2) { width: 30px; top: 6px; animation-delay: 0.2s; }
+  .speed-line:nth-child(3) { width: 50px; top: 12px; animation-delay: 0.4s; }
+  @keyframes speedTrail { from { transform: translateX(0); opacity: 0.6; } to { transform: translateX(-30px); opacity: 0; } }
+
+  .darc-label { position: absolute; top: 20px; left: 24px; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: rgba(34,197,94,0.5); letter-spacing: 2px; }
+  .darc-telemetry { position: absolute; top: 20px; right: 24px; font-family: 'JetBrains Mono', monospace; font-size: 9px; color: rgba(34,197,94,0.3); text-align: right; line-height: 1.6; }
+
+  /* ============ NASA SATELLITE ANIMATION ============ */
+  .nasa-scene { background: linear-gradient(135deg, #0a0a1a 0%, #0f0f2d 50%, #050520 100%); width: 100%; height: 100%; position: relative; overflow: hidden; }
+  .stars { position: absolute; inset: 0; }
+  .star { position: absolute; width: 1px; height: 1px; background: #fff; border-radius: 50%; animation: twinkle 3s ease-in-out infinite; }
+  .star:nth-child(1) { top: 15%; left: 20%; animation-delay: 0s; }
+  .star:nth-child(2) { top: 30%; left: 70%; animation-delay: 0.5s; width: 2px; height: 2px; }
+  .star:nth-child(3) { top: 60%; left: 40%; animation-delay: 1s; }
+  .star:nth-child(4) { top: 25%; left: 85%; animation-delay: 1.5s; }
+  .star:nth-child(5) { top: 75%; left: 15%; animation-delay: 2s; width: 2px; height: 2px; }
+  .star:nth-child(6) { top: 45%; left: 55%; animation-delay: 0.8s; }
+  .star:nth-child(7) { top: 80%; left: 75%; animation-delay: 1.3s; }
+  .star:nth-child(8) { top: 10%; left: 45%; animation-delay: 2.2s; width: 2px; height: 2px; }
+  @keyframes twinkle { 0%,100% { opacity: 0.3; } 50% { opacity: 1; } }
+
+  .earth { position: absolute; bottom: -60px; left: 50%; transform: translateX(-50%); width: 200px; height: 200px; border-radius: 50%; background: radial-gradient(circle at 40% 40%, #1e40af, #1e3a5f 40%, #0c1e3a 70%, #060e1a); box-shadow: 0 0 60px rgba(30,64,175,0.3), inset -20px -10px 40px rgba(0,0,0,0.5); }
+  .earth-glow { position: absolute; bottom: -60px; left: 50%; transform: translateX(-50%); width: 210px; height: 210px; border-radius: 50%; background: radial-gradient(circle, rgba(59,130,246,0.15), transparent 60%); }
+  .atmosphere { position: absolute; bottom: -62px; left: 50%; transform: translateX(-50%); width: 208px; height: 208px; border-radius: 50%; border: 1px solid rgba(96,165,250,0.1); }
+
+  .orbit-path { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 280px; height: 160px; border: 1px dashed rgba(129,140,248,0.1); border-radius: 50%; transform: translate(-50%, -50%) rotate(-20deg); }
+
+  .satellite { position: absolute; top: 50%; left: 50%; animation: orbit 8s linear infinite; }
+  @keyframes orbit {
+    0% { transform: translate(-140px, -50px) rotate(0deg); }
+    25% { transform: translate(0px, -90px) rotate(90deg); }
+    50% { transform: translate(140px, -50px) rotate(180deg); }
+    75% { transform: translate(0px, 10px) rotate(270deg); }
+    100% { transform: translate(-140px, -50px) rotate(360deg); }
+  }
+  .sat-body { width: 16px; height: 10px; background: linear-gradient(135deg, #c0c0c0, #808080); border-radius: 2px; position: relative; }
+  .sat-panel { position: absolute; top: 1px; width: 20px; height: 8px; background: linear-gradient(135deg, #4f46e5, #6366f1); border: 1px solid #818cf8; }
+  .sat-panel-l { right: 100%; margin-right: 2px; }
+  .sat-panel-r { left: 100%; margin-left: 2px; }
+  .sat-signal { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); }
+  .signal-ring { position: absolute; border: 1px solid rgba(129,140,248,0.4); border-radius: 50%; animation: signalPulse 2s ease-out infinite; }
+  .signal-ring:nth-child(1) { width: 24px; height: 24px; top: -12px; left: -12px; }
+  .signal-ring:nth-child(2) { width: 40px; height: 40px; top: -20px; left: -20px; animation-delay: 0.5s; }
+  .signal-ring:nth-child(3) { width: 56px; height: 56px; top: -28px; left: -28px; animation-delay: 1s; }
+  @keyframes signalPulse { 0% { transform: scale(0.5); opacity: 0.8; } 100% { transform: scale(1.5); opacity: 0; } }
+
+  .nasa-label { position: absolute; top: 16px; left: 20px; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: rgba(129,140,248,0.4); letter-spacing: 2px; }
+
+  /* ============ ROBOTIC ARM ANIMATION ============ */
+  .arm-scene { background: linear-gradient(135deg, #1a0a1a 0%, #2a1030 50%, #150a20 100%); width: 100%; height: 100%; position: relative; overflow: hidden; }
+  .arm-base { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); }
+  .base-plate { width: 60px; height: 10px; background: linear-gradient(to top, #555, #777); border-radius: 3px; }
+  .arm-segment1 { position: absolute; bottom: 10px; left: 50%; transform-origin: bottom center; transform: translateX(-50%) rotate(-20deg); animation: armMove1 4s ease-in-out infinite; width: 8px; height: 70px; background: linear-gradient(to top, #888, #aaa); border-radius: 4px; }
+  .arm-segment2 { position: absolute; top: -2px; left: 50%; transform-origin: top center; transform: translateX(-50%) rotate(40deg); animation: armMove2 4s ease-in-out infinite; width: 6px; height: 55px; background: linear-gradient(to top, #999, #bbb); border-radius: 3px; }
+  .arm-joint { position: absolute; top: -4px; left: 50%; transform: translateX(-50%); width: 12px; height: 12px; background: #c084fc; border-radius: 50%; box-shadow: 0 0 10px rgba(192,132,252,0.4); }
+  .arm-gripper { position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%); display: flex; gap: 3px; animation: gripperGrab 4s ease-in-out infinite; }
+  .gripper-l, .gripper-r { width: 3px; height: 14px; background: #ccc; border-radius: 1px; }
+  @keyframes armMove1 { 0%,100% { transform: translateX(-50%) rotate(-20deg); } 50% { transform: translateX(-50%) rotate(15deg); } }
+  @keyframes armMove2 { 0%,100% { transform: translateX(-50%) rotate(40deg); } 50% { transform: translateX(-50%) rotate(-10deg); } }
+  @keyframes gripperGrab { 0%,40% { gap: 6px; } 50%,90% { gap: 2px; } 100% { gap: 6px; } }
+
+  .gcode-lines { position: absolute; top: 16px; left: 20px; font-family: 'JetBrains Mono', monospace; font-size: 9px; color: rgba(192,132,252,0.3); line-height: 1.7; }
+  .gcode-line { animation: gcodeType 4s ease-in-out infinite; }
+  .gcode-line:nth-child(2) { animation-delay: 0.3s; }
+  .gcode-line:nth-child(3) { animation-delay: 0.6s; }
+  .gcode-line:nth-child(4) { animation-delay: 0.9s; }
+  @keyframes gcodeType { 0%,100% { opacity: 0.2; } 50% { opacity: 0.6; } }
+
+  .arm-grid { position: absolute; inset: 0; background-image: radial-gradient(rgba(192,132,252,0.04) 1px, transparent 1px); background-size: 24px 24px; }
+  .arm-label { position: absolute; top: 16px; right: 20px; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: rgba(192,132,252,0.4); letter-spacing: 2px; text-align: right; }
+
+  /* ============ VISION PIPELINE ANIMATION ============ */
+  .vision-scene { background: linear-gradient(135deg, #0a1520 0%, #0d2030 50%, #081018 100%); width: 100%; height: 100%; position: relative; overflow: hidden; }
+  .vision-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(6,182,212,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(6,182,212,0.03) 1px, transparent 1px); background-size: 30px 30px; }
+  .scan-line { position: absolute; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, rgba(6,182,212,0.3), transparent); animation: scanDown 3s linear infinite; }
+  @keyframes scanDown { from { top: -2px; } to { top: 100%; } }
+
+  .bbox { position: absolute; border: 1.5px solid; border-radius: 4px; animation: bboxPulse 3s ease-in-out infinite; }
+  .bbox::before { content: attr(data-label); position: absolute; top: -16px; left: -1px; font-family: 'JetBrains Mono', monospace; font-size: 8px; padding: 1px 6px; border-radius: 2px; }
+  .bbox1 { width: 70px; height: 50px; top: 35%; left: 20%; border-color: rgba(34,197,94,0.6); animation-delay: 0s; }
+  .bbox1::before { content: 'obstacle'; background: rgba(34,197,94,0.2); color: #4ade80; }
+  .bbox2 { width: 45px; height: 65px; top: 25%; left: 55%; border-color: rgba(251,191,36,0.6); animation-delay: 0.5s; }
+  .bbox2::before { content: 'vehicle'; background: rgba(251,191,36,0.2); color: #fbbf24; }
+  .bbox3 { width: 90px; height: 35px; top: 60%; left: 40%; border-color: rgba(239,68,68,0.6); animation-delay: 1s; }
+  .bbox3::before { content: 'barrier'; background: rgba(239,68,68,0.2); color: #f87171; }
+  .bbox-conf { position: absolute; bottom: -14px; right: 0; font-family: 'JetBrains Mono', monospace; font-size: 8px; }
+  .bbox1 .bbox-conf { color: rgba(34,197,94,0.6); }
+  .bbox2 .bbox-conf { color: rgba(251,191,36,0.6); }
+  .bbox3 .bbox-conf { color: rgba(239,68,68,0.6); }
+  @keyframes bboxPulse { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
+
+  .crosshair { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 40px; height: 40px; }
+  .crosshair::before, .crosshair::after { content: ''; position: absolute; background: rgba(6,182,212,0.3); }
+  .crosshair::before { width: 1px; height: 100%; left: 50%; }
+  .crosshair::after { height: 1px; width: 100%; top: 50%; }
+  .focus-ring { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 60px; height: 60px; border: 1px solid rgba(6,182,212,0.2); border-radius: 50%; animation: focusPulse 2s ease-in-out infinite; }
+  @keyframes focusPulse { 0%,100% { transform: translate(-50%,-50%) scale(0.8); opacity: 0.6; } 50% { transform: translate(-50%,-50%) scale(1.2); opacity: 0.2; } }
+  .vision-label { position: absolute; top: 16px; left: 20px; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: rgba(6,182,212,0.4); letter-spacing: 2px; }
+  .vision-fps { position: absolute; bottom: 16px; right: 20px; font-family: 'JetBrains Mono', monospace; font-size: 9px; color: rgba(6,182,212,0.3); }
+
+  /* ============ FULLSTACK ANIMATION ============ */
+  .stack-scene { background: linear-gradient(135deg, #0a0a1e 0%, #10102a 50%, #08081a 100%); width: 100%; height: 100%; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .stack-grid { position: absolute; inset: 0; background-image: radial-gradient(rgba(129,140,248,0.03) 1px, transparent 1px); background-size: 20px 20px; }
+  .code-block { font-family: 'JetBrains Mono', monospace; font-size: 11px; line-height: 1.8; position: relative; z-index: 1; }
+  .code-line { opacity: 0; animation: codeFade 6s ease-in-out infinite; }
+  .code-line:nth-child(1) { animation-delay: 0s; }
+  .code-line:nth-child(2) { animation-delay: 0.4s; }
+  .code-line:nth-child(3) { animation-delay: 0.8s; }
+  .code-line:nth-child(4) { animation-delay: 1.2s; }
+  .code-line:nth-child(5) { animation-delay: 1.6s; }
+  .code-line:nth-child(6) { animation-delay: 2.0s; }
+  .code-line:nth-child(7) { animation-delay: 2.4s; }
+  @keyframes codeFade { 0% { opacity: 0; transform: translateX(-8px); } 15%,85% { opacity: 1; transform: translateX(0); } 100% { opacity: 0; transform: translateX(8px); } }
+  .c-kw { color: #c084fc; }
+  .c-fn { color: #60a5fa; }
+  .c-str { color: #4ade80; }
+  .c-op { color: #666; }
+  .c-num { color: #fbbf24; }
+  .c-cm { color: #333; }
+  .stack-label { position: absolute; top: 16px; left: 20px; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: rgba(129,140,248,0.4); letter-spacing: 2px; }
+
+  .data-flow { position: absolute; right: 24px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 8px; align-items: center; }
+  .flow-node { width: 50px; height: 22px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 7px; letter-spacing: 0.5px; }
+  .flow-fe { background: rgba(96,165,250,0.15); color: #60a5fa; border: 1px solid rgba(96,165,250,0.2); }
+  .flow-api { background: rgba(129,140,248,0.15); color: #818cf8; border: 1px solid rgba(129,140,248,0.2); }
+  .flow-db { background: rgba(244,114,182,0.15); color: #f472b6; border: 1px solid rgba(244,114,182,0.2); }
+  .flow-arrow { width: 1px; height: 12px; position: relative; }
+  .flow-arrow::after { content: ''; position: absolute; width: 1px; height: 100%; background: linear-gradient(to bottom, rgba(129,140,248,0.3), rgba(129,140,248,0.1)); animation: flowPulse 1.5s ease-in-out infinite; }
+  @keyframes flowPulse { 0%,100% { opacity: 0.3; } 50% { opacity: 1; } }
+
+  /* ============ ABOUT SECTION (nize.ph minimalism) ============ */
+  .about-content { max-width: 640px; }
+  .about-content p { color: #888; font-size: 16px; line-height: 1.9; margin-bottom: 20px; }
+  .about-content .highlight { color: #e0e0e0; font-weight: 500; }
+
+  /* ============ EXPERIENCE (clean, no timeline) ============ */
+  .exp-stack { display: flex; flex-direction: column; gap: 2px; }
+  .exp-card { background: #0a0a0a; border: 1px solid #131313; border-radius: 12px; padding: 24px 28px; display: grid; grid-template-columns: 160px 1fr; gap: 28px; transition: border-color 0.3s; }
+  .exp-card:hover { border-color: #222; }
+  .exp-date { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #444; padding-top: 3px; }
+  .exp-info h3 { font-size: 16px; font-weight: 500; margin-bottom: 3px; }
+  .exp-info h3 a { color: #818cf8; text-decoration: none; }
+  .exp-info .role { color: #666; font-size: 13px; margin-bottom: 8px; }
+  .exp-info p { color: #555; font-size: 13px; line-height: 1.6; }
+
+  /* ============ CONTACT (clean CTA) ============ */
+  .contact { text-align: center; padding: 100px 40px 120px; }
+  .contact h2 { font-size: 44px; font-weight: 700; letter-spacing: -2px; margin-bottom: 14px; }
+  .contact h2 .gradient { background: linear-gradient(135deg, #60a5fa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .contact p { color: #666; font-size: 15px; margin-bottom: 32px; }
+  .contact-links { display: flex; gap: 12px; justify-content: center; }
+  .contact-links a { color: #888; text-decoration: none; font-size: 13px; padding: 11px 24px; border: 1px solid #1a1a1a; border-radius: 50px; transition: all 0.3s; }
+  .contact-links a:hover { color: #fff; border-color: #444; }
+</style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-logo">JS<span class="dot">.</span></div>
+    <div class="nav-links">
+      <a href="#projects">Projects</a>
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="orb orb1"></div>
+      <div class="orb orb2"></div>
+      <div class="orb orb3"></div>
+      <div class="orb orb4"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-overline">Software &amp; Embedded Engineer</div>
+      <h1 class="hero-h1">Building at the<br><span class="gradient">intersection of<br>hardware &amp; software</span></h1>
+      <p class="hero-sub">From production web apps to bare-metal firmware — I build full-stack systems, autonomous robots, and everything in between. CSE @ UC Davis.</p>
+      <div class="hero-cta">
+        <a class="btn btn-glow" href="#projects">View Projects</a>
+        <a class="btn btn-outline" href="#">Resume ↓</a>
+      </div>
+    </div>
+    <div class="scroll-hint">
+      <div class="line"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- PROJECTS BENTO -->
+  <section class="section" id="projects">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <span class="section-title">Projects</span>
+      <span class="section-line"></span>
+    </div>
+    <div class="bento">
+
+      <!-- DARC - Featured -->
+      <div class="bento-card featured">
+        <div class="card-visual">
+          <div class="darc-scene">
+            <div class="darc-label">LIDAR ACTIVE</div>
+            <div class="darc-telemetry">SPD 42.7 km/h<br>LAT ±0.02m</div>
+            <div class="track">
+              <div class="track-line"></div>
+              <div class="track-dashes"></div>
+            </div>
+            <div class="speed-lines">
+              <div class="speed-line"></div>
+              <div class="speed-line"></div>
+              <div class="speed-line"></div>
+            </div>
+            <div class="racecar">
+              <div class="car-body">
+                <div class="wheel wheel-front"></div>
+                <div class="wheel wheel-rear"></div>
+              </div>
+            </div>
+            <div class="lidar-sweep">
+              <div class="lidar-beam"></div>
+              <div class="lidar-dots">
+                <div class="lidar-dot"></div>
+                <div class="lidar-dot"></div>
+                <div class="lidar-dot"></div>
+                <div class="lidar-dot"></div>
+                <div class="lidar-dot"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-tags">
+            <span class="card-tag tag-robotics">robotics</span>
+            <span class="card-tag tag-cv">computer vision</span>
+          </div>
+          <h3>Davis Autonomous Race Car</h3>
+          <p>Real-time autonomous navigation for F1Tenth racing. LiDAR, computer vision, multi-sensor fusion on Nvidia Jetson Xavier NX using ROS2.</p>
+          <div class="card-tech"><span>C++ · ROS2 · Python · LiDAR · OpenCV · Jetson NX</span></div>
+        </div>
+      </div>
+
+      <!-- NASA Satellite -->
+      <div class="bento-card">
+        <div class="card-visual">
+          <div class="nasa-scene">
+            <div class="nasa-label">TELEMETRY</div>
+            <div class="stars">
+              <div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div>
+              <div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div>
+            </div>
+            <div class="earth-glow"></div>
+            <div class="atmosphere"></div>
+            <div class="earth"></div>
+            <div class="orbit-path"></div>
+            <div class="satellite">
+              <div class="sat-signal">
+                <div class="signal-ring"></div>
+                <div class="signal-ring"></div>
+                <div class="signal-ring"></div>
+              </div>
+              <div class="sat-body">
+                <div class="sat-panel sat-panel-l"></div>
+                <div class="sat-panel sat-panel-r"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-tags"><span class="card-tag tag-embedded">embedded</span></div>
+          <h3>NASA CubeSatellite</h3>
+          <p>Custom RTOS with SPI, I2C, UART drivers for satellite communication on STM32.</p>
+          <div class="card-tech"><span>C · STM32 · RTOS · SPI/I2C/UART</span></div>
+        </div>
+      </div>
+
+      <!-- Robotic Arm -->
+      <div class="bento-card">
+        <div class="card-visual">
+          <div class="arm-scene">
+            <div class="arm-grid"></div>
+            <div class="arm-label">KINEMATICS</div>
+            <div class="gcode-lines">
+              <div class="gcode-line">G01 X42.5 Y18.0</div>
+              <div class="gcode-line">G28 Z0.0 F200</div>
+              <div class="gcode-line">M03 S1000</div>
+              <div class="gcode-line">G01 X0.0 Y35.2</div>
+            </div>
+            <div class="arm-base">
+              <div class="base-plate"></div>
+              <div class="arm-segment1">
+                <div class="arm-joint"></div>
+                <div class="arm-segment2">
+                  <div class="arm-gripper">
+                    <div class="gripper-l"></div>
+                    <div class="gripper-r"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-tags">
+            <span class="card-tag tag-fullstack">full-stack</span>
+            <span class="card-tag tag-embedded">embedded</span>
+          </div>
+          <h3>Robotic Arm Controller</h3>
+          <p>Kinematic controller with G-Code parsing and web dashboard.</p>
+          <div class="card-tech"><span>C++ · Assembly · React · WebSocket</span></div>
+        </div>
+      </div>
+
+      <!-- Vision Pipeline -->
+      <div class="bento-card">
+        <div class="card-visual">
+          <div class="vision-scene">
+            <div class="vision-grid"></div>
+            <div class="vision-label">CV PIPELINE</div>
+            <div class="vision-fps">30 FPS · RealSense D435</div>
+            <div class="scan-line"></div>
+            <div class="crosshair"></div>
+            <div class="focus-ring"></div>
+            <div class="bbox bbox1"><span class="bbox-conf">0.94</span></div>
+            <div class="bbox bbox2"><span class="bbox-conf">0.87</span></div>
+            <div class="bbox bbox3"><span class="bbox-conf">0.91</span></div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-tags">
+            <span class="card-tag tag-ml">machine learning</span>
+            <span class="card-tag tag-cv">computer vision</span>
+          </div>
+          <h3>Vision Pipeline</h3>
+          <p>Dynamic obstacle detection with LangSAM and Intel RealSense depth cameras.</p>
+          <div class="card-tech"><span>Python · OpenCV · LangSAM · TinySAM</span></div>
+        </div>
+      </div>
+
+      <!-- Full-Stack -->
+      <div class="bento-card">
+        <div class="card-visual">
+          <div class="stack-scene">
+            <div class="stack-grid"></div>
+            <div class="stack-label">FULL-STACK</div>
+            <div class="code-block">
+              <div class="code-line"><span class="c-kw">const</span> <span class="c-fn">app</span> <span class="c-op">=</span> <span class="c-fn">express</span><span class="c-op">()</span></div>
+              <div class="code-line"><span class="c-kw">const</span> <span class="c-fn">port</span> <span class="c-op">=</span> <span class="c-num">3000</span></div>
+              <div class="code-line"></div>
+              <div class="code-line"><span class="c-fn">app</span>.<span class="c-fn">get</span>(<span class="c-str">'/api'</span>, <span class="c-op">(</span>req, res<span class="c-op">)</span> <span class="c-kw">=></span> <span class="c-op">{</span></div>
+              <div class="code-line">  res.<span class="c-fn">json</span>(<span class="c-op">{</span> <span class="c-str">status</span>: <span class="c-str">'ok'</span> <span class="c-op">}</span>)</div>
+              <div class="code-line"><span class="c-op">})</span></div>
+              <div class="code-line"><span class="c-cm">// serving 10k+ requests/day</span></div>
+            </div>
+            <div class="data-flow">
+              <div class="flow-node flow-fe">React</div>
+              <div class="flow-arrow"></div>
+              <div class="flow-node flow-api">API</div>
+              <div class="flow-arrow"></div>
+              <div class="flow-node flow-db">DB</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-tags"><span class="card-tag tag-fullstack">full-stack</span></div>
+          <h3>Web Applications</h3>
+          <p>Production full-stack apps with React, Node.js, Flask, and PostgreSQL.</p>
+          <div class="card-tech"><span>React · Node.js · Flask · PostgreSQL</span></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="section" id="about">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <span class="section-title">About</span>
+      <span class="section-line"></span>
+    </div>
+    <div class="about-content">
+      <p>I'm a Computer Science & Engineering student at <span class="highlight">UC Davis</span> with a passion for building across the full stack — from bare-metal firmware to production web apps.</p>
+      <p>Currently developing autonomous navigation systems at <span class="highlight">Prof. Nazari's CORE Lab</span> and contributing to <span class="highlight">NASA-affiliated satellite projects</span>. I believe the best engineers are the ones who can move fluidly between hardware and software.</p>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section class="section" id="experience">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <span class="section-title">Experience</span>
+      <span class="section-line"></span>
+    </div>
+    <div class="exp-stack">
+      <div class="exp-card">
+        <div class="exp-date">2025 — Present</div>
+        <div class="exp-info">
+          <h3><a href="#">Davis Autonomous Race Car</a></h3>
+          <div class="role">Software / Robotics Engineer · CORE Lab, Davis CA</div>
+          <p>Developing autonomous navigation for F1Tenth. Enhanced real-time nav with ROS2, integrated LangSAM/TinySAM, designed CV pipelines for obstacle detection.</p>
+        </div>
+      </div>
+      <div class="exp-card">
+        <div class="exp-date">2024 — Present</div>
+        <div class="exp-info">
+          <h3><a href="#">NASA CubeSatellite Project</a></h3>
+          <div class="role">Firmware Developer · Davis, CA</div>
+          <p>Flight software with custom RTOS. Embedded protocol drivers (SPI, I2C, UART) for satellite communication systems.</p>
+        </div>
+      </div>
+      <div class="exp-card">
+        <div class="exp-date">2022 — 2024</div>
+        <div class="exp-info">
+          <h3><a href="#">Yuba College</a></h3>
+          <div class="role">Student Tutor · Marysville, CA</div>
+          <p>Tutored students in advanced mathematics, physics, and computer science courses.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+    <h2>Let's build something <span class="gradient">together</span>.</h2>
+    <p>Open to internships, research collaborations, and interesting challenges.</p>
+    <div class="contact-links">
+      <a href="#">Email</a>
+      <a href="#">GitHub</a>
+      <a href="#">LinkedIn</a>
+      <a href="#">Resume ↓</a>
+    </div>
+  </section>
+
+</body>
+</html>

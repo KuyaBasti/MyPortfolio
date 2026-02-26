@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Option A - Bento Grid</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0a0a0a; color: #fafafa; font-family: 'Space Grotesk', sans-serif; min-height: 100vh; padding: 24px; }
+
+  .nav { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; margin-bottom: 24px; }
+  .nav-logo { font-size: 18px; font-weight: 600; letter-spacing: -0.5px; }
+  .nav-links { display: flex; gap: 28px; font-size: 14px; color: #888; }
+  .nav-links a { color: #888; text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover { color: #fff; }
+
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: auto; gap: 16px; max-width: 1200px; margin: 0 auto; }
+
+  .card { background: #141414; border: 1px solid #222; border-radius: 20px; padding: 28px; transition: border-color 0.3s, transform 0.2s; overflow: hidden; position: relative; }
+  .card:hover { border-color: #333; transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .card { animation: fadeUp 0.6s ease both; }
+  .card:nth-child(1) { animation-delay: 0s; }
+  .card:nth-child(2) { animation-delay: 0.08s; }
+  .card:nth-child(3) { animation-delay: 0.16s; }
+  .card:nth-child(4) { animation-delay: 0.24s; }
+  .card:nth-child(5) { animation-delay: 0.32s; }
+  .card:nth-child(6) { animation-delay: 0.40s; }
+  .card:nth-child(7) { animation-delay: 0.48s; }
+  .card:nth-child(8) { animation-delay: 0.56s; }
+  .card:nth-child(9) { animation-delay: 0.64s; }
+
+  .hero-card { grid-column: span 2; grid-row: span 2; display: flex; flex-direction: column; justify-content: center; background: linear-gradient(135deg, #141414 0%, #1a1a2e 100%); }
+  .hero-card h1 { font-size: 48px; font-weight: 700; letter-spacing: -2px; line-height: 1.1; margin-bottom: 16px; }
+  .hero-card h1 span { background: linear-gradient(135deg, #60a5fa, #a78bfa, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero-card p { color: #888; font-size: 16px; line-height: 1.6; max-width: 400px; }
+  .hero-card .tags { display: flex; gap: 8px; margin-top: 20px; flex-wrap: wrap; }
+  .hero-card .tag { background: #1e1e2e; border: 1px solid #333; padding: 6px 14px; border-radius: 20px; font-size: 13px; color: #aaa; font-family: 'JetBrains Mono', monospace; }
+
+  .stats-card { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+  .stats-card .number { font-size: 42px; font-weight: 700; background: linear-gradient(135deg, #34d399, #60a5fa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .stats-card .label { color: #666; font-size: 13px; margin-top: 4px; text-transform: uppercase; letter-spacing: 1px; }
+
+  .project-card { grid-column: span 2; }
+  .project-card .project-tag { display: inline-block; background: #1a2332; color: #60a5fa; font-size: 11px; font-weight: 500; padding: 4px 10px; border-radius: 6px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .project-card h3 { font-size: 20px; font-weight: 600; margin-bottom: 8px; letter-spacing: -0.5px; }
+  .project-card p { color: #777; font-size: 14px; line-height: 1.5; }
+  .project-card .tech-row { display: flex; gap: 6px; margin-top: 14px; flex-wrap: wrap; }
+  .project-card .tech { background: #1a1a1a; border: 1px solid #2a2a2a; padding: 4px 10px; border-radius: 6px; font-size: 12px; color: #999; font-family: 'JetBrains Mono', monospace; }
+
+  .project-pink .project-tag { background: #2d1a2e; color: #f472b6; }
+
+  .skills-card { grid-column: span 2; }
+  .skills-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 16px; color: #ccc; }
+  .skills-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .skill-group h4 { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #555; margin-bottom: 8px; }
+  .skill-group .items { display: flex; flex-wrap: wrap; gap: 6px; }
+  .skill-group .item { background: #1a1a1a; border: 1px solid #252525; padding: 4px 10px; border-radius: 6px; font-size: 12px; color: #aaa; }
+
+  .contact-card { display: flex; flex-direction: column; justify-content: center; }
+  .contact-card h3 { font-size: 18px; font-weight: 600; margin-bottom: 12px; }
+  .contact-card .links { display: flex; flex-direction: column; gap: 8px; }
+  .contact-card .links a { color: #60a5fa; text-decoration: none; font-size: 14px; display: flex; align-items: center; gap: 8px; }
+  .contact-card .links a:hover { color: #93c5fd; }
+
+  .about-card { grid-column: span 2; }
+  .about-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 10px; color: #ccc; }
+  .about-card p { color: #777; font-size: 14px; line-height: 1.7; }
+
+  .cta-row { display: flex; gap: 10px; margin-top: 24px; }
+  .btn { padding: 10px 22px; border-radius: 10px; font-size: 14px; font-weight: 500; cursor: pointer; text-decoration: none; transition: all 0.2s; font-family: 'Space Grotesk', sans-serif; }
+  .btn-primary { background: #fff; color: #000; border: none; }
+  .btn-primary:hover { background: #e0e0e0; }
+  .btn-secondary { background: transparent; color: #aaa; border: 1px solid #333; }
+  .btn-secondary:hover { border-color: #555; color: #fff; }
+
+  .label-badge { position: absolute; top: 16px; right: 16px; font-size: 11px; background: #1a2e1a; color: #34d399; padding: 3px 10px; border-radius: 20px; }
+</style>
+</head>
+<body>
+  <div style="max-width:1200px; margin:0 auto;">
+    <nav class="nav">
+      <div class="nav-logo">JS</div>
+      <div class="nav-links">
+        <a href="#">About</a>
+        <a href="#">Projects</a>
+        <a href="#">Experience</a>
+        <a href="#">Skills</a>
+        <a href="#">Contact</a>
+      </div>
+    </nav>
+
+    <div class="grid">
+      <!-- Hero -->
+      <div class="card hero-card">
+        <h1>John Sebastian<br><span>Solon</span></h1>
+        <p>Software &amp; Embedded Systems Engineer building real-time systems, full-stack applications, and everything in between.</p>
+        <div class="tags">
+          <span class="tag">Full-Stack</span>
+          <span class="tag">Embedded</span>
+          <span class="tag">Robotics</span>
+          <span class="tag">ML/CV</span>
+        </div>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#">View Resume</a>
+          <a class="btn btn-secondary" href="#">Get in Touch</a>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="card stats-card">
+        <div class="number">UC Davis</div>
+        <div class="label">B.S. Computer Science & Engineering</div>
+      </div>
+      <div class="card stats-card">
+        <div class="number">3.5</div>
+        <div class="label">GPA · CSE Department</div>
+      </div>
+
+      <!-- Project 1 -->
+      <div class="card project-card">
+        <span class="project-tag">Robotics · ROS2</span>
+        <span class="label-badge">Active</span>
+        <h3>Davis Autonomous Race Car (DARC)</h3>
+        <p>Real-time navigation for F1Tenth racing with LiDAR, computer vision, and multi-sensor fusion on Nvidia Jetson Xavier NX.</p>
+        <div class="tech-row">
+          <span class="tech">C++</span>
+          <span class="tech">ROS2</span>
+          <span class="tech">Python</span>
+          <span class="tech">LiDAR</span>
+          <span class="tech">OpenCV</span>
+        </div>
+      </div>
+
+      <!-- Project 2 -->
+      <div class="card project-card project-pink">
+        <span class="project-tag">Embedded · Flight Software</span>
+        <h3>NASA CubeSatellite Project</h3>
+        <p>Custom RTOS flight software with embedded protocol drivers (SPI, I2C, UART) for satellite communication systems.</p>
+        <div class="tech-row">
+          <span class="tech">C</span>
+          <span class="tech">STM32</span>
+          <span class="tech">RTOS</span>
+          <span class="tech">SPI/I2C</span>
+          <span class="tech">UART</span>
+        </div>
+      </div>
+
+      <!-- Skills -->
+      <div class="card skills-card">
+        <h3>Skills & Technologies</h3>
+        <div class="skills-grid">
+          <div class="skill-group">
+            <h4>Languages</h4>
+            <div class="items">
+              <span class="item">C/C++</span>
+              <span class="item">Python</span>
+              <span class="item">TypeScript</span>
+              <span class="item">Java</span>
+              <span class="item">Go</span>
+            </div>
+          </div>
+          <div class="skill-group">
+            <h4>Embedded & Robotics</h4>
+            <div class="items">
+              <span class="item">STM32</span>
+              <span class="item">ROS2</span>
+              <span class="item">SPI/I2C</span>
+              <span class="item">RTOS</span>
+            </div>
+          </div>
+          <div class="skill-group">
+            <h4>Web & Full-Stack</h4>
+            <div class="items">
+              <span class="item">React</span>
+              <span class="item">Next.js</span>
+              <span class="item">Node.js</span>
+              <span class="item">Flask</span>
+            </div>
+          </div>
+          <div class="skill-group">
+            <h4>AI / ML</h4>
+            <div class="items">
+              <span class="item">Computer Vision</span>
+              <span class="item">LiDAR</span>
+              <span class="item">Sensor Fusion</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact -->
+      <div class="card contact-card">
+        <h3>Let's Connect</h3>
+        <div class="links">
+          <a href="#">→ GitHub</a>
+          <a href="#">→ LinkedIn</a>
+          <a href="#">→ Email</a>
+        </div>
+      </div>
+
+      <!-- About -->
+      <div class="card about-card">
+        <h3>About</h3>
+        <p>CSE student at UC Davis with a passion for building across the full stack — from bare-metal firmware to production web apps. Currently developing autonomous navigation systems and contributing to NASA-affiliated satellite projects. I believe the best engineers are the ones who can move fluidly between hardware and software.</p>
+      </div>
+
+      <div class="card stats-card">
+        <div class="number" style="font-size:28px;">CORE Lab</div>
+        <div class="label">Research · Prof. Shima Nazari</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

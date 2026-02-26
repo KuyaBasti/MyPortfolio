@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Option B - Developer / Code-Inspired</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0c0c0c; color: #e0e0e0; font-family: 'Inter', sans-serif; min-height: 100vh; }
+
+  .sidebar { position: fixed; left: 0; top: 0; width: 260px; height: 100vh; background: #111; border-right: 1px solid #1e1e1e; padding: 24px 20px; display: flex; flex-direction: column; z-index: 10; }
+  .sidebar-logo { font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #666; margin-bottom: 32px; }
+  .sidebar-logo span { color: #e0e0e0; }
+  .sidebar-nav { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+  .sidebar-nav a { color: #555; text-decoration: none; font-size: 14px; padding: 8px 12px; border-radius: 6px; transition: all 0.2s; display: flex; align-items: center; gap: 10px; font-family: 'JetBrains Mono', monospace; }
+  .sidebar-nav a:hover { color: #ccc; background: #1a1a1a; }
+  .sidebar-nav a.active { color: #e0e0e0; background: #1a1a1a; }
+  .sidebar-nav .line-num { color: #333; font-size: 12px; width: 20px; text-align: right; }
+  .sidebar-bottom { font-size: 12px; color: #333; font-family: 'JetBrains Mono', monospace; border-top: 1px solid #1e1e1e; padding-top: 16px; }
+
+  .main { margin-left: 260px; padding: 60px 80px; max-width: 900px; }
+
+  .breadcrumb { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #444; margin-bottom: 40px; }
+  .breadcrumb span { color: #666; }
+
+  .hero { margin-bottom: 80px; }
+  .hero .greeting { font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #4ade80; margin-bottom: 16px; }
+  .hero h1 { font-size: 52px; font-weight: 600; letter-spacing: -2px; line-height: 1.15; margin-bottom: 20px; }
+  .hero h1 .highlight { color: #60a5fa; }
+  .hero h1 .highlight2 { color: #a78bfa; }
+  .hero p { color: #777; font-size: 17px; line-height: 1.7; max-width: 560px; }
+  .hero .role-tags { display: flex; gap: 16px; margin-top: 24px; font-family: 'JetBrains Mono', monospace; font-size: 13px; }
+  .hero .role-tags .divider { color: #333; }
+  .hero .role-tags span { color: #888; }
+
+  .section { margin-bottom: 64px; }
+  .section-header { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #4ade80; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+  .section-header::after { content: ''; flex: 1; height: 1px; background: #1e1e1e; }
+
+  .project-list { display: flex; flex-direction: column; gap: 20px; }
+  .project { background: #111; border: 1px solid #1a1a1a; border-radius: 12px; padding: 24px; transition: border-color 0.3s; }
+  .project:hover { border-color: #2a2a2a; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  .hero { animation: fadeIn 0.8s ease both; }
+  .section { animation: fadeIn 0.6s ease both; }
+  .section:nth-child(2) { animation-delay: 0.1s; }
+  .section:nth-child(3) { animation-delay: 0.2s; }
+  .sidebar-nav a { transition: all 0.2s; }
+  .sidebar-nav a:hover { padding-left: 16px; }
+  html { scroll-behavior: smooth; }
+  .project .row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+  .project h3 { font-size: 18px; font-weight: 500; letter-spacing: -0.3px; }
+  .project .type-badge { font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 3px 10px; border-radius: 4px; }
+  .type-embedded { background: #1a2e1a; color: #4ade80; }
+  .type-fullstack { background: #1a1a2e; color: #818cf8; }
+  .type-robotics { background: #2e1a1a; color: #f87171; }
+  .type-ml { background: #2e2a1a; color: #fbbf24; }
+  .project p { color: #666; font-size: 14px; line-height: 1.5; margin-bottom: 12px; }
+  .project .tech { display: flex; gap: 6px; flex-wrap: wrap; }
+  .project .tech span { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #555; background: #0c0c0c; border: 1px solid #1e1e1e; padding: 3px 8px; border-radius: 4px; }
+
+  .exp-item { padding: 20px 0; border-bottom: 1px solid #1a1a1a; }
+  .exp-item:last-child { border-bottom: none; }
+  .exp-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
+  .exp-item h3 { font-size: 16px; font-weight: 500; }
+  .exp-item h3 a { color: #60a5fa; text-decoration: none; }
+  .exp-item .role { color: #888; font-size: 14px; margin-bottom: 8px; }
+  .exp-item .date { color: #444; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  .exp-item ul { list-style: none; }
+  .exp-item ul li { color: #666; font-size: 13px; line-height: 1.6; padding-left: 16px; position: relative; }
+  .exp-item ul li::before { content: '·'; position: absolute; left: 0; color: #333; }
+
+  .skills-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .skill-cat h4 { font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; color: #444; font-family: 'JetBrains Mono', monospace; margin-bottom: 12px; }
+  .skill-items { display: flex; flex-wrap: wrap; gap: 6px; }
+  .skill-items span { font-size: 13px; color: #888; background: #141414; border: 1px solid #1e1e1e; padding: 5px 12px; border-radius: 6px; }
+
+  .cta-row { display: flex; gap: 12px; margin-top: 28px; }
+  .btn { padding: 10px 24px; border-radius: 8px; font-size: 14px; font-weight: 500; text-decoration: none; transition: all 0.2s; font-family: 'Inter', sans-serif; display: inline-block; }
+  .btn-primary { background: #e0e0e0; color: #0c0c0c; }
+  .btn-primary:hover { background: #fff; }
+  .btn-ghost { color: #888; border: 1px solid #2a2a2a; background: transparent; }
+  .btn-ghost:hover { border-color: #444; color: #ccc; }
+</style>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="sidebar-logo">~/portfolio/<span>john-solon</span></div>
+    <nav class="sidebar-nav">
+      <a href="#" class="active"><span class="line-num">1</span> home</a>
+      <a href="#"><span class="line-num">2</span> about</a>
+      <a href="#"><span class="line-num">3</span> projects</a>
+      <a href="#"><span class="line-num">4</span> experience</a>
+      <a href="#"><span class="line-num">5</span> skills</a>
+      <a href="#"><span class="line-num">6</span> contact</a>
+    </nav>
+    <div class="sidebar-bottom">
+      CSE @ UC Davis<br>
+      GPA 3.5 · Class of 2025
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="breadcrumb">~/<span>john-solon</span>/README.md</div>
+
+    <section class="hero">
+      <div class="greeting">// Hi, I'm</div>
+      <h1>John Sebastian<br>Solon<span class="highlight">.</span></h1>
+      <p>I build things across the entire stack — from <span style="color:#4ade80">bare-metal firmware</span> to <span style="color:#818cf8">production web apps</span>. Currently working on autonomous navigation systems and NASA satellite software at UC Davis.</p>
+      <div class="role-tags">
+        <span>Software Engineer</span>
+        <span class="divider">/</span>
+        <span>Embedded Systems</span>
+        <span class="divider">/</span>
+        <span>Robotics</span>
+      </div>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#">Resume ↓</a>
+        <a class="btn btn-ghost" href="#">Contact →</a>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">// projects</div>
+      <div class="project-list">
+        <div class="project">
+          <div class="row">
+            <h3>Davis Autonomous Race Car</h3>
+            <span class="type-badge type-robotics">robotics</span>
+          </div>
+          <p>Real-time navigation for F1Tenth racing using ROS2 on Nvidia Jetson Xavier NX with LiDAR and computer vision pipelines.</p>
+          <div class="tech">
+            <span>C++</span><span>ROS2</span><span>Python</span><span>LiDAR</span><span>OpenCV</span><span>Jetson NX</span>
+          </div>
+        </div>
+        <div class="project">
+          <div class="row">
+            <h3>NASA CubeSatellite Flight Software</h3>
+            <span class="type-badge type-embedded">embedded</span>
+          </div>
+          <p>Custom RTOS with embedded protocol drivers for satellite communication. SPI, I2C, UART on STM32 microcontrollers.</p>
+          <div class="tech">
+            <span>C</span><span>STM32</span><span>RTOS</span><span>SPI/I2C/UART</span>
+          </div>
+        </div>
+        <div class="project">
+          <div class="row">
+            <h3>Robotic Arm Controller</h3>
+            <span class="type-badge type-fullstack">full-stack</span>
+          </div>
+          <p>Kinematic controller with G-Code parsing, embedded assembly, and a web-based monitoring interface.</p>
+          <div class="tech">
+            <span>Assembly</span><span>C++</span><span>G-Code</span><span>React</span><span>WebSocket</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">// experience</div>
+      <div class="exp-item">
+        <div class="exp-row">
+          <h3><a href="#">Davis Autonomous Race Car (DARC)</a></h3>
+          <span class="date">Jan 2025 – Present</span>
+        </div>
+        <div class="role">Software / Robotics Engineer · Davis, CA</div>
+        <ul>
+          <li>Enhanced real-time navigation using ROS2 on Nvidia Jetson Xavier NX</li>
+          <li>Integrated LangSAM and TinySAM with Intel RealSense D435</li>
+          <li>Designed computer vision pipelines for dynamic obstacle detection</li>
+        </ul>
+      </div>
+      <div class="exp-item">
+        <div class="exp-row">
+          <h3><a href="#">NASA CubeSatellite Project</a></h3>
+          <span class="date">Sep 2024 – Present</span>
+        </div>
+        <div class="role">Firmware Developer · Davis, CA</div>
+        <ul>
+          <li>Developed flight software with custom RTOS for satellite systems</li>
+          <li>Implemented embedded protocol drivers: SPI, I2C, UART</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">// skills</div>
+      <div class="skills-grid">
+        <div class="skill-cat">
+          <h4>Languages</h4>
+          <div class="skill-items">
+            <span>C/C++</span><span>Python</span><span>TypeScript</span><span>Java</span><span>Assembly</span><span>Go</span>
+          </div>
+        </div>
+        <div class="skill-cat">
+          <h4>Embedded & Robotics</h4>
+          <div class="skill-items">
+            <span>STM32</span><span>ROS2</span><span>SPI/I2C/UART</span><span>RTOS</span><span>Sensor Fusion</span>
+          </div>
+        </div>
+        <div class="skill-cat">
+          <h4>Web & Software</h4>
+          <div class="skill-items">
+            <span>React</span><span>Next.js</span><span>Node.js</span><span>Flask</span><span>PostgreSQL</span>
+          </div>
+        </div>
+        <div class="skill-cat">
+          <h4>AI / ML / CV</h4>
+          <div class="skill-items">
+            <span>Computer Vision</span><span>LiDAR</span><span>OpenCV</span><span>TensorFlow</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

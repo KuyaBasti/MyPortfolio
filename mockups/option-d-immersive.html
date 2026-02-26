@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Option D - Immersive / Cinematic</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #050505; color: #f0f0f0; font-family: 'Sora', sans-serif; overflow-x: hidden; }
+
+  .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 20px 48px; background: rgba(5,5,5,0.8); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .nav-logo { font-size: 16px; font-weight: 600; letter-spacing: 2px; }
+  .nav-links { display: flex; gap: 32px; }
+  .nav-links a { color: #666; text-decoration: none; font-size: 13px; letter-spacing: 0.5px; transition: color 0.3s; }
+  .nav-links a:hover { color: #fff; }
+
+  .hero { height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+  .hero-bg { position: absolute; inset: 0; }
+  .hero-bg .orb { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.3; }
+  .hero-bg .orb1 { width: 500px; height: 500px; background: #4f46e5; top: 10%; left: 20%; animation: float1 20s ease-in-out infinite; }
+  .hero-bg .orb2 { width: 400px; height: 400px; background: #7c3aed; bottom: 20%; right: 15%; animation: float2 25s ease-in-out infinite; }
+  .hero-bg .orb3 { width: 300px; height: 300px; background: #06b6d4; top: 40%; right: 30%; animation: float3 18s ease-in-out infinite; }
+  @keyframes float1 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(60px,-40px); } }
+  @keyframes float2 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(-50px,30px); } }
+  @keyframes float3 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(40px,50px); } }
+
+  .hero-content { position: relative; z-index: 1; text-align: center; max-width: 800px; }
+  .hero-content .overline { font-size: 12px; letter-spacing: 4px; text-transform: uppercase; color: #888; margin-bottom: 24px; }
+  .hero-content h1 { font-size: 72px; font-weight: 700; letter-spacing: -3px; line-height: 1.05; margin-bottom: 24px; }
+  .hero-content h1 .gradient { background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 50%, #f472b6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero-content p { color: #888; font-size: 18px; line-height: 1.7; max-width: 580px; margin: 0 auto 32px; }
+  .hero-content .cta { display: flex; gap: 16px; justify-content: center; }
+  .hero-content .btn { padding: 14px 32px; border-radius: 50px; font-size: 14px; font-weight: 500; text-decoration: none; transition: all 0.3s; font-family: 'Sora', sans-serif; letter-spacing: 0.5px; }
+  .btn-glow { background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; border: none; box-shadow: 0 0 30px rgba(124,58,237,0.3); }
+  .btn-glow:hover { box-shadow: 0 0 50px rgba(124,58,237,0.5); transform: translateY(-2px); }
+  .btn-outline { border: 1px solid #333; color: #aaa; background: transparent; }
+  .btn-outline:hover { border-color: #666; color: #fff; }
+
+  .scroll-indicator { position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 8px; color: #444; font-size: 11px; letter-spacing: 2px; }
+  .scroll-line { width: 1px; height: 40px; background: linear-gradient(to bottom, #444, transparent); }
+
+  .section { padding: 120px 48px; max-width: 1100px; margin: 0 auto; }
+  .section-header { display: flex; align-items: center; gap: 16px; margin-bottom: 48px; }
+  .section-number { font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #4f46e5; }
+  .section-title { font-size: 32px; font-weight: 600; letter-spacing: -1px; }
+  .section-line { flex: 1; height: 1px; background: linear-gradient(to right, #222, transparent); }
+
+  .project-showcase { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .showcase-card { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 16px; overflow: hidden; transition: all 0.4s; }
+  .showcase-card:hover { border-color: #333; transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+
+  @keyframes heroFade { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+  .hero-content .overline { animation: heroFade 0.8s ease 0.2s both; }
+  .hero-content h1 { animation: heroFade 0.8s ease 0.4s both; }
+  .hero-content p { animation: heroFade 0.8s ease 0.6s both; }
+  .hero-content .cta { animation: heroFade 0.8s ease 0.8s both; }
+  .scroll-indicator { animation: heroFade 0.8s ease 1.2s both; }
+  @keyframes pulse { 0%,100% { opacity: 0.3; } 50% { opacity: 0.5; } }
+  .orb { animation-name: float1, pulse !important; }
+  html { scroll-behavior: smooth; }
+  .showcase-card.featured { grid-column: span 2; display: grid; grid-template-columns: 1fr 1fr; }
+  .showcase-visual { height: 220px; display: flex; align-items: center; justify-content: center; position: relative; }
+  .showcase-visual.v1 { background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); }
+  .showcase-visual.v2 { background: linear-gradient(135deg, #1a0a2e 0%, #2d1b4e 100%); }
+  .showcase-visual.v3 { background: linear-gradient(135deg, #0a1628 0%, #0c2445 100%); }
+  .showcase-visual.v4 { background: linear-gradient(135deg, #1a0a0a 0%, #2d1515 100%); }
+  .showcase-visual .icon-text { font-size: 48px; opacity: 0.3; font-weight: 700; letter-spacing: -2px; }
+  .showcase-body { padding: 24px; }
+  .showcase-body .tags { display: flex; gap: 8px; margin-bottom: 12px; }
+  .showcase-body .tag { font-size: 11px; padding: 3px 10px; border-radius: 20px; background: rgba(99,102,241,0.1); color: #818cf8; border: 1px solid rgba(99,102,241,0.2); }
+  .showcase-body .tag.green { background: rgba(34,197,94,0.1); color: #4ade80; border-color: rgba(34,197,94,0.2); }
+  .showcase-body .tag.pink { background: rgba(236,72,153,0.1); color: #f472b6; border-color: rgba(236,72,153,0.2); }
+  .showcase-body .tag.cyan { background: rgba(6,182,212,0.1); color: #22d3ee; border-color: rgba(6,182,212,0.2); }
+  .showcase-body h3 { font-size: 20px; font-weight: 600; letter-spacing: -0.5px; margin-bottom: 8px; }
+  .showcase-body p { color: #666; font-size: 14px; line-height: 1.6; }
+  .showcase-body .tech-row { display: flex; gap: 6px; margin-top: 14px; flex-wrap: wrap; }
+  .showcase-body .tech { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #555; }
+
+  .exp-grid { display: flex; flex-direction: column; gap: 2px; }
+  .exp-card { background: #0a0a0a; border: 1px solid #151515; border-radius: 12px; padding: 28px 32px; display: grid; grid-template-columns: 180px 1fr; gap: 32px; transition: border-color 0.3s; }
+  .exp-card:hover { border-color: #252525; }
+  .exp-card .year { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #555; padding-top: 4px; }
+  .exp-card h3 { font-size: 17px; font-weight: 500; margin-bottom: 4px; }
+  .exp-card .role { color: #888; font-size: 13px; margin-bottom: 8px; }
+  .exp-card p { color: #555; font-size: 13px; line-height: 1.6; }
+
+  .contact-full { text-align: center; padding: 120px 48px; position: relative; }
+  .contact-full h2 { font-size: 48px; font-weight: 700; letter-spacing: -2px; margin-bottom: 16px; }
+  .contact-full h2 .gradient { background: linear-gradient(135deg, #60a5fa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .contact-full p { color: #666; font-size: 16px; margin-bottom: 32px; }
+  .contact-full .links { display: flex; gap: 16px; justify-content: center; }
+  .contact-full .links a { color: #888; text-decoration: none; font-size: 14px; padding: 12px 28px; border: 1px solid #222; border-radius: 50px; transition: all 0.3s; }
+  .contact-full .links a:hover { color: #fff; border-color: #555; }
+</style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-logo">JOHN SOLON</div>
+    <div class="nav-links">
+      <a href="#">About</a>
+      <a href="#">Projects</a>
+      <a href="#">Experience</a>
+      <a href="#">Contact</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="orb orb1"></div>
+      <div class="orb orb2"></div>
+      <div class="orb orb3"></div>
+    </div>
+    <div class="hero-content">
+      <div class="overline">Software & Embedded Engineer</div>
+      <h1>Building at the<br><span class="gradient">intersection of<br>hardware & software</span></h1>
+      <p>From production web apps to bare-metal firmware — I build full-stack systems, autonomous robots, and everything in between. CSE @ UC Davis.</p>
+      <div class="cta">
+        <a class="btn btn-glow" href="#">View Projects</a>
+        <a class="btn btn-outline" href="#">Resume</a>
+      </div>
+    </div>
+    <div class="scroll-indicator">
+      <div class="scroll-line"></div>
+      SCROLL
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <span class="section-number">01</span>
+      <span class="section-title">Projects</span>
+      <span class="section-line"></span>
+    </div>
+    <div class="project-showcase">
+      <div class="showcase-card featured">
+        <div class="showcase-visual v1"><div class="icon-text">DARC</div></div>
+        <div class="showcase-body" style="display:flex;flex-direction:column;justify-content:center;">
+          <div class="tags"><span class="tag green">robotics</span><span class="tag cyan">computer vision</span></div>
+          <h3>Davis Autonomous Race Car</h3>
+          <p>Real-time autonomous navigation for F1Tenth racing. LiDAR, computer vision, multi-sensor fusion on Nvidia Jetson Xavier NX using ROS2.</p>
+          <div class="tech-row"><span class="tech">C++ · ROS2 · Python · LiDAR · OpenCV</span></div>
+        </div>
+      </div>
+      <div class="showcase-card">
+        <div class="showcase-visual v2"><div class="icon-text">NASA</div></div>
+        <div class="showcase-body">
+          <div class="tags"><span class="tag pink">embedded</span></div>
+          <h3>CubeSatellite Flight Software</h3>
+          <p>Custom RTOS with SPI, I2C, UART drivers for satellite communication on STM32.</p>
+          <div class="tech-row"><span class="tech">C · STM32 · RTOS</span></div>
+        </div>
+      </div>
+      <div class="showcase-card">
+        <div class="showcase-visual v3"><div class="icon-text">ARM</div></div>
+        <div class="showcase-body">
+          <div class="tags"><span class="tag">full-stack</span><span class="tag green">embedded</span></div>
+          <h3>Robotic Arm Controller</h3>
+          <p>Kinematic controller with G-Code parsing and web-based monitoring dashboard.</p>
+          <div class="tech-row"><span class="tech">C++ · Assembly · React</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <span class="section-number">02</span>
+      <span class="section-title">Experience</span>
+      <span class="section-line"></span>
+    </div>
+    <div class="exp-grid">
+      <div class="exp-card">
+        <div class="year">2025 — Present</div>
+        <div>
+          <h3>Davis Autonomous Race Car (DARC)</h3>
+          <div class="role">Software / Robotics Engineer · CORE Lab</div>
+          <p>Developing autonomous navigation systems for F1Tenth. Enhanced real-time nav with ROS2, integrated LangSAM/TinySAM, designed computer vision pipelines for obstacle detection.</p>
+        </div>
+      </div>
+      <div class="exp-card">
+        <div class="year">2024 — Present</div>
+        <div>
+          <h3>NASA CubeSatellite Project</h3>
+          <div class="role">Firmware Developer</div>
+          <p>Flight software with custom RTOS. Embedded protocol drivers for satellite communication systems.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact-full">
+    <h2>Let's build something <span class="gradient">together</span>.</h2>
+    <p>Open to internships, collaborations, and interesting challenges.</p>
+    <div class="links">
+      <a href="#">Email</a>
+      <a href="#">GitHub</a>
+      <a href="#">LinkedIn</a>
+      <a href="#">Resume ↓</a>
+    </div>
+  </section>
+</body>
+</html>

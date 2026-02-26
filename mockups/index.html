@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio Design Options</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0a0a0a; color: #fafafa; font-family: 'Inter', sans-serif; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+  .container { max-width: 900px; width: 100%; padding: 48px; }
+  h1 { font-size: 32px; font-weight: 600; letter-spacing: -1px; margin-bottom: 8px; }
+  .subtitle { color: #666; font-size: 16px; margin-bottom: 48px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .option { background: #111; border: 1px solid #222; border-radius: 16px; padding: 32px; text-decoration: none; color: inherit; transition: all 0.3s; display: flex; flex-direction: column; gap: 12px; }
+  .option:hover { border-color: #444; transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.4); }
+  .option .letter { font-size: 48px; font-weight: 700; line-height: 1; }
+  .option:nth-child(1) .letter { color: #60a5fa; }
+  .option:nth-child(2) .letter { color: #4ade80; }
+  .option:nth-child(3) .letter { color: #f472b6; }
+  .option:nth-child(4) .letter { color: #a78bfa; }
+  .option h2 { font-size: 20px; font-weight: 600; letter-spacing: -0.5px; }
+  .option p { color: #777; font-size: 14px; line-height: 1.6; }
+  .option .tag { display: inline-block; font-size: 11px; padding: 4px 10px; border-radius: 20px; background: rgba(255,255,255,0.05); color: #888; margin-top: 4px; }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>Pick a design direction</h1>
+    <p class="subtitle">Click any option to view and interact with the live mockup.</p>
+    <div class="grid">
+      <a class="option" href="option-a-bento.html">
+        <div class="letter">A</div>
+        <h2>Bento Grid</h2>
+        <p>Dashboard-style card layout. Everything visible at a glance. Dark, modern, information-dense.</p>
+        <span class="tag">Dark · Cards · Grid</span>
+      </a>
+      <a class="option" href="option-b-developer.html">
+        <div class="letter">B</div>
+        <h2>Developer</h2>
+        <p>Code-inspired with sidebar navigation. Professional and clean with subtle dev aesthetics.</p>
+        <span class="tag">Dark · Sidebar · Code</span>
+      </a>
+      <a class="option" href="option-c-editorial.html">
+        <div class="letter">C</div>
+        <h2>Editorial</h2>
+        <p>Magazine-style with serif typography and light cream background. Elegant and distinctive.</p>
+        <span class="tag">Light · Serif · Minimal</span>
+      </a>
+      <a class="option" href="option-d-immersive.html">
+        <div class="letter">D</div>
+        <h2>Immersive</h2>
+        <p>Cinematic hero with floating orbs and gradient text. Bold, dramatic, statement-making.</p>
+        <span class="tag">Dark · Cinematic · Bold</span>
+      </a>
+    </div>
+  </div>
+</body>
+</html>
