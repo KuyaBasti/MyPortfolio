@@ -112,7 +112,7 @@ export const experiences: Experience[] = [
     {
         year: "2025",
         company: "ubreakifix by Asurion",
-        companyUrl: "https://www.asurion.com/",
+        companyUrl: "",
         role: "IT",
         location: "Yuba City, CA",
         date: "December 2025 \u2013 Present",
@@ -124,7 +124,7 @@ export const experiences: Experience[] = [
     {
         year: "2025",
         company: "Rukmer Inc.",
-        companyUrl: "https://rukmer.com/",
+        companyUrl: "",
         role: "Software Engineer",
         location: "Boston, MA",
         date: "September 2025 \u2013 November 2025",
@@ -161,7 +161,7 @@ export const experiences: Experience[] = [
     {
         year: "2023",
         company: "NASA Space and Satellite Systems",
-        companyUrl: "https://www.nasa.gov/",
+        companyUrl: "",
         role: "Firmware Engineer",
         location: "Davis, CA",
         date: "September 2023 \u2013 January 2025",
