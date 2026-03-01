@@ -1,0 +1,1 @@
+// a cinematic full-viewport hero section based on the design in mockups/complete-mockup.html
