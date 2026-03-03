@@ -1,9 +1,15 @@
 "use client";
 
+import { type ReactNode } from "react";
 import { motion } from "motion/react";
 import { experiences } from "@/data/portfolio";
 import { sora } from "@/app/layout";
 import { jetbrainsMono } from "@/app/layout";
+
+// Maps company name → background animation component
+const cardBackgrounds: Record<string, ReactNode> = {
+    "ubreakifix by Asurion": <CircuitBoard />,
+};
 
 export default function Experience() {
     return (
@@ -31,17 +37,24 @@ export default function Experience() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.5, delay: i * 0.08 }}
-                        className="group grid grid-cols-1 sm:grid-cols-[160px_1fr] gap-4 sm:gap-7 rounded-xl border border-[#131313] bg-[#0a0a0a] px-6 sm:px-7 py-6 transition-colors duration-300 hover:border-[#222]"
+                        className="group relative overflow-hidden grid grid-cols-1 sm:grid-cols-[160px_1fr] gap-4 sm:gap-7 rounded-xl border border-[#131313] bg-[#0a0a0a] px-6 sm:px-7 py-6 transition-colors duration-300 hover:border-[#222]"
                     >
+                        {/* Per-card background animation */}
+                        {cardBackgrounds[exp.company] && (
+                            <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                {cardBackgrounds[exp.company]}
+                            </div>
+                        )}
+
                         {/* Date */}
                         <div
-                            className={`${jetbrainsMono.className} text-xs text-[#444] pt-0.5`}
+                            className={`${jetbrainsMono.className} relative text-xs text-[#444] pt-0.5`}
                         >
                             {exp.date}
                         </div>
 
                         {/* Info */}
-                        <div>
+                        <div className="relative">
                             <h3 className="text-[16px] font-medium text-white mb-0.5">
                                 {exp.companyUrl ? (
                                     <a
@@ -70,6 +83,99 @@ export default function Experience() {
                     </motion.div>
                 ))}
             </div>
+
+            <style>{`
+                /* ── Circuit board traces (ubreakifix) ── */
+                .circuit-container {
+                    position: absolute;
+                    inset: 0;
+                }
+                .circuit-trace {
+                    position: absolute;
+                    background: #22c55e;
+                    border-radius: 1px;
+                }
+                /* Horizontal traces */
+                .ct-h1 { height: 1px; width: 80px; top: 20%; left: 60%; opacity: 0.08; animation: ctPulse 4s ease-in-out infinite; }
+                .ct-h2 { height: 1px; width: 60px; top: 45%; left: 70%; opacity: 0.06; animation: ctPulse 4s ease-in-out infinite 1s; }
+                .ct-h3 { height: 1px; width: 100px; top: 70%; left: 55%; opacity: 0.07; animation: ctPulse 4s ease-in-out infinite 2s; }
+                /* Vertical traces */
+                .ct-v1 { width: 1px; height: 50px; top: 15%; left: 72%; opacity: 0.06; animation: ctPulse 4s ease-in-out infinite 0.5s; }
+                .ct-v2 { width: 1px; height: 40px; top: 40%; left: 85%; opacity: 0.08; animation: ctPulse 4s ease-in-out infinite 1.5s; }
+                .ct-v3 { width: 1px; height: 60px; top: 25%; left: 62%; opacity: 0.05; animation: ctPulse 4s ease-in-out infinite 2.5s; }
+                /* Solder pads */
+                .ct-pad {
+                    position: absolute;
+                    width: 5px;
+                    height: 5px;
+                    border-radius: 50%;
+                    background: #22c55e;
+                }
+                .ct-p1 { top: 20%; left: 72%; opacity: 0.12; animation: ctGlow 3s ease-in-out infinite; }
+                .ct-p2 { top: 45%; left: 85%; opacity: 0.1; animation: ctGlow 3s ease-in-out infinite 1s; }
+                .ct-p3 { top: 70%; left: 62%; opacity: 0.1; animation: ctGlow 3s ease-in-out infinite 2s; }
+                .ct-p4 { top: 45%; left: 70%; opacity: 0.08; animation: ctGlow 3s ease-in-out infinite 0.5s; }
+                /* IC chip outline */
+                .ct-chip {
+                    position: absolute;
+                    width: 24px;
+                    height: 16px;
+                    border: 1px solid rgba(34,197,94,0.1);
+                    border-radius: 2px;
+                    top: 30%;
+                    left: 78%;
+                    animation: ctGlow 5s ease-in-out infinite 0.8s;
+                }
+                .ct-chip-pin {
+                    position: absolute;
+                    width: 4px;
+                    height: 1px;
+                    background: rgba(34,197,94,0.12);
+                }
+                .ct-chip-pin-l { left: -5px; }
+                .ct-chip-pin-r { right: -5px; }
+                .ct-chip-pin:nth-child(1) { top: 3px; }
+                .ct-chip-pin:nth-child(2) { top: 8px; }
+                .ct-chip-pin:nth-child(3) { top: 3px; }
+                .ct-chip-pin:nth-child(4) { top: 8px; }
+
+                @keyframes ctPulse {
+                    0%, 100% { opacity: 0.04; }
+                    50% { opacity: 0.15; }
+                }
+                @keyframes ctGlow {
+                    0%, 100% { opacity: 0.06; box-shadow: 0 0 4px rgba(34,197,94,0); }
+                    50% { opacity: 0.2; box-shadow: 0 0 8px rgba(34,197,94,0.15); }
+                }
+            `}</style>
         </section>
+    );
+}
+
+// ─── Card background animations ──────────────────────────────────────────────
+
+function CircuitBoard() {
+    return (
+        <div className="circuit-container">
+            {/* Traces */}
+            <div className="circuit-trace ct-h1" />
+            <div className="circuit-trace ct-h2" />
+            <div className="circuit-trace ct-h3" />
+            <div className="circuit-trace ct-v1" />
+            <div className="circuit-trace ct-v2" />
+            <div className="circuit-trace ct-v3" />
+            {/* Solder pads */}
+            <div className="ct-pad ct-p1" />
+            <div className="ct-pad ct-p2" />
+            <div className="ct-pad ct-p3" />
+            <div className="ct-pad ct-p4" />
+            {/* IC chip */}
+            <div className="ct-chip">
+                <div className="ct-chip-pin ct-chip-pin-l" style={{ top: 3 }} />
+                <div className="ct-chip-pin ct-chip-pin-l" style={{ top: 8 }} />
+                <div className="ct-chip-pin ct-chip-pin-r" style={{ top: 3 }} />
+                <div className="ct-chip-pin ct-chip-pin-r" style={{ top: 8 }} />
+            </div>
+        </div>
     );
 }
