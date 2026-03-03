@@ -9,6 +9,7 @@ import { jetbrainsMono } from "@/app/layout";
 // Maps company name → background animation component
 const cardBackgrounds: Record<string, ReactNode> = {
     "ubreakifix by Asurion": <CircuitBoard />,
+    "Rukmer Inc.": <DroneFirmware />,
 };
 
 export default function Experience() {
@@ -147,12 +148,116 @@ export default function Experience() {
                     0%, 100% { opacity: 0.06; box-shadow: 0 0 4px rgba(34,197,94,0); }
                     50% { opacity: 0.2; box-shadow: 0 0 8px rgba(34,197,94,0.15); }
                 }
+
+                /* ── Drone firmware delivery (Rukmer) ── */
+                .drone-container { position: absolute; inset: 0; }
+                .drone-body {
+                    position: absolute;
+                    top: 35%;
+                    right: 18%;
+                    width: 28px;
+                    height: 10px;
+                    background: rgba(129,140,248,0.15);
+                    border-radius: 4px;
+                    animation: droneHover 3s ease-in-out infinite;
+                }
+                .drone-rotor {
+                    position: absolute;
+                    height: 2px;
+                    width: 16px;
+                    background: rgba(129,140,248,0.2);
+                    border-radius: 1px;
+                    top: -4px;
+                    animation: droneRotorSpin 0.15s linear infinite;
+                }
+                .drone-rotor-l { left: -6px; }
+                .drone-rotor-r { right: -6px; }
+                @keyframes droneRotorSpin {
+                    0% { opacity: 0.25; }
+                    50% { opacity: 0.1; }
+                    100% { opacity: 0.25; }
+                }
+                @keyframes droneHover {
+                    0%, 100% { transform: translateY(0); }
+                    50% { transform: translateY(-6px); }
+                }
+                /* Firmware packet dropping from drone */
+                .drone-packet {
+                    position: absolute;
+                    width: 8px;
+                    height: 6px;
+                    border: 1px solid rgba(129,140,248,0.2);
+                    border-radius: 2px;
+                    right: 21%;
+                    animation: dronePacketDrop 3s ease-in infinite;
+                }
+                .drone-pkt-1 { top: 48%; animation-delay: 0s; }
+                .drone-pkt-2 { top: 48%; animation-delay: 1.5s; }
+                @keyframes dronePacketDrop {
+                    0% { transform: translateY(0); opacity: 0.25; }
+                    60% { transform: translateY(30px); opacity: 0.15; }
+                    80% { transform: translateY(30px); opacity: 0; }
+                    100% { transform: translateY(0); opacity: 0; }
+                }
+                /* Cloud / S3 icon */
+                .drone-cloud {
+                    position: absolute;
+                    top: 18%;
+                    right: 10%;
+                    width: 30px;
+                    height: 14px;
+                    border: 1px solid rgba(129,140,248,0.08);
+                    border-radius: 10px 10px 3px 3px;
+                    animation: droneCloudPulse 4s ease-in-out infinite;
+                }
+                @keyframes droneCloudPulse {
+                    0%, 100% { opacity: 0.06; }
+                    50% { opacity: 0.15; }
+                }
+                /* Upload arrow from cloud */
+                .drone-upload-arrow {
+                    position: absolute;
+                    top: 24%;
+                    right: 16%;
+                    width: 1px;
+                    height: 12px;
+                    background: rgba(129,140,248,0.12);
+                    animation: droneUpload 2.5s ease-in-out infinite;
+                }
+                .drone-upload-arrow::after {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: -3px;
+                    border-left: 3.5px solid transparent;
+                    border-right: 3.5px solid transparent;
+                    border-bottom: 5px solid rgba(129,140,248,0.12);
+                }
+                @keyframes droneUpload {
+                    0%, 100% { opacity: 0.08; }
+                    50% { opacity: 0.2; }
+                }
             `}</style>
         </section>
     );
 }
 
 // ─── Card background animations ──────────────────────────────────────────────
+
+function DroneFirmware() {
+    return (
+        <div className="drone-container">
+            <div className="drone-cloud" />
+            <div className="drone-upload-arrow" />
+            <div className="drone-body">
+                <div className="drone-rotor drone-rotor-l" />
+                <div className="drone-rotor drone-rotor-r" />
+            </div>
+            <div className="drone-packet drone-pkt-1" />
+            <div className="drone-packet drone-pkt-2" />
+        </div>
+    );
+}
 
 function CircuitBoard() {
     return (
