@@ -1,0 +1,34 @@
+## Project context
+Read CLAUDE.md for full project context, design direction, and architecture decisions.
+
+## Component creation rules
+- New components go in `src/components/new/` until the old design is fully replaced.
+- Every component must pull content from `src/data/portfolio.ts` — never hardcode text, dates, descriptions, or tech stacks directly in JSX.
+- Use `"use client"` directive for components that need Framer Motion or browser APIs.
+- Use Tailwind CSS for styling. No CSS modules, no styled-components, no MUI.
+
+## Animation rules
+- Use Framer Motion (`motion` package, already installed) for entrance animations and hover effects.
+- For always-running background animations inside project/experience cards (e.g., orbiting satellite, racing car), use CSS `@keyframes` in globals.css or inline styles — Framer Motion is overkill for these.
+- Every project card in the bento grid must have a unique visual animation that represents the project.
+- Every experience card should have a subtle background animation representing the work.
+
+## Styling rules
+- Font: Sora for headings and body text, JetBrains Mono for code/tech labels.
+- Dark theme: background #050505, text #f0f0f0, muted text #666-#888.
+- Accent gradient: blue (#60a5fa) → indigo (#818cf8) → purple (#c084fc) → pink (#f472b6).
+- Cards: background #0a0a0a, border #151515, hover border #2a2a2a.
+- Use numbered section headers (01 Experience, 02 Projects, etc.) with a horizontal line.
+
+## Commit rules
+- One logical change per commit.
+- Commit message format: imperative mood, concise (e.g., "Add Hero component with floating orbs animation").
+- Never commit broken code — `npm run dev` must work after every commit.
+- Run `npm run lint` before pushing.
+
+## What NOT to do
+- Don't use ClashDisplay font (shared template with friend's portfolio).
+- Don't use the floating pill-style navbar (shared template element).
+- Don't use the vertical timeline for experience (shared template element).
+- Don't use MUI components or Three.js (removing these dependencies).
+- Don't put DARC or NASA in the projects section — they are experiences.
