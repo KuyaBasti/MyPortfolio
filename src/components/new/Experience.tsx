@@ -10,6 +10,7 @@ import { jetbrainsMono } from "@/app/layout";
 const cardBackgrounds: Record<string, ReactNode> = {
     "ubreakifix by Asurion": <CircuitBoard />,
     "Rukmer Inc.": <DroneFirmware />,
+    "American Lost Children Association": <MapRoute />,
 };
 
 export default function Experience() {
@@ -86,6 +87,82 @@ export default function Experience() {
             </div>
 
             <style>{`
+                /* ── Map route (American Lost Children Association) ── */
+                .map-container { position: absolute; inset: 0; }
+                /* Road grid lines */
+                .map-road {
+                    position: absolute;
+                    background: rgba(251,146,60,0.06);
+                }
+                .map-road-h1 { height: 1px; width: 120px; top: 30%; right: 5%; }
+                .map-road-h2 { height: 1px; width: 90px;  top: 55%; right: 8%; }
+                .map-road-h3 { height: 1px; width: 70px;  top: 75%; right: 12%; }
+                .map-road-v1 { width: 1px; height: 80px; top: 15%; right: 22%; }
+                .map-road-v2 { width: 1px; height: 60px; top: 30%; right: 10%; }
+                /* Location pins */
+                .map-pin {
+                    position: absolute;
+                    width: 6px;
+                    height: 6px;
+                    border-radius: 50%;
+                    background: rgba(251,146,60,0.35);
+                }
+                .map-pin::after {
+                    content: '';
+                    position: absolute;
+                    bottom: -4px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    border-left: 3px solid transparent;
+                    border-right: 3px solid transparent;
+                    border-top: 5px solid rgba(251,146,60,0.35);
+                }
+                .map-pin-a { top: 22%; right: 22%; animation: mapPinPop 3s ease-in-out infinite 0s; }
+                .map-pin-b { top: 42%; right: 10%; animation: mapPinPop 3s ease-in-out infinite 0.6s; }
+                .map-pin-c { top: 62%; right: 18%; animation: mapPinPop 3s ease-in-out infinite 1.2s; }
+                .map-pin-d { top: 75%; right: 7%;  animation: mapPinPop 3s ease-in-out infinite 1.8s; }
+                @keyframes mapPinPop {
+                    0%, 100% { transform: scale(1);   opacity: 0.3; }
+                    50%       { transform: scale(1.4); opacity: 0.7; }
+                }
+                /* Animated route line drawn with svg-like dash trick */
+                .map-route-line {
+                    position: absolute;
+                    top: 24%;
+                    right: 8%;
+                    width: 2px;
+                    height: 60px;
+                    background: repeating-linear-gradient(
+                        to bottom,
+                        rgba(251,146,60,0.3) 0px,
+                        rgba(251,146,60,0.3) 5px,
+                        transparent 5px,
+                        transparent 9px
+                    );
+                    animation: mapRouteDraw 2.5s ease-in-out infinite;
+                }
+                @keyframes mapRouteDraw {
+                    0%        { background-position: 0 0;    opacity: 0.2; }
+                    50%       { background-position: 0 -18px; opacity: 0.5; }
+                    100%      { background-position: 0 0;    opacity: 0.2; }
+                }
+                /* Moving dot along route */
+                .map-traveler {
+                    position: absolute;
+                    width: 4px;
+                    height: 4px;
+                    border-radius: 50%;
+                    background: #fb923c;
+                    right: calc(8% + -1px);
+                    top: 24%;
+                    animation: mapTravel 2.5s ease-in-out infinite;
+                    box-shadow: 0 0 6px rgba(251,146,60,0.5);
+                }
+                @keyframes mapTravel {
+                    0%   { transform: translateY(0);   opacity: 0.8; }
+                    100% { transform: translateY(60px); opacity: 0; }
+                }
+
                 /* ── Circuit board traces (ubreakifix) ── */
                 .circuit-container {
                     position: absolute;
@@ -243,6 +320,27 @@ export default function Experience() {
 }
 
 // ─── Card background animations ──────────────────────────────────────────────
+
+function MapRoute() {
+    return (
+        <div className="map-container">
+            {/* Road grid */}
+            <div className="map-road map-road-h1" />
+            <div className="map-road map-road-h2" />
+            <div className="map-road map-road-h3" />
+            <div className="map-road map-road-v1" />
+            <div className="map-road map-road-v2" />
+            {/* Location pins */}
+            <div className="map-pin map-pin-a" />
+            <div className="map-pin map-pin-b" />
+            <div className="map-pin map-pin-c" />
+            <div className="map-pin map-pin-d" />
+            {/* Animated route */}
+            <div className="map-route-line" />
+            <div className="map-traveler" />
+        </div>
+    );
+}
 
 function DroneFirmware() {
     return (
