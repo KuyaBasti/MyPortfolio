@@ -11,6 +11,7 @@ const cardBackgrounds: Record<string, ReactNode> = {
     "ubreakifix by Asurion": <CircuitBoard />,
     "Rukmer Inc.": <DroneFirmware />,
     "American Lost Children Association": <MapRoute />,
+    "UCD CORE Lab \u2013 F1Tenth": <RaceCar />,
 };
 
 export default function Experience() {
@@ -87,6 +88,97 @@ export default function Experience() {
             </div>
 
             <style>{`
+                /* ── Race car / F1Tenth (CORE Lab) ── */
+                .race-container { position: absolute; inset: 0; }
+
+                /* Track oval */
+                .race-track {
+                    position: absolute;
+                    top: 15%;
+                    right: 6%;
+                    width: 110px;
+                    height: 60px;
+                    border: 1px solid rgba(250,204,21,0.08);
+                    border-radius: 50%;
+                }
+                /* Inner track lane */
+                .race-track-inner {
+                    position: absolute;
+                    top: 22%;
+                    right: 10%;
+                    width: 86px;
+                    height: 44px;
+                    border: 1px solid rgba(250,204,21,0.05);
+                    border-radius: 50%;
+                }
+
+                /* Car body */
+                .race-car {
+                    position: absolute;
+                    width: 14px;
+                    height: 7px;
+                    background: rgba(250,204,21,0.3);
+                    border-radius: 3px 5px 2px 2px;
+                    animation: raceOrbit 2.8s linear infinite;
+                    transform-origin: 55px 30px; /* half track size offsets */
+                    top: 40%;
+                    right: 55%;
+                    box-shadow: 0 0 6px rgba(250,204,21,0.2);
+                }
+                /* Wheel dots */
+                .race-car::before,
+                .race-car::after {
+                    content: '';
+                    position: absolute;
+                    width: 3px;
+                    height: 3px;
+                    background: rgba(250,204,21,0.5);
+                    border-radius: 50%;
+                    bottom: -2px;
+                }
+                .race-car::before { left: 2px; }
+                .race-car::after  { right: 2px; }
+
+                @keyframes raceOrbit {
+                    0%   { transform: rotate(0deg)   translateX(46px) rotate(0deg); }
+                    100% { transform: rotate(360deg) translateX(46px) rotate(-360deg); }
+                }
+
+                /* Speed / LiDAR scan lines */
+                .race-lidar {
+                    position: absolute;
+                    top: 28%;
+                    right: 17%;
+                    width: 1px;
+                    height: 28px;
+                    background: rgba(250,204,21,0.08);
+                    transform-origin: bottom center;
+                    animation: lidarSweep 1.4s ease-in-out infinite;
+                }
+                .race-lidar-2 { animation-delay: 0.35s; }
+                .race-lidar-3 { animation-delay: 0.7s; }
+                .race-lidar-4 { animation-delay: 1.05s; }
+                @keyframes lidarSweep {
+                    0%, 100% { transform: rotate(-40deg); opacity: 0; }
+                    50%       { transform: rotate(40deg);  opacity: 0.35; }
+                }
+
+                /* Speed lines behind car */
+                .race-speed {
+                    position: absolute;
+                    height: 1px;
+                    background: rgba(250,204,21,0.1);
+                    border-radius: 1px;
+                    animation: raceSpeed 0.6s ease-out infinite;
+                }
+                .race-sp1 { width: 18px; top: 38%; right: 30%; animation-delay: 0s; }
+                .race-sp2 { width: 12px; top: 44%; right: 32%; animation-delay: 0.2s; }
+                .race-sp3 { width: 22px; top: 50%; right: 28%; animation-delay: 0.1s; }
+                @keyframes raceSpeed {
+                    0%   { transform: scaleX(1);   opacity: 0.15; }
+                    100% { transform: scaleX(0.2); opacity: 0; }
+                }
+
                 /* ── Map route (American Lost Children Association) ── */
                 .map-container { position: absolute; inset: 0; }
                 /* Road grid lines */
@@ -320,6 +412,27 @@ export default function Experience() {
 }
 
 // ─── Card background animations ──────────────────────────────────────────────
+
+function RaceCar() {
+    return (
+        <div className="race-container">
+            {/* Track ovals */}
+            <div className="race-track" />
+            <div className="race-track-inner" />
+            {/* LiDAR sweep lines */}
+            <div className="race-lidar" />
+            <div className="race-lidar race-lidar-2" />
+            <div className="race-lidar race-lidar-3" />
+            <div className="race-lidar race-lidar-4" />
+            {/* Orbiting car */}
+            <div className="race-car" />
+            {/* Speed lines */}
+            <div className="race-speed race-sp1" />
+            <div className="race-speed race-sp2" />
+            <div className="race-speed race-sp3" />
+        </div>
+    );
+}
 
 function MapRoute() {
     return (
