@@ -1,34 +1,150 @@
-## Project context
-Read CLAUDE.md for full project context, design direction, and architecture decisions.
+# Cursor Rules — Portfolio Rebuild
 
-## Component creation rules
-- New components go in `src/components/new/` until the old design is fully replaced.
-- Every component must pull content from `src/data/portfolio.ts` — never hardcode text, dates, descriptions, or tech stacks directly in JSX.
-- Use `"use client"` directive for components that need Framer Motion or browser APIs.
-- Use Tailwind CSS for styling. No CSS modules, no styled-components, no MUI.
+Read CLAUDE.md for full project context, content inventory, and design direction.
+Reference `mockups/complete-mockup.html` for the approved visual design.
+
+## File conventions
+
+- Components: `src/components/ComponentName.tsx` (PascalCase)
+- Data: `src/data/portfolio.ts` (single source of truth for ALL content)
+- Styles: `src/app/globals.css` (design tokens, @keyframes for card animations)
+- Utils: `src/lib/utils.ts` (cn() helper)
+- No CSS modules. No styled-components. Tailwind only.
+
+## Component rules
+
+- Always add `"use client"` for components using Framer Motion, hooks, or browser APIs.
+- Import motion from `"motion/react"` (NOT `"framer-motion"` — the package is `motion`).
+- Pull ALL text content from `src/data/portfolio.ts`. Zero hardcoded strings in JSX.
+- Use `cn()` from `src/lib/utils.ts` for conditional class merging.
+- Every section component receives its section number as a prop or derives it internally.
+
+### Section header pattern
+Every section uses this consistent header:
+```tsx
+<div className="flex items-center gap-4 mb-12">
+  <span className="font-mono text-sm text-indigo-400">{sectionNumber}</span>
+  <span className="text-[28px] font-semibold tracking-tight">{title}</span>
+  <span className="flex-1 h-px bg-gradient-to-r from-[#1a1a1a] to-transparent" />
+</div>
+```
 
 ## Animation rules
-- Use Framer Motion (`motion` package, already installed) for entrance animations and hover effects.
-- For always-running background animations inside project/experience cards (e.g., orbiting satellite, racing car), use CSS `@keyframes` in globals.css or inline styles — Framer Motion is overkill for these.
-- Every project card in the bento grid must have a unique visual animation that represents the project.
-- Every experience card should have a subtle background animation representing the work.
+
+### Framer Motion — for entrance/interaction animations
+```tsx
+// Scroll-triggered entrance (use on cards, sections)
+<motion.div
+  initial={{ opacity: 0, y: 20 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  viewport={{ once: true, margin: "-50px" }}
+  transition={{ duration: 0.5, delay: index * 0.1 }}
+/>
+
+// Hover lift effect (use on bento cards)
+<motion.div
+  whileHover={{ y: -6, borderColor: "rgba(255,255,255,0.1)" }}
+  transition={{ duration: 0.3 }}
+/>
+
+// Hero text stagger
+<motion.div
+  initial={{ opacity: 0, y: 24 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.8, delay: 0.2 * index }}
+/>
+```
+
+### CSS @keyframes — for always-running background animations in cards
+Put these in `globals.css`. They run continuously inside the visual area of each project/experience card. Examples: orbiting satellite, racing car, robotic arm swing, bouncing dots, typing code. These should be pure CSS for performance — Framer Motion would re-render too often.
+
+### Animation performance
+- Use `transform` and `opacity` only for CSS animations (GPU-accelerated).
+- Use `will-change: transform` on elements with complex animations.
+- Use `filter: blur()` sparingly — it's expensive. Only on hero orbs.
 
 ## Styling rules
-- Font: Sora for headings and body text, JetBrains Mono for code/tech labels.
-- Dark theme: background #050505, text #f0f0f0, muted text #666-#888.
-- Accent gradient: blue (#60a5fa) → indigo (#818cf8) → purple (#c084fc) → pink (#f472b6).
-- Cards: background #0a0a0a, border #151515, hover border #2a2a2a.
-- Use numbered section headers (01 Experience, 02 Projects, etc.) with a horizontal line.
+
+### Colors (Tailwind custom or inline)
+```
+bg-[#050505]      — page background
+bg-[#0a0a0a]      — card background
+border-[#151515]  — card border default
+border-[#2a2a2a]  — card border hover
+text-[#f0f0f0]    — primary text
+text-[#888]       — secondary text
+text-[#555]       — muted text
+text-[#444]       — very muted (dates, tech labels)
+```
+
+### Tag/badge colors by category
+```
+embedded:        bg-pink-500/10 text-pink-400 border-pink-500/15
+full-stack:      bg-indigo-400/10 text-indigo-400 border-indigo-400/15
+systems:         bg-green-400/10 text-green-400 border-green-400/15
+machine-learning:bg-yellow-400/10 text-yellow-400 border-yellow-400/15
+computer-vision: bg-cyan-400/10 text-cyan-400 border-cyan-400/15
+web/hackathon:   bg-orange-400/10 text-orange-400 border-orange-400/15
+robotics:        bg-green-400/10 text-green-400 border-green-400/15
+networking:      bg-indigo-400/10 text-indigo-400 border-indigo-400/15
+IoT:             bg-orange-400/10 text-orange-400 border-orange-400/15
+parallel:        bg-cyan-400/10 text-cyan-400 border-cyan-400/15
+software:        bg-indigo-400/10 text-indigo-400 border-indigo-400/15
+```
+
+### Responsive breakpoints
+```
+Mobile:  < 768px  — single column bento, stacked experience cards
+Tablet:  768-1024 — 2-column bento, side-by-side experience
+Desktop: > 1024   — 3-column bento, full layout
+```
+
+### Navbar
+- Fixed position, `backdrop-blur-xl`, `bg-[#050505]/70`
+- Logo: "JS." with the dot in indigo-400
+- Links: text-[#555], hover text-white, transition
+- No hamburger menu in desktop. Simple collapse on mobile.
+
+### Hero
+- Full viewport height (100vh)
+- 4 gradient orbs with `filter: blur(120px)`, animated with CSS @keyframes (float/drift)
+- Centered text: overline → h1 (with gradient span) → subtitle → CTA buttons
+- Scroll indicator at bottom with pulsing line
+- Staggered Framer Motion entrance (overline 0.2s, h1 0.4s, sub 0.6s, CTA 0.8s)
+
+### Bento grid
+- 3 columns on desktop, 2 on tablet, 1 on mobile
+- Featured card (DUAL! game) spans 2 columns
+- Each card: visual area (top, 220px height) + body area (bottom, padding)
+- Visual area contains the unique CSS animation for that project
+- Body area: tags → title → description → tech stack
+
+### Experience cards
+- Grid layout: date column (160px) + content column
+- Subtle background animation in each card (very low opacity, doesn't distract from text)
+- Tech pills at bottom of each card
+- Framer Motion scroll-triggered entrance
 
 ## Commit rules
-- One logical change per commit.
-- Commit message format: imperative mood, concise (e.g., "Add Hero component with floating orbs animation").
-- Never commit broken code — `npm run dev` must work after every commit.
-- Run `npm run lint` before pushing.
+- One logical change per commit
+- Imperative mood: "Add Hero component" not "Added Hero component"
+- Run `npm run dev` after every change to verify
+- Run `npm run lint` before pushing
 
-## What NOT to do
-- Don't use ClashDisplay font (shared template with friend's portfolio).
-- Don't use the floating pill-style navbar (shared template element).
-- Don't use the vertical timeline for experience (shared template element).
-- Don't use MUI components or Three.js (removing these dependencies).
-- Don't put DARC or NASA in the projects section — they are experiences.
+## Import order
+1. React / Next.js
+2. Third-party libraries (motion, clsx, etc.)
+3. Internal data (`@/data/portfolio`)
+4. Internal components (`@/components/...`)
+5. Internal utils (`@/lib/utils`)
+6. Types
+
+## What to NEVER do
+- Never hardcode content in components — always use portfolio.ts
+- Never use ClashDisplay font
+- Never use MUI components
+- Never use Three.js
+- Never use the floating pill navbar from the old design
+- Never use the vertical timeline from the old design
+- Never put DARC or NASA in the projects section (they are experiences)
+- Never use `framer-motion` import path (use `motion/react` instead)
