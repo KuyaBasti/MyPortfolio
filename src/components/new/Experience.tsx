@@ -3,7 +3,6 @@
 import { type ReactNode } from "react";
 import { motion } from "motion/react";
 import { experiences } from "@/data/portfolio";
-import { sora, jetbrainsMono } from "@/lib/fonts";
 
 // Maps company name → left-side overlay animation
 const cardBackgrounds: Record<string, ReactNode> = {
@@ -17,11 +16,11 @@ export default function Experience() {
     return (
         <section
             id="experience"
-            className={`${sora.className} max-w-[1100px] mx-auto px-6 sm:px-10 py-24`}
+            className="font-sora max-w-[1100px] mx-auto px-6 sm:px-10 py-24"
         >
             {/* Section header */}
             <div className="flex items-center gap-4 mb-12">
-                <span className={`${jetbrainsMono.className} text-[13px] text-[#818cf8]`}>
+                <span className="font-mono-code text-[13px] text-[#818cf8]">
                     01
                 </span>
                 <span className="text-[28px] font-semibold tracking-[-1px] text-white">
@@ -65,7 +64,7 @@ export default function Experience() {
                                         exp.company
                                     )}
                                 </h3>
-                                <span className={`${jetbrainsMono.className} text-xs text-[#444] flex-shrink-0`}>
+                                <span className="font-mono-code text-xs text-[#444] flex-shrink-0">
                                     {exp.date}
                                 </span>
                             </div>

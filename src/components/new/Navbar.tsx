@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { sora } from "@/lib/fonts";
 
 const links = [
     { name: "Experience", href: "#experience" },
@@ -17,7 +16,7 @@ export default function Navbar() {
 
     return (
         <nav
-            className={`${sora.className} fixed top-0 left-0 right-0 z-[100] flex items-center justify-between px-6 sm:px-12 h-[60px]`}
+            className="font-sora fixed top-0 left-0 right-0 z-[100] flex items-center justify-between px-6 sm:px-12 h-[60px]"
             style={{
                 background: "rgba(5,5,5,0.7)",
                 backdropFilter: "blur(24px)",

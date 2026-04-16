@@ -2,7 +2,6 @@
 
 import { motion } from "motion/react";
 import { projects } from "@/data/portfolio";
-import { sora, jetbrainsMono } from "@/lib/fonts";
 import type { ReactNode } from "react";
 
 // ─── Category tag styles ──────────────────────────────────────────────────────
@@ -35,11 +34,11 @@ export default function Projects() {
     return (
         <section
             id="projects"
-            className={`${sora.className} max-w-[1100px] mx-auto px-6 sm:px-10 py-24`}
+            className="font-sora max-w-[1100px] mx-auto px-6 sm:px-10 py-24"
         >
             {/* Section header */}
             <div className="flex items-center gap-4 mb-12">
-                <span className={`${jetbrainsMono.className} text-[13px] text-[#818cf8]`}>
+                <span className="font-mono-code text-[13px] text-[#818cf8]">
                     02
                 </span>
                 <span className="text-[28px] font-semibold tracking-[-1px] text-white">
@@ -82,7 +81,7 @@ export default function Projects() {
                                 <h3 className="bento-title">{project.title}</h3>
                                 <p className="bento-desc">{project.description}</p>
                                 <div className="bento-tech">
-                                    <span className={jetbrainsMono.className}>
+                                    <span className="font-mono-code">
                                         {project.technologies.slice(0, 6).join(" · ")}
                                         {project.technologies.length > 6 ? ` · +${project.technologies.length - 6}` : ""}
                                     </span>

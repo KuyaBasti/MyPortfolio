@@ -1,12 +1,11 @@
 "use client";
 
 import { motion } from "motion/react";
-import { sora } from "@/lib/fonts";
 
 export default function Hero() {
     return (
         <section
-            className={`${sora.className} relative min-h-screen flex items-center justify-center overflow-hidden`}
+            className="font-sora relative min-h-screen flex items-center justify-center overflow-hidden"
             style={{ background: "#050505" }}
         >
             {/* Floating gradient orbs */}
