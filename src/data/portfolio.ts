@@ -110,12 +110,25 @@ export const contactLinks: ContactLink[] = [
 
 export const experiences: Experience[] = [
     {
+        year: "2026",
+        company: "Quanta Manufacturing",
+        companyUrl: "",
+        role: "Test Technician",
+        location: "Fremont, CA",
+        date: "April 2026 \u2013 Present",
+        details: [
+            "Support the qualification and high-volume production of servers and rack systems by deploying test equipment, managing cable infrastructure and validating networking protocols including PXE boot",
+            "Analyze complex hardware failures and test data using Linux and Python scripts to troubleshoot defects, improve manufacturing yields and provide detailed diagnostic logs",
+            "Collaborate with corporate R&D to install and verify new test scripts, develop comprehensive process instructions (TPI) and enhance existing quality methods to improve product reliability",
+        ],
+    },
+    {
         year: "2025",
         company: "ubreakifix by Asurion",
         companyUrl: "",
-        role: "IT",
+        role: "Electronics Technician",
         location: "Yuba City, CA",
-        date: "December 2025 \u2013 Present",
+        date: "July 2025 \u2013 April 2026",
         details: [
             "Diagnosed and repaired consumer electronics including smartphones, tablets, laptops, and game consoles",
             "Performed board-level repairs including HDMI port replacement, fine-pitch soldering, and power and I/O troubleshooting using schematics and rework tools",
@@ -123,34 +136,9 @@ export const experiences: Experience[] = [
     },
     {
         year: "2025",
-        company: "Rukmer Inc.",
-        companyUrl: "",
-        role: "Software Engineer",
-        location: "Boston, MA",
-        date: "September 2025 \u2013 November 2025",
-        details: [
-            "Built a backend pipeline enabling drones to download compatible firmware after hardware replacements, eliminating the need to replace entire units when components changed",
-            "Implemented secure, versioned firmware delivery using Phoenix LiveView, presigned S3 uploads, checksum validation, and role-gated installs for staged rollouts",
-            "Designed immutable, content-addressed firmware artifacts served via CloudFront, ensuring reproducible deployments and preventing release drift across heterogeneous hardware",
-        ],
-    },
-    {
-        year: "2025",
-        company: "American Lost Children Association",
-        companyUrl: "",
-        role: "Software Engineer",
-        location: "Yuba City, CA",
-        date: "July 2025 \u2013 September 2025",
-        details: [
-            "Built a web and mobile dispatch system that computes a single efficient delivery route across multiple locations based on a dispatcher\u2019s starting point",
-            "Implemented traffic-aware routing with Postgres/PostGIS and Google Directions API, plus offline-first Android support with cached routes and automatic re-sync",
-        ],
-    },
-    {
-        year: "2025",
         company: "UCD CORE Lab \u2013 F1Tenth",
         companyUrl: "https://nazarilab.ucdavis.edu/",
-        role: "Software Engineer",
+        role: "Software Engineer Intern",
         location: "Davis, CA",
         date: "January 2025 \u2013 July 2025",
         details: [
@@ -160,7 +148,7 @@ export const experiences: Experience[] = [
     },
     {
         year: "2023",
-        company: "NASA Space and Satellite Systems",
+        company: "NASA \u2013 Space and Satellite Systems",
         companyUrl: "",
         role: "Firmware Engineer",
         location: "Davis, CA",
@@ -202,6 +190,33 @@ export const projects: Project[] = [
             "Integrated AWS IoT and Lambda to persist and display scores via a Flask backend, bridging embedded firmware with cloud services",
         ],
         category: "Embedded Systems",
+    },
+    {
+        title: "Drone Modularization",
+        description:
+            "Firmware delivery pipeline with S3 and CloudFront to automate secure, versioned deployments for modular hardware variants",
+        technologies: ["Phoenix LiveView", "Elixir", "AWS S3", "CloudFront", "Presigned URLs"],
+        link: null,
+        github: null,
+        details: [
+            "Built a firmware delivery pipeline with S3 and CloudFront to automate secure, versioned deployments for modular hardware variants",
+            "Implemented presigned S3 uploads with checksum validation and role-gated installs for staged rollouts",
+            "Designed immutable, content-addressed firmware artifacts served via CloudFront, preventing release drift across heterogeneous hardware",
+        ],
+        category: "Full-Stack Development",
+    },
+    {
+        title: "Dispatcher System",
+        description:
+            "Traffic-aware routing system with PostGIS and Google Maps API, featuring offline-first Android support and automated re-sync",
+        technologies: ["Android", "Kotlin", "PostgreSQL/PostGIS", "Google Directions API"],
+        link: null,
+        github: null,
+        details: [
+            "Built a traffic-aware routing system with PostGIS and Google Maps API that computes a single efficient delivery route across multiple locations",
+            "Implemented offline-first Android support with cached routes and automatic re-sync when connectivity is restored",
+        ],
+        category: "Full-Stack Development",
     },
     {
         title: "Salary Prediction Machine Learning Model",

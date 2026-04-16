@@ -8,10 +8,10 @@ import { jetbrainsMono } from "@/app/layout";
 
 // Maps company name → background animation component
 const cardBackgrounds: Record<string, ReactNode> = {
+    "Quanta Manufacturing": null,
     "ubreakifix by Asurion": <CircuitBoard />,
-    "Rukmer Inc.": <DroneFirmware />,
-    "American Lost Children Association": <MapRoute />,
     "UCD CORE Lab \u2013 F1Tenth": <RaceCar />,
+    "NASA \u2013 Space and Satellite Systems": null,
 };
 
 export default function Experience() {
