@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { sora } from "@/app/layout";
+import { sora } from "@/lib/fonts";
 
 const links = [
     { name: "Experience", href: "#experience" },

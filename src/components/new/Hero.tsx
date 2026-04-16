@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
-import { sora } from "@/app/layout";
+import { sora } from "@/lib/fonts";
 
 export default function Hero() {
     return (

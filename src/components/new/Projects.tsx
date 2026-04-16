@@ -2,7 +2,7 @@
 
 import { motion } from "motion/react";
 import { projects } from "@/data/portfolio";
-import { sora, jetbrainsMono } from "@/app/layout";
+import { sora, jetbrainsMono } from "@/lib/fonts";
 import type { ReactNode } from "react";
 
 // ─── Category tag styles ──────────────────────────────────────────────────────
@@ -202,35 +202,87 @@ export default function Projects() {
                     text-align: center; padding: 3px;
                     border-bottom: 1px solid #1a1a1a;
                 }
+                /* Ships — face each other horizontally */
                 .ship { position: absolute; width: 0; height: 0; }
+                /* P1: right side of left screen, pointing right */
                 .ship-l {
-                    bottom: 15px; left: 50%; transform: translateX(-50%);
-                    border-left: 6px solid transparent;
-                    border-right: 6px solid transparent;
-                    border-bottom: 12px solid #60a5fa;
-                    animation: shipBob 2s ease-in-out infinite;
+                    right: 10px; top: 50%; transform: translateY(-50%);
+                    border-top: 6px solid transparent;
+                    border-bottom: 6px solid transparent;
+                    border-left: 12px solid #60a5fa;
+                    animation: shipBobV 2s ease-in-out infinite;
                 }
+                /* P2: left side of right screen, pointing left */
                 .ship-r {
-                    top: 15px; left: 50%; transform: translateX(-50%);
-                    border-left: 6px solid transparent;
-                    border-right: 6px solid transparent;
-                    border-top: 12px solid #f87171;
-                    animation: shipBob 2s ease-in-out infinite .5s;
+                    left: 10px; top: 50%; transform: translateY(-50%);
+                    border-top: 6px solid transparent;
+                    border-bottom: 6px solid transparent;
+                    border-right: 12px solid #f87171;
+                    animation: shipBobV 2s ease-in-out infinite .5s;
                 }
-                @keyframes shipBob {
-                    0%,100% { transform: translateX(-50%) translateX(0); }
-                    50%     { transform: translateX(-50%) translateX(4px); }
+                @keyframes shipBobV {
+                    0%,100% { transform: translateY(-50%) translateY(0); }
+                    50%     { transform: translateY(-50%) translateY(3px); }
                 }
+
+                /* Projectiles */
                 .projectile {
                     position: absolute;
-                    width: 3px; height: 3px;
+                    width: 4px; height: 4px;
                     border-radius: 50%;
                 }
-                .proj-1 { background: #60a5fa; left: 50%;  bottom: 30px; animation: shootUp   1.2s linear infinite; }
-                .proj-2 { background: #f87171; left: 45%;  top: 30px;    animation: shootDown 1.2s linear infinite .4s; }
-                .proj-3 { background: #60a5fa; left: 55%;  bottom: 35px; animation: shootUp   1.2s linear infinite .8s; }
-                @keyframes shootUp   { 0% { transform: translateY(0);    opacity: 1; } 100% { transform: translateY(-90px); opacity: 0; } }
-                @keyframes shootDown { 0% { transform: translateY(0);    opacity: 1; } 100% { transform: translateY(90px);  opacity: 0; } }
+                /* P1 fires right — exits left screen */
+                .proj-l-fire-1 {
+                    background: #60a5fa;
+                    right: 22px; top: calc(50% - 2px);
+                    animation: fireRight 1.4s linear infinite;
+                }
+                .proj-l-fire-2 {
+                    background: #60a5fa;
+                    right: 22px; top: calc(50% + 6px);
+                    animation: fireRight 1.4s linear infinite .7s;
+                }
+                /* P2's shots arriving on left screen from right */
+                .proj-l-arrive {
+                    background: #f87171;
+                    right: 0px; top: calc(50% - 8px);
+                    animation: arriveLeft 1.8s linear infinite .3s;
+                }
+                /* P2 fires left — exits right screen */
+                .proj-r-fire-1 {
+                    background: #f87171;
+                    left: 22px; top: calc(50% - 2px);
+                    animation: fireLeft 1.4s linear infinite .4s;
+                }
+                .proj-r-fire-2 {
+                    background: #f87171;
+                    left: 22px; top: calc(50% - 10px);
+                    animation: fireLeft 1.4s linear infinite 1.1s;
+                }
+                /* P1's shots arriving on right screen from left */
+                .proj-r-arrive {
+                    background: #60a5fa;
+                    left: 0px; top: calc(50% + 6px);
+                    animation: arriveRight 1.8s linear infinite 1s;
+                }
+                @keyframes fireRight {
+                    0%   { transform: translateX(0);    opacity: 1; }
+                    100% { transform: translateX(80px); opacity: 0; }
+                }
+                @keyframes fireLeft {
+                    0%   { transform: translateX(0);     opacity: 1; }
+                    100% { transform: translateX(-80px); opacity: 0; }
+                }
+                @keyframes arriveRight {
+                    0%   { transform: translateX(0);    opacity: 0; }
+                    10%  { opacity: 1; }
+                    100% { transform: translateX(80px); opacity: 0; }
+                }
+                @keyframes arriveLeft {
+                    0%   { transform: translateX(0);     opacity: 0; }
+                    10%  { opacity: 1; }
+                    100% { transform: translateX(-80px); opacity: 0; }
+                }
                 .uart-line {
                     position: absolute; top: 50%;
                     left: calc(50% - 15px); width: 30px; height: 1px;
@@ -527,13 +579,16 @@ function DualGame() {
             <div className="dual-screen dual-screen-l">
                 <div className="screen-header">PLAYER 1</div>
                 <div className="ship ship-l" />
-                <div className="projectile proj-1" />
-                <div className="projectile proj-3" />
+                <div className="projectile proj-l-fire-1" />
+                <div className="projectile proj-l-fire-2" />
+                <div className="projectile proj-l-arrive" />
             </div>
             <div className="dual-screen dual-screen-r">
                 <div className="screen-header">PLAYER 2</div>
                 <div className="ship ship-r" />
-                <div className="projectile proj-2" />
+                <div className="projectile proj-r-fire-1" />
+                <div className="projectile proj-r-fire-2" />
+                <div className="projectile proj-r-arrive" />
             </div>
             <div className="uart-line" />
             <div className="uart-label">UART</div>
