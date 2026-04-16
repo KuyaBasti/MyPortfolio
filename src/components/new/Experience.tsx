@@ -3,7 +3,7 @@
 import { type ReactNode } from "react";
 import { motion } from "motion/react";
 import { experiences } from "@/data/portfolio";
-import { sora, jetbrainsMono } from "@/app/layout";
+import { sora, jetbrainsMono } from "@/lib/fonts";
 
 // Maps company name → background animation component
 const cardBackgrounds: Record<string, ReactNode> = {

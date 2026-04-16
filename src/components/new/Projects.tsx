@@ -2,7 +2,7 @@
 
 import { motion } from "motion/react";
 import { projects } from "@/data/portfolio";
-import { sora, jetbrainsMono } from "@/app/layout";
+import { sora, jetbrainsMono } from "@/lib/fonts";
 import type { ReactNode } from "react";
 
 // ─── Category tag styles ──────────────────────────────────────────────────────
