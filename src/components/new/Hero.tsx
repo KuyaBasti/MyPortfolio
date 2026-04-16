@@ -42,7 +42,7 @@ export default function Hero() {
                     transition={{ duration: 0.8, delay: 0.6 }}
                     className="hero-tagline"
                 >
-                    I bridge the gap between hardware and software
+                    Bridging the gap between hardware and software
                 </motion.p>
             </div>
 
