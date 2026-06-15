@@ -286,7 +286,9 @@ export default function Hero() {
 
             <div className="hero-grid">
                 <div className="hero-copy" ref={copyRef}>
-                    <div className="hero-eyebrow">New · Portfolio 2026</div>
+                    <div className="hero-eyebrow cmd-eyebrow">
+                        <span className="p">~ %</span> whoami<span className="cur" />
+                    </div>
                     <h1 className="hero-h1">
                         The space between
                         <br />
@@ -302,7 +304,7 @@ export default function Hero() {
                             See my work
                         </a>
                         <a className="hero-link" href="#contact">
-                            Get in touch <span aria-hidden>›</span>
+                            ./get_in_touch <span aria-hidden>›</span>
                         </a>
                     </div>
                 </div>
@@ -330,25 +332,25 @@ export default function Hero() {
                     align-items: center; gap: 56px;
                     max-width: 1180px; margin: 0 auto; padding: 96px 40px 60px;
                 }
-                .hero-eyebrow { font-size: 16px; color: var(--accent); margin-bottom: 16px; }
+                .hero-eyebrow { margin-bottom: 16px; }
                 .hero-h1 { font-size: clamp(38px, 4.8vw, 76px); font-weight: 600; line-height: 1.05; letter-spacing: -0.025em; margin-bottom: 20px; }
                 .hero-sub { font-size: clamp(17px, 1.5vw, 21px); color: var(--ink-soft); line-height: 1.45; max-width: 540px; margin-bottom: 30px; }
                 .hero-cta { display: flex; gap: 22px; align-items: center; flex-wrap: wrap; }
-                .hero-btn { background: var(--accent); color: #fff; padding: 13px 26px; border-radius: 980px; font-size: 16px; transition: transform .2s, background .2s; }
-                .hero-btn:hover { transform: scale(1.03); background: var(--accent-hover); }
-                .hero-link { color: var(--accent); font-size: 16px; }
+                .hero-btn { background: var(--green); color: #05140a; font-weight: 600; padding: 13px 26px; border-radius: 12px; font-size: 16px; transition: transform .2s, box-shadow .2s; box-shadow: 0 0 0 1px var(--green-dim), 0 0 28px -6px rgba(40,200,90,0.5); }
+                .hero-btn:hover { transform: translateY(-1px); box-shadow: 0 0 0 1px var(--green), 0 0 40px -6px rgba(40,200,90,0.75); }
+                .hero-link { color: var(--green-bright); font-family: var(--font-mono); font-size: 15px; }
                 .hero-link span { display: inline-block; transition: transform .2s; }
                 .hero-link:hover span { transform: translateX(2px); }
 
                 /* Terminal */
                 .hero-term {
                     position: relative; width: 100%; max-width: 560px; justify-self: end;
-                    background: #1c1c1f; border: 1px solid rgba(255,255,255,0.08); border-radius: 14px;
-                    overflow: hidden; box-shadow: 0 40px 100px -30px rgba(40,30,90,0.35), 0 8px 24px -12px rgba(0,0,0,0.35);
+                    background: #0c0f14; border: 1px solid rgba(255,255,255,0.09); border-radius: 14px;
+                    overflow: hidden; box-shadow: 0 0 0 1px rgba(40,200,90,0.10), 0 0 60px -16px rgba(40,200,90,0.28), 0 30px 80px -30px #000;
                 }
                 html.intro-on .hero-term { z-index: 210; opacity: 0; }
                 .hero-term.boot { box-shadow: 0 0 0 1px rgba(70,255,150,0.18), 0 0 70px rgba(40,200,90,0.25), 0 30px 90px -20px rgba(0,0,0,0.7); }
-                .hero-term-bar { position: relative; height: 40px; display: flex; align-items: center; gap: 8px; padding: 0 14px; background: #2a2a2e; border-bottom: 1px solid rgba(255,255,255,0.06); }
+                .hero-term-bar { position: relative; height: 40px; display: flex; align-items: center; gap: 8px; padding: 0 14px; background: #131820; border-bottom: 1px solid rgba(255,255,255,0.06); }
                 .hero-dot { width: 12px; height: 12px; border-radius: 50%; }
                 .hero-dot.r { background: #ff5f57; } .hero-dot.y { background: #febc2e; } .hero-dot.g { background: #28c840; }
                 .hero-term-title { position: absolute; left: 0; right: 0; text-align: center; font-family: var(--font-mono); font-size: 12.5px; color: #8b8b93; pointer-events: none; }
@@ -385,10 +387,10 @@ export default function Hero() {
                 @keyframes bootScan { to { background-position: 0 7px; } }
                 @keyframes bootFlick { 0%,96%,100% { opacity: 0; } 97% { opacity: 0.05; } 98.5% { opacity: 0.09; } }
 
-                /* Reveal flash */
-                .boot-flash { position: fixed; inset: 0; z-index: 205; background: #eaf2ff; opacity: 0; pointer-events: none; }
-                .boot-flash.go { animation: bootFlash .75s ease forwards; }
-                @keyframes bootFlash { 0% { opacity: 0; } 22% { opacity: 0.5; } 100% { opacity: 0; } }
+                /* Reveal pulse — subtle green "system online", settles into the dark rain (no white flash) */
+                .boot-flash { position: fixed; inset: 0; z-index: 205; background: radial-gradient(ellipse at 50% 40%, rgba(40,255,140,0.18), rgba(40,255,140,0) 60%); opacity: 0; pointer-events: none; }
+                .boot-flash.go { animation: bootFlash .9s ease forwards; }
+                @keyframes bootFlash { 0% { opacity: 0; } 30% { opacity: 1; } 100% { opacity: 0; } }
 
                 @media (max-width: 900px) {
                     .hero-grid { grid-template-columns: 1fr; gap: 36px; padding: 110px 24px 60px; }
