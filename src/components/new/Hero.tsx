@@ -1,128 +1,399 @@
 "use client";
 
-import { motion } from "motion/react";
+import { useEffect, useRef } from "react";
+
+type LineKind = "cmd" | "out" | "sys" | "welcome";
+interface Line {
+    kind: LineKind;
+    text: string;
+}
+
+const SCRIPT: Line[] = [
+    { kind: "cmd", text: "whoami" },
+    { kind: "out", text: "John Sebastian Solon" },
+    { kind: "cmd", text: "cat role.txt" },
+    { kind: "out", text: "Software & Embedded Engineer — UC Davis CSE '25" },
+    { kind: "cmd", text: "./launch_portfolio.sh" },
+    { kind: "sys", text: "[ ok ] bridging hardware ↔ software" },
+    { kind: "sys", text: "[ ok ] loading 4 roles · 10+ projects" },
+    { kind: "welcome", text: "welcome — let's build something good." },
+];
+
+const PROMPT =
+    '<span class="p-host">john@portfolio</span> <span class="p-path">~</span> <span class="p-pct">%</span> ';
+const colorSys = (t: string) => t.replace("[ ok ]", '<span class="ok">[ ok ]</span>');
+
+// The completed session, rendered statically as the default terminal content
+// (what returning / reduced-motion visitors see; the boot typewriter rebuilds it).
+const FULL_HTML =
+    SCRIPT.map((item, i) => {
+        const inner = item.kind === "sys" ? colorSys(item.text) : item.text;
+        const prompt = item.kind === "cmd" ? PROMPT : "";
+        const cursor = i === SCRIPT.length - 1 ? '<span class="cursor"></span>' : "";
+        return `<div class="tl tl-${item.kind}">${prompt}<span class="txt">${inner}</span>${cursor}</div>`;
+    }).join("");
 
 export default function Hero() {
+    const rootRef = useRef<HTMLElement>(null);
+    const termRef = useRef<HTMLDivElement>(null);
+    const bodyRef = useRef<HTMLDivElement>(null);
+    const copyRef = useRef<HTMLDivElement>(null);
+    const overlayRef = useRef<HTMLDivElement>(null);
+    const flashRef = useRef<HTMLDivElement>(null);
+    const rainRef = useRef<HTMLCanvasElement>(null);
+    const staticRef = useRef<HTMLCanvasElement>(null);
+
+    useEffect(() => {
+        const html = document.documentElement;
+        const shouldPlay = html.classList.contains("intro-on");
+        if (!shouldPlay) return; // returning visitor / reduced-motion: render docked instantly
+
+        const term = termRef.current!;
+        const body = bodyRef.current!;
+        const copy = copyRef.current!;
+        const overlay = overlayRef.current!;
+        const flash = flashRef.current!;
+        const rain = rainRef.current!;
+        const stat = staticRef.current!;
+        const rctx = rain.getContext("2d")!;
+        const sctx = stat.getContext("2d")!;
+
+        let cancelled = false; // typewriter stop flag
+        let docked = false;
+        let raf = 0;
+        let frame = 0;
+        let running = false;
+        const timers: number[] = [];
+        const wait = (fn: () => void, ms: number) => {
+            const id = window.setTimeout(fn, ms);
+            timers.push(id);
+        };
+
+        // ── canvas FX ───────────────────────────────────────────────
+        const chars = "01｢｣ｦｱｳﾘﾝ<>/=+*ABCDEF0123456789".split("");
+        const fs = 15;
+        let cols = 0;
+        let drops: number[] = [];
+        let sw = 0;
+        let sh = 0;
+        const sizeCanvases = () => {
+            rain.width = innerWidth;
+            rain.height = innerHeight;
+            cols = Math.ceil(rain.width / fs);
+            drops = Array.from({ length: cols }, () => (Math.random() * rain.height) / fs);
+            sw = Math.ceil(innerWidth / 3);
+            sh = Math.ceil(innerHeight / 3);
+            stat.width = sw;
+            stat.height = sh;
+        };
+        const drawRain = () => {
+            rctx.fillStyle = "rgba(5,7,10,0.14)";
+            rctx.fillRect(0, 0, rain.width, rain.height);
+            rctx.font = `${fs}px 'JetBrains Mono', monospace`;
+            for (let i = 0; i < cols; i++) {
+                const c = chars[(Math.random() * chars.length) | 0];
+                const x = i * fs;
+                const y = drops[i] * fs;
+                rctx.fillStyle = Math.random() < 0.03 ? "#9dffc4" : "rgba(40,200,95,0.55)";
+                rctx.fillText(c, x, y);
+                if (y > rain.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i] += 1;
+            }
+        };
+        const drawStatic = () => {
+            const img = sctx.createImageData(sw, sh);
+            const d = img.data;
+            for (let i = 0; i < d.length; i += 4) {
+                const v = (Math.random() * 255) | 0;
+                d[i] = d[i + 1] = d[i + 2] = v;
+                d[i + 3] = (Math.random() * 30) | 0;
+            }
+            sctx.putImageData(img, 0, 0);
+        };
+        const loop = () => {
+            if (!running) return;
+            frame++;
+            if (frame % 2 === 0) drawRain();
+            drawStatic();
+            raf = requestAnimationFrame(loop);
+        };
+        const startFX = () => {
+            sizeCanvases();
+            running = true;
+            raf = requestAnimationFrame(loop);
+        };
+        const stopFX = () => {
+            running = false;
+            cancelAnimationFrame(raf);
+        };
+        const onResize = () => {
+            if (running) sizeCanvases();
+        };
+
+        // ── dock (reveal) ───────────────────────────────────────────
+        const dock = () => {
+            if (docked) return;
+            docked = true;
+            cleanupBail();
+            flash.classList.remove("go");
+            void flash.offsetWidth;
+            flash.classList.add("go");
+            overlay.classList.add("out");
+            term.classList.remove("boot");
+            term.style.transition = "transform .9s cubic-bezier(0.7,0,0.2,1), opacity .4s ease";
+            term.style.transform = "none";
+            copy.classList.add("in");
+            wait(() => {
+                stopFX();
+                html.classList.remove("intro-on");
+            }, 950);
+            try {
+                sessionStorage.setItem("introPlayed", "1");
+            } catch {}
+        };
+
+        // ── typewriter ──────────────────────────────────────────────
+        const renderAll = () => {
+            body.innerHTML = "";
+            SCRIPT.forEach((item) => {
+                const line = document.createElement("div");
+                line.className = "tl tl-" + item.kind;
+                if (item.kind === "cmd") line.innerHTML = PROMPT;
+                const span = document.createElement("span");
+                span.className = "txt";
+                span.innerHTML = item.kind === "sys" ? colorSys(item.text) : item.text;
+                line.appendChild(span);
+                body.appendChild(line);
+            });
+            const last = body.lastElementChild;
+            if (last) {
+                const c = document.createElement("span");
+                c.className = "cursor";
+                last.appendChild(c);
+            }
+        };
+        const finishTyping = () => {
+            cancelled = true;
+            renderAll();
+        };
+
+        let li = 0;
+        const nextLine = () => {
+            if (cancelled) return;
+            if (li >= SCRIPT.length) {
+                dock();
+                return;
+            }
+            const item = SCRIPT[li];
+            const line = document.createElement("div");
+            line.className = "tl tl-" + item.kind;
+            if (item.kind === "cmd") line.innerHTML = PROMPT;
+            const span = document.createElement("span");
+            span.className = "txt";
+            line.appendChild(span);
+            const cur = document.createElement("span");
+            cur.className = "cursor";
+            line.appendChild(cur);
+            body.appendChild(line);
+
+            const speed = item.kind === "cmd" ? 46 : 9;
+            const text = item.text;
+            let ci = 0;
+            const typeChar = () => {
+                if (cancelled) return;
+                if (ci < text.length) {
+                    ci++;
+                    if (item.kind === "sys") span.innerHTML = colorSys(text.slice(0, ci));
+                    else span.textContent = text.slice(0, ci);
+                    body.scrollTop = body.scrollHeight;
+                    const jitter = item.kind === "cmd" ? Math.random() * 38 : 0;
+                    wait(typeChar, speed + jitter);
+                } else {
+                    li++;
+                    if (item.kind === "welcome") {
+                        wait(dock, 700);
+                        return; // keep cursor blinking on welcome line
+                    }
+                    cur.remove();
+                    wait(nextLine, item.kind === "cmd" ? 280 : 110);
+                }
+            };
+            wait(typeChar, item.kind === "out" || item.kind === "sys" ? 150 : 30);
+        };
+
+        // ── bail (skip / key / scroll) ──────────────────────────────
+        const bail = () => {
+            finishTyping();
+            dock();
+        };
+        const onKey = (e: KeyboardEvent) => {
+            if (e.key === "Escape" || e.key === "Enter" || e.key === " ") bail();
+        };
+        const skipBtn = overlay.querySelector(".boot-skip") as HTMLButtonElement | null;
+        const cleanupBail = () => {
+            window.removeEventListener("keydown", onKey);
+            window.removeEventListener("wheel", bail);
+            window.removeEventListener("touchmove", bail);
+            skipBtn?.removeEventListener("click", bail);
+        };
+        window.addEventListener("keydown", onKey);
+        window.addEventListener("wheel", bail, { passive: true, once: true });
+        window.addEventListener("touchmove", bail, { passive: true, once: true });
+        skipBtn?.addEventListener("click", bail);
+        window.addEventListener("resize", onResize);
+
+        // ── kick off boot ───────────────────────────────────────────
+        const rect = term.getBoundingClientRect();
+        const scale = Math.min(600, innerWidth * 0.9) / rect.width;
+        const tx = innerWidth / 2 - (rect.left + rect.width / 2);
+        const ty = innerHeight / 2 - (rect.top + rect.height / 2);
+        term.classList.add("boot");
+        term.style.transition = "none";
+        term.style.transform = `translate(${tx}px, ${ty}px) scale(${scale.toFixed(3)})`;
+        void term.offsetWidth;
+        term.style.transition = "opacity .45s ease";
+        term.style.opacity = "1";
+        body.innerHTML = "";
+        startFX();
+        wait(nextLine, 60);
+
+        return () => {
+            cancelled = true;
+            cleanupBail();
+            window.removeEventListener("resize", onResize);
+            stopFX();
+            timers.forEach(clearTimeout);
+        };
+    }, []);
+
     return (
-        <section
-            className="font-sora relative min-h-screen flex items-center justify-center overflow-hidden"
-            style={{ background: "#050505" }}
-        >
-            {/* Floating gradient orbs */}
-            <div className="absolute inset-0 pointer-events-none" aria-hidden>
-                <div className="hero-orb hero-orb-1" />
-                <div className="hero-orb hero-orb-2" />
-                <div className="hero-orb hero-orb-3" />
-                <div className="hero-orb hero-orb-4" />
+        <section className="hero" ref={rootRef} id="top">
+            {/* Dark hacker boot overlay (shown only when html.intro-on) */}
+            <div className="boot-overlay" ref={overlayRef} aria-hidden>
+                <canvas className="boot-rain" ref={rainRef} />
+                <canvas className="boot-static" ref={staticRef} />
+                <div className="boot-scan" />
+                <div className="boot-vig" />
+                <div className="boot-flick" />
+                <div className="boot-hud">
+                    secure shell // 0xJSS · <span className="blip">decrypting session…</span>
+                </div>
+                <button className="boot-skip" type="button">
+                    skip intro ›
+                </button>
             </div>
+            <div className="boot-flash" ref={flashRef} aria-hidden />
 
-            {/* Content */}
-            <div className="relative z-10 text-center px-6">
-                <motion.h1
-                    initial={{ opacity: 0, y: 24 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.2 }}
-                    className="hero-name-text hero-gradient-text mb-5"
-                >
-                    JOHN SEBASTIAN SOLON
-                </motion.h1>
+            <div className="hero-grid">
+                <div className="hero-copy" ref={copyRef}>
+                    <div className="hero-eyebrow">New · Portfolio 2026</div>
+                    <h1 className="hero-h1">
+                        The space between
+                        <br />
+                        <span className="iri">hardware and software.</span>
+                    </h1>
+                    <p className="hero-sub">
+                        I&apos;m John Sebastian Solon — a Software &amp; Embedded Engineer who builds
+                        the rare things that work end-to-end: from the firmware on the metal to the
+                        cloud that talks to it.
+                    </p>
+                    <div className="hero-cta">
+                        <a className="hero-btn" href="#projects">
+                            See my work
+                        </a>
+                        <a className="hero-link" href="#contact">
+                            Get in touch <span aria-hidden>›</span>
+                        </a>
+                    </div>
+                </div>
 
-                <motion.p
-                    initial={{ opacity: 0, y: 24 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.4 }}
-                    className="hero-subtitle mb-6"
-                >
-                    Software &amp; Embedded Engineer
-                </motion.p>
-
-                <motion.p
-                    initial={{ opacity: 0, y: 24 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.6 }}
-                    className="hero-tagline"
-                >
-                    Bridging the gap between hardware and software
-                </motion.p>
+                <div className="hero-term" ref={termRef}>
+                    <div className="hero-term-bar">
+                        <span className="hero-dot r" />
+                        <span className="hero-dot y" />
+                        <span className="hero-dot g" />
+                        <span className="hero-term-title">john@portfolio — zsh</span>
+                    </div>
+                    <div
+                        className="hero-term-body"
+                        ref={bodyRef}
+                        dangerouslySetInnerHTML={{ __html: FULL_HTML }}
+                    />
+                </div>
             </div>
 
             <style>{`
-                /* Orbs */
-                .hero-orb {
-                    position: absolute;
-                    border-radius: 50%;
-                    filter: blur(120px);
+                .hero { position: relative; }
+                .hero-grid {
+                    min-height: 100vh; display: grid;
+                    grid-template-columns: 1.05fr 0.95fr;
+                    align-items: center; gap: 56px;
+                    max-width: 1180px; margin: 0 auto; padding: 96px 40px 60px;
                 }
-                .hero-orb-1 {
-                    width: 600px; height: 600px;
-                    background: radial-gradient(circle, rgba(79,70,229,0.35) 0%, transparent 70%);
-                    top: 5%; left: 15%;
-                    animation: heroF1 22s ease-in-out infinite;
-                }
-                .hero-orb-2 {
-                    width: 500px; height: 500px;
-                    background: radial-gradient(circle, rgba(124,58,237,0.3) 0%, transparent 70%);
-                    bottom: 10%; right: 10%;
-                    animation: heroF2 28s ease-in-out infinite;
-                }
-                .hero-orb-3 {
-                    width: 350px; height: 350px;
-                    background: radial-gradient(circle, rgba(6,182,212,0.2) 0%, transparent 70%);
-                    top: 35%; right: 25%;
-                    animation: heroF3 20s ease-in-out infinite;
-                }
-                .hero-orb-4 {
-                    width: 250px; height: 250px;
-                    background: radial-gradient(circle, rgba(244,114,182,0.15) 0%, transparent 70%);
-                    bottom: 30%; left: 30%;
-                    animation: heroF1 25s ease-in-out infinite reverse;
-                }
-                @keyframes heroF1 {
-                    0%, 100% { transform: translate(0, 0) scale(1); }
-                    33% { transform: translate(40px, -30px) scale(1.05); }
-                    66% { transform: translate(-20px, 20px) scale(0.95); }
-                }
-                @keyframes heroF2 {
-                    0%, 100% { transform: translate(0, 0) scale(1); }
-                    33% { transform: translate(-50px, 25px) scale(1.08); }
-                    66% { transform: translate(30px, -40px) scale(0.92); }
-                }
-                @keyframes heroF3 {
-                    0%, 100% { transform: translate(0, 0); }
-                    50% { transform: translate(35px, 45px); }
-                }
+                .hero-eyebrow { font-size: 16px; color: var(--accent); margin-bottom: 16px; }
+                .hero-h1 { font-size: clamp(38px, 4.8vw, 76px); font-weight: 600; line-height: 1.05; letter-spacing: -0.025em; margin-bottom: 20px; }
+                .hero-sub { font-size: clamp(17px, 1.5vw, 21px); color: var(--ink-soft); line-height: 1.45; max-width: 540px; margin-bottom: 30px; }
+                .hero-cta { display: flex; gap: 22px; align-items: center; flex-wrap: wrap; }
+                .hero-btn { background: var(--accent); color: #fff; padding: 13px 26px; border-radius: 980px; font-size: 16px; transition: transform .2s, background .2s; }
+                .hero-btn:hover { transform: scale(1.03); background: var(--accent-hover); }
+                .hero-link { color: var(--accent); font-size: 16px; }
+                .hero-link span { display: inline-block; transition: transform .2s; }
+                .hero-link:hover span { transform: translateX(2px); }
 
-                /* Full name */
-                .hero-name-text {
-                    font-size: clamp(36px, 7vw, 88px);
-                    font-weight: 700;
-                    letter-spacing: -2px;
-                    line-height: 1.0;
-                    white-space: nowrap;
+                /* Terminal */
+                .hero-term {
+                    position: relative; width: 100%; max-width: 560px; justify-self: end;
+                    background: #1c1c1f; border: 1px solid rgba(255,255,255,0.08); border-radius: 14px;
+                    overflow: hidden; box-shadow: 0 40px 100px -30px rgba(40,30,90,0.35), 0 8px 24px -12px rgba(0,0,0,0.35);
                 }
+                html.intro-on .hero-term { z-index: 210; opacity: 0; }
+                .hero-term.boot { box-shadow: 0 0 0 1px rgba(70,255,150,0.18), 0 0 70px rgba(40,200,90,0.25), 0 30px 90px -20px rgba(0,0,0,0.7); }
+                .hero-term-bar { position: relative; height: 40px; display: flex; align-items: center; gap: 8px; padding: 0 14px; background: #2a2a2e; border-bottom: 1px solid rgba(255,255,255,0.06); }
+                .hero-dot { width: 12px; height: 12px; border-radius: 50%; }
+                .hero-dot.r { background: #ff5f57; } .hero-dot.y { background: #febc2e; } .hero-dot.g { background: #28c840; }
+                .hero-term-title { position: absolute; left: 0; right: 0; text-align: center; font-family: var(--font-mono); font-size: 12.5px; color: #8b8b93; pointer-events: none; }
+                .hero-term-body { font-family: var(--font-mono); font-size: 14.5px; line-height: 1.75; color: #c9d1d9; padding: 22px 24px 26px; min-height: 232px; }
+                .tl { white-space: pre-wrap; word-break: break-word; }
+                .p-host { color: #56d364; } .p-path { color: #79c0ff; } .p-pct { color: #8b949e; }
+                .tl-cmd .txt { color: #f0f6fc; }
+                .tl-out .txt { color: #c9d1d9; }
+                .tl-sys .txt { color: #9aa0a8; }
+                .tl-sys .ok { color: #56d364; }
+                .tl-welcome .txt { background: var(--iri); background-size: 200% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: iriShift 8s linear infinite; font-size: 15.5px; }
+                .cursor { display: inline-block; width: 8px; height: 16px; margin-left: 2px; vertical-align: -3px; background: #f0f6fc; animation: termBlink 1s steps(1) infinite; }
+                @keyframes termBlink { 50% { opacity: 0; } }
 
-                /* Gradient — name only */
-                .hero-gradient-text {
-                    background: linear-gradient(135deg, #60a5fa 0%, #818cf8 40%, #c084fc 70%, #f472b6 100%);
-                    -webkit-background-clip: text;
-                    -webkit-text-fill-color: transparent;
-                    background-clip: text;
-                }
+                /* Copy reveal */
+                .hero-copy { transition: opacity .7s ease .2s, transform .7s ease .2s; }
+                html.intro-on .hero-copy { opacity: 0; transform: translateX(-24px); }
+                .hero-copy.in { opacity: 1; transform: none; }
 
-                /* Subtitle — white */
-                .hero-subtitle {
-                    font-size: 13px;
-                    font-weight: 500;
-                    letter-spacing: 5px;
-                    text-transform: uppercase;
-                    color: #f0f0f0;
-                }
+                /* Dark hacker boot overlay */
+                .boot-overlay { display: none; position: fixed; inset: 0; z-index: 200; background: #05070a; overflow: hidden; transition: opacity .85s ease; }
+                html.intro-on .boot-overlay { display: block; }
+                .boot-overlay.out { opacity: 0; pointer-events: none; }
+                .boot-overlay canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+                .boot-rain { opacity: 0.5; }
+                .boot-static { opacity: 0.07; image-rendering: pixelated; mix-blend-mode: screen; }
+                .boot-scan { position: absolute; inset: 0; pointer-events: none; opacity: 0.55; background: repeating-linear-gradient(to bottom, rgba(0,0,0,0) 0 2px, rgba(0,0,0,0.28) 2px 3px); animation: bootScan 7s linear infinite; }
+                .boot-vig { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse at center, transparent 52%, rgba(0,0,0,0.72) 100%); }
+                .boot-flick { position: absolute; inset: 0; pointer-events: none; background: #1aff7a; opacity: 0; mix-blend-mode: overlay; animation: bootFlick 4s steps(1) infinite; }
+                .boot-hud { position: absolute; left: 26px; bottom: 22px; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.1em; color: rgba(86,255,150,0.5); }
+                .boot-hud .blip { color: rgba(86,255,150,0.9); }
+                .boot-skip { position: absolute; top: 22px; right: 26px; font-family: var(--font-mono); font-size: 13px; color: rgba(255,255,255,0.55); background: none; border: none; cursor: pointer; transition: color .2s; }
+                .boot-skip:hover { color: #fff; }
+                @keyframes bootScan { to { background-position: 0 7px; } }
+                @keyframes bootFlick { 0%,96%,100% { opacity: 0; } 97% { opacity: 0.05; } 98.5% { opacity: 0.09; } }
 
-                /* Tagline */
-                .hero-tagline {
-                    font-size: 15px;
-                    color: #555;
-                    letter-spacing: 0.3px;
+                /* Reveal flash */
+                .boot-flash { position: fixed; inset: 0; z-index: 205; background: #eaf2ff; opacity: 0; pointer-events: none; }
+                .boot-flash.go { animation: bootFlash .75s ease forwards; }
+                @keyframes bootFlash { 0% { opacity: 0; } 22% { opacity: 0.5; } 100% { opacity: 0; } }
+
+                @media (max-width: 900px) {
+                    .hero-grid { grid-template-columns: 1fr; gap: 36px; padding: 110px 24px 60px; }
+                    .hero-term { justify-self: center; }
+                    .hero-sub { margin-left: 0; margin-right: 0; }
                 }
             `}</style>
         </section>
