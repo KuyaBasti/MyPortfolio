@@ -29,6 +29,14 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
+            <head>
+                {/* Decide the boot intro before first paint (no flash for returning / reduced-motion visitors). */}
+                <script
+                    dangerouslySetInnerHTML={{
+                        __html: `(function(){try{var p=sessionStorage.getItem('introPlayed');var f=location.search.indexOf('intro=play')>-1;var r=matchMedia('(prefers-reduced-motion: reduce)').matches;document.documentElement.classList.add((f||(!p&&!r))?'intro-on':'intro-off');}catch(e){document.documentElement.classList.add('intro-off');}})();`,
+                    }}
+                />
+            </head>
             <body className={`${inter.variable} ${jetbrainsMono.variable} antialiased`}>
                 {children}
                 <Analytics />
