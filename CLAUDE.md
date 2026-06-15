@@ -15,11 +15,12 @@ Personal portfolio website for **John Sebastian Solon**, a Software & Embedded E
 - **UI:** React 19
 - **Styling:** Tailwind CSS v4
 - **Animation:** Framer Motion (installed as `motion` package)
-- **Fonts:** Sora (Google Fonts) + JetBrains Mono (Google Fonts)
+- **Fonts:** Inter (Google Fonts) + JetBrains Mono (Google Fonts, for mono labels)
 - **Deployment:** Vercel
 
 ### Removed from old design (do NOT use)
-- ~~ClashDisplay / Fira Code fonts~~ (template fingerprint shared with friend)
+- ~~Dark theme (#050505 / Sora)~~ (replaced by the light "space between" direction below)
+- ~~ClashDisplay / Fira Code fonts~~ (template fingerprint; local font files deleted)
 - ~~MUI / Material UI~~ (unnecessary weight)
 - ~~Three.js~~ (only used for icon cloud, not worth the bundle size)
 - ~~Emotion CSS-in-JS~~ (came with MUI)
@@ -28,50 +29,56 @@ Personal portfolio website for **John Sebastian Solon**, a Software & Embedded E
 - ~~Wave gradient background~~ (template fingerprint)
 
 ## Design Direction
-The approved design is a hybrid combining:
-1. **Cinematic hero** (Option D) — full-viewport, dark, floating gradient orbs, large gradient text
-2. **Animated bento grid** (Option A) — for projects, each card has a unique looping animation
-3. **Clean minimal sections** (nize.ph inspired) — generous whitespace, simple typography
+**Light, Apple-inspired "the space between hardware and software."** A hybrid combining:
+1. **Apple-style cinematic hero** — centered, light, large iridescent gradient headline over a page-wide ambient pastel-blob backdrop
+2. **Cinematic sticky-scroll experience scenes** — each role pins full-viewport with bespoke looping CSS visuals (server racks, PCB + soldering iron, F1 car + LiDAR, orbiting satellite), alternating text/visual sides
+3. **Light glass bento for projects** — "Selected work" strip, 12-col grid with iridescent edge rings and animated headers
+4. **Clean minimal sections** — About + Skills over the ambient backdrop, generous whitespace
 
-Interactive mockups are in `mockups/`. The final approved complete mockup is `mockups/complete-mockup.html`.
+The approved reference is "Mockup 6 — Hybrid" (the single-file HTML the redesign was built from). Older mockups in `mockups/` are superseded.
 
 ### Design Tokens
 ```
-Background:       #050505
-Card background:  #0a0a0a
-Card border:      #151515
-Card hover border:#2a2a2a
-Text primary:     #f0f0f0
-Text secondary:   #888888
-Text muted:       #555555
-Accent gradient:  linear-gradient(135deg, #60a5fa, #818cf8, #c084fc, #f472b6)
-Section numbers:  #818cf8 (indigo)
-Green accent:     #4ade80
-Pink accent:      #f472b6
-Cyan accent:      #22d3ee
-Yellow accent:    #fbbf24
-Orange accent:    #fb923c
+Background (--bg):        #fafaff
+Text primary (--ink):     #1d1d1f
+Text soft (--ink-soft):   #515154
+Text muted (--ink-muted): #6e6e73
+Text faint (--ink-faint): #86868b
+Hairline (--hairline):    rgba(0,0,0,0.06)
+Accent / CTA (--accent):  #0071e3  (hover #0077ed)
+Iridescent gradient (--iri):
+  linear-gradient(120deg, #5e7dff 0%, #bf5af2 40%, #ff6680 70%, #ff9f0a 100%)
+  (animated via @keyframes iriShift; use the .iri text helper)
+Backdrop blobs:           #b5cfff #f4c8ff #ffd6c8 #c8ffe2 #ffe9b8 (blurred 120px)
+Scene/dot accents:        green #34c759 · pink #ff6680 · orange #ff9f0a · indigo #5e7dff
 ```
+
+Design tokens live as CSS variables in `src/app/globals.css`. Per-section bespoke
+animation CSS lives in scoped `<style>` blocks inside each component (Experience,
+Projects, Contact). All looping animations are gated behind
+`@media (prefers-reduced-motion: reduce)`.
 
 ### Typography Scale
 ```
-Hero heading:     68px, font-weight 700, letter-spacing -3px (Sora)
-Section title:    28px, font-weight 600, letter-spacing -1px (Sora)
-Card title:       18px, font-weight 600 (Sora)
-Body text:        16px, font-weight 400, line-height 1.9 (Sora)
-Card body:        13px, color #666 (Sora)
-Tech labels:      10-11px, monospace (JetBrains Mono)
-Section number:   13px, monospace (JetBrains Mono)
-Nav links:        13px, letter-spacing 0.5px (Sora)
+Hero heading:     clamp(56px, 9vw, 112px), weight 600, tracking -0.025em (Inter)
+Scene title:      clamp(48px, 6vw, 88px), weight 600, tracking -0.03em (Inter)
+Section heading:  clamp(32-40px ...), weight 600, tracking -0.025em (Inter)
+Card title:       24px, weight 600 (Inter)
+Body / scene-desc:19-20px, color --ink-soft, line-height 1.5-1.6 (Inter)
+Card body:        15px, color --ink-soft (Inter)
+Tech labels:      11-12px, monospace (JetBrains Mono via .mono)
+Section number:   13px, uppercase, monospace, color --accent (JetBrains Mono)
+Nav links:        13px (Inter)
 ```
 
 ### Spacing
 ```
-Section padding:  100px vertical, 40px horizontal
-Max content width:1100px, centered
+Section padding:  ~112px (py-28) vertical, 22-32px horizontal
+Max content width:1100px (1280px for the projects bento)
+Scene height:     200vh wrapper, 100vh sticky inner (stacks on <=880px)
 Bento grid gap:   16px
-Card padding:     22-24px
-Card border-radius:18px (bento cards), 12px (experience cards)
+Card padding:     28-30px (bento), 22-24px
+Card border-radius:32px (card-frame), 28px (bento), 24px (skills), 999px (pills)
 ```
 
 ## System Architecture
@@ -80,72 +87,49 @@ Card border-radius:18px (bento cards), 12px (experience cards)
 ```
 src/
 ├── app/
-│   ├── globals.css          # Design tokens, @keyframes for card animations, base styles
-│   ├── layout.tsx           # Root layout with Sora + JetBrains Mono fonts
+│   ├── globals.css          # Light design tokens (CSS vars), .iri helper, ambient blob backdrop, iriShift/float keyframes
+│   ├── layout.tsx           # Root layout with Inter + JetBrains Mono fonts
 │   └── page.tsx             # Renders <Home />
 ├── components/
-│   ├── Hero.tsx             # Full-viewport cinematic hero with floating orbs
-│   ├── Navbar.tsx           # Fixed minimal navbar with backdrop blur
-│   ├── Experience.tsx       # All 5 experiences with per-card animations
-│   ├── Projects.tsx         # Bento grid with 6 animated project cards
-│   ├── About.tsx            # Simple text section
-│   ├── Skills.tsx           # 2x2 category grid
-│   ├── Contact.tsx          # CTA with gradient text + link buttons
-│   └── Home.tsx             # Orchestrator: renders all sections in order
-├── data/
-│   └── portfolio.ts         # ALL content: experiences, projects, skills, education, contact
-└── lib/
-    └── utils.ts             # cn() helper (clsx + tailwind-merge)
+│   ├── Backdrop.tsx         # Page-wide drifting pastel blobs (fixed, z-index -1)
+│   ├── Home.tsx             # Orchestrator: renders all sections in order
+│   └── new/                 # All section components live here
+│       ├── Navbar.tsx       # Fixed light glass bar + mobile menu
+│       ├── Hero.tsx         # Apple-style hero, iridescent headline, scroll hint
+│       ├── Highlights.tsx   # 3-stat strip (iridescent numbers)
+│       ├── Experience.tsx   # 4 cinematic sticky-scroll scenes (scoped <style>)
+│       ├── Projects.tsx     # Light glass bento, 6 featured cards (scoped <style>)
+│       ├── About.tsx        # Bio + education/location/focus facts
+│       ├── Skills.tsx       # 2x2 glass category grid (from portfolio.ts)
+│       ├── Contact.tsx      # Large CTA + Say hello / GitHub / LinkedIn
+│       └── Footer.tsx       # Minimal glass footer
+└── data/
+    └── portfolio.ts         # Content source: experiences, projects, skills, education, contact
 ```
 
 ### Data Flow
 ```
-portfolio.ts (single source of truth)
+portfolio.ts (content source)
        │
        ▼
-   Home.tsx (orchestrator)
-       │
-       ├── Navbar.tsx (section links)
-       ├── Hero.tsx (static content, animations)
-       ├── Experience.tsx ← experiences[] from portfolio.ts
-       ├── Projects.tsx ← projects[] from portfolio.ts
-       ├── About.tsx ← about content from portfolio.ts
-       ├── Skills.tsx ← skills[] from portfolio.ts
-       └── Contact.tsx ← contact info from portfolio.ts
+   Home.tsx (orchestrator) → Backdrop, Navbar, Hero, Highlights,
+                             Experience, Projects, About, Skills, Contact, Footer
+
+NOTE: Skills/About read from portfolio.ts. Experience and Projects currently
+hold their curated, editorialized copy + bespoke visuals INLINE (the 4 featured
+scenes / 6 featured cards), because each has hand-tuned animation markup that
+doesn't map cleanly onto the generic data shape. portfolio.ts remains the
+canonical record of every role/project; keep the two in sync when content changes.
 ```
 
 ### Component Pattern
-Every section component follows this pattern:
-```tsx
-"use client";
-import { motion } from "motion/react";
-import { experiences } from "@/data/portfolio";
-
-export default function Experience() {
-  return (
-    <section id="experience" className="max-w-[1100px] mx-auto px-10 py-24">
-      {/* Section header with number + title + line */}
-      <div className="flex items-center gap-4 mb-12">
-        <span className="font-mono text-sm text-indigo-400">01</span>
-        <span className="text-3xl font-semibold tracking-tight">Experience</span>
-        <span className="flex-1 h-px bg-gradient-to-r from-[#1a1a1a] to-transparent" />
-      </div>
-      {/* Content */}
-      {experiences.map((exp, i) => (
-        <motion.div
-          key={i}
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-50px" }}
-          transition={{ delay: i * 0.1 }}
-        >
-          {/* ... */}
-        </motion.div>
-      ))}
-    </section>
-  );
-}
-```
+Section components are `"use client"`, use `motion` for whileInView reveals, the
+`.iri` helper for iridescent text, and `--*` CSS variables for color. Sections that
+need bespoke looping visuals (Experience, Projects, Contact) keep their CSS in a
+scoped `<style>` block at the end of the component, and gate every animation behind
+`@media (prefers-reduced-motion: reduce)`. Section headers use a monospace number
+eyebrow (`.mono`, color `--accent`, e.g. `03 — About`) followed by a clamp-sized
+heading with an `.iri` phrase.
 
 ## Page Section Order
 1. **Navbar** — fixed, always visible
@@ -163,49 +147,46 @@ export default function Experience() {
 - Bachelor of Science in Computer Science and Engineering
 - Graduated June 2025
 
-### Experiences (5 total, newest first)
+### Experiences (4 featured as cinematic scenes, newest first)
 
-#### 1. IT — ubreakifix by Asurion
-- **Dates:** December 2025 – Present
+> The live site features these 4 roles as sticky-scroll scenes (source of truth:
+> `portfolio.ts`). Rukmer Inc. and American Lost Children Association were dropped
+> from the curated set — re-add them to `portfolio.ts` + an Experience scene if
+> they should reappear.
+
+#### 1. Test Technician — Quanta Manufacturing  ← CURRENT
+- **Dates:** April 2026 – Present
+- **Location:** Fremont, CA
+- **Bullets:**
+  - Support qualification and high-volume production of servers/rack systems — deploying test equipment, managing cable infrastructure, validating networking including PXE boot.
+  - Analyze hardware failures and test data with Linux + Python to troubleshoot defects, improve yields, and produce diagnostic logs.
+  - Collaborate with corporate R&D to install/verify new test scripts, write process instructions (TPI), and enhance quality methods.
+- **Scene:** `tint-quanta` — server racks with blinking LEDs + packet streams
+
+#### 2. Electronics Technician — ubreakifix by Asurion
+- **Dates:** July 2025 – April 2026
 - **Location:** Yuba City, CA
 - **Bullets:**
   - Diagnosed and repaired consumer electronics including smartphones, tablets, laptops, and game consoles.
-  - Performed board-level repairs including HDMI port replacement, fine-pitch soldering, and power and I/O troubleshooting using schematics and rework tools.
-- **Animation concept:** Circuit board traces lighting up, soldering iron spark
+  - Board-level repairs including HDMI port replacement, fine-pitch soldering, and power/I/O troubleshooting using schematics and rework tools.
+- **Scene:** `tint-ubif` — PCB with traces + hovering soldering iron + spark
 
-#### 2. Software Engineer — Rukmer Inc.
-- **Dates:** September 2025 – November 2025
-- **Location:** Boston, MA
-- **Bullets:**
-  - Built a backend pipeline enabling drones to download compatible firmware after hardware replacements, eliminating the need to replace entire units when components changed.
-  - Implemented secure, versioned firmware delivery using Phoenix LiveView, presigned S3 uploads, checksum validation, and role-gated installs for staged rollouts.
-  - Designed immutable, content-addressed firmware artifacts served via CloudFront, ensuring reproducible deployments and preventing release drift across heterogeneous hardware.
-- **Animation concept:** Small drone silhouette with firmware download progress bar / data stream
-
-#### 3. Software Engineer — American Lost Children Association
-- **Dates:** July 2025 – September 2025
-- **Location:** Yuba City, CA
-- **Bullets:**
-  - Built a web and mobile dispatch system that computes a single efficient delivery route across multiple locations based on a dispatcher's starting point.
-  - Implemented traffic-aware routing with Postgres/PostGIS and Google Directions API, plus offline-first Android support with cached routes and automatic re-sync.
-- **Animation concept:** Map with a route being drawn between location pins
-
-#### 4. Software Engineer — UCD CORE Lab – F1Tenth
+#### 3. Software Engineer Intern — UCD CORE Lab – F1Tenth
 - **Dates:** January 2025 – July 2025
 - **Location:** Davis, CA
 - **Bullets:**
   - Developed a ROS2-based autonomous racing platform achieving 20+ mph with Monte Carlo localization (1000+ particles at 40 Hz) and real-time obstacle avoidance.
   - Built perception and planning pipelines using synchronized LiDAR-camera data, CNN-based segmentation, and SLAM map processing, improving lap consistency by 30%.
-- **Animation concept:** Race car on track with LiDAR sweep beam and speed lines
+- **Scene:** `tint-f1` — race car on track with LiDAR sweep + speed lines
 
-#### 5. Firmware Engineer — NASA Space and Satellite Systems
+#### 4. Firmware Engineer — NASA Space and Satellite Systems
 - **Dates:** September 2023 – January 2025
 - **Location:** Davis, CA
 - **Bullets:**
   - Developed bare-metal ASM330LHH IMU drivers in C supporting I2C and SPI across multiple flight board revisions, including register-level configuration and sensor scaling.
   - Implemented dual-IMU redundancy with runtime sensor selection, health checks, and per-unit calibration, improving attitude sensing reliability by 40%.
   - Designed high-rate sensor acquisition and interrupt-driven logging using FreeRTOS and hardware timers, achieving 6.6 kHz telemetry with 99.9% timing accuracy.
-- **Animation concept:** Satellite orbiting Earth with signal pulses and twinkling stars
+- **Scene:** `tint-nasa` — orbiting satellite with signal pulses and twinkling stars
 
 ### Projects (6 total)
 
