@@ -1,21 +1,26 @@
 @import "tailwindcss";
 
 /* ═══════════════════════════════════════════════════════════
-   DESIGN TOKENS — light "space between hardware & software"
+   DESIGN TOKENS — dark "Neo / Matrix" (refined dark-cyber)
 ═══════════════════════════════════════════════════════════ */
 :root {
-  --bg: #fafaff;
-  --ink: #1d1d1f;
-  --ink-soft: #515154;
-  --ink-muted: #6e6e73;
-  --ink-faint: #86868b;
-  --hairline: rgba(0, 0, 0, 0.06);
+  --bg: #05070a;
+  --panel: rgba(13, 18, 25, 0.55);
+  --ink: #e6e8ee;
+  --ink-soft: #9aa0a8;
+  --ink-muted: #7d8590;
+  --ink-faint: #6b7280;
+  --hairline: rgba(255, 255, 255, 0.08);
 
-  --accent: #0071e3;
-  --accent-hover: #0077ed;
+  /* Phosphor-green accent (terminal labels, CTAs, glows) */
+  --accent: #28c840;
+  --accent-hover: #3ee05a;
+  --green: #28c840;
+  --green-bright: #9dffc4;
+  --green-dim: rgba(40, 200, 90, 0.55);
 
-  /* Iridescent gradient used across hero, headings, accents */
-  --iri: linear-gradient(120deg, #5e7dff 0%, #bf5af2 40%, #ff6680 70%, #ff9f0a 100%);
+  /* Cooler / cyber iridescent gradient for headlines */
+  --iri: linear-gradient(120deg, #5eead4 0%, #5e7dff 38%, #bf5af2 68%, #ff6680 100%);
 
   --font-sans: var(--font-inter), -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
   --font-mono: var(--font-jetbrains), ui-monospace, "JetBrains Mono", monospace;
@@ -65,8 +70,25 @@ a {
   100% { background-position: 200% 0%; }
 }
 
+/* Command-style section eyebrow (mono, green, with optional cursor) */
+.cmd-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: var(--green);
+  display: inline-flex;
+  align-items: center;
+}
+.cmd-eyebrow .p { color: var(--green-dim); margin-right: 8px; }
+.cur {
+  display: inline-block; width: 8px; height: 1em; margin-left: 6px;
+  vertical-align: -2px; background: var(--green-bright);
+  animation: curBlink 1.05s steps(1) infinite;
+}
+@keyframes curBlink { 50% { opacity: 0; } }
+
 /* ═══════════════════════════════════════════════════════════
-   AMBIENT BACKDROP — page-wide drifting pastel blobs
+   AMBIENT BACKDROP — dark streams rain + scanlines + vignette
 ═══════════════════════════════════════════════════════════ */
 .backdrop {
   position: fixed;
@@ -75,34 +97,20 @@ a {
   overflow: hidden;
   background: var(--bg);
 }
-.blob {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(120px);
-  opacity: 0.5;
-  will-change: transform;
+.backdrop-rain {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  opacity: 0.32;
 }
-.blob-1 { width: 700px; height: 700px; background: #b5cfff; top: -10%; left: -5%;  animation: float1 24s ease-in-out infinite; }
-.blob-2 { width: 620px; height: 620px; background: #f4c8ff; top: 20%;  right: -8%; animation: float2 30s ease-in-out infinite; }
-.blob-3 { width: 540px; height: 540px; background: #ffd6c8; top: 55%;  left: 30%;  animation: float3 26s ease-in-out infinite; }
-.blob-4 { width: 460px; height: 460px; background: #c8ffe2; top: 80%;  left: -10%; animation: float1 28s ease-in-out infinite reverse; }
-.blob-5 { width: 520px; height: 520px; background: #ffe9b8; bottom: -10%; right: 10%; animation: float2 32s ease-in-out infinite reverse; }
-
-@keyframes float1 {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  33%      { transform: translate(60px, -40px) scale(1.08); }
-  66%      { transform: translate(-30px, 50px) scale(0.94); }
+.backdrop-scan {
+  position: absolute; inset: 0; pointer-events: none; opacity: 0.5;
+  background: repeating-linear-gradient(to bottom, rgba(0,0,0,0) 0 2px, rgba(0,0,0,0.22) 2px 3px);
 }
-@keyframes float2 {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50%      { transform: translate(-80px, 40px) scale(1.1); }
-}
-@keyframes float3 {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50%      { transform: translate(50px, -60px) scale(0.92); }
+.backdrop-vig {
+  position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse at 50% 34%, transparent 44%, rgba(0,0,0,0.62) 100%);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .iri { animation: none; }
-  .blob { animation: none !important; }
+  .iri, .cur { animation: none; }
 }
