@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { Sora, JetBrains_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import { Analytics } from '@vercel/analytics/next';
 import "./globals.css";
 
-const sora = Sora({
+const inter = Inter({
     subsets: ["latin"],
-    weight: ["300", "400", "500", "600", "700"],
-    variable: "--font-sora",
+    weight: ["300", "400", "500", "600", "700", "800"],
+    variable: "--font-inter",
     display: "swap",
 });
 
@@ -29,7 +29,7 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body className={`${sora.variable} ${jetbrainsMono.variable} antialiased`}>
+            <body className={`${inter.variable} ${jetbrainsMono.variable} antialiased`}>
                 {children}
                 <Analytics />
             </body>
