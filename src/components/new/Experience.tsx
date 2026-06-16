@@ -214,30 +214,30 @@ export default function Experience() {
                 .card-frame {
                     width: 100%; max-width: 540px; aspect-ratio: 4/3;
                     border-radius: 32px; overflow: hidden; position: relative;
-                    background: rgba(255,255,255,0.55);
-                    border: 1px solid rgba(255,255,255,0.7);
-                    backdrop-filter: blur(20px) saturate(180%);
-                    -webkit-backdrop-filter: blur(20px) saturate(180%);
-                    box-shadow: 0 1px 0 rgba(255,255,255,0.8) inset, 0 30px 80px -25px rgba(120,100,200,0.22);
+                    background: rgba(10,14,20,0.55);
+                    border: 1px solid rgba(255,255,255,0.08);
+                    backdrop-filter: blur(20px) saturate(160%);
+                    -webkit-backdrop-filter: blur(20px) saturate(160%);
+                    box-shadow: 0 0 0 1px rgba(40,200,90,0.10), 0 30px 80px -25px rgba(0,0,0,0.6), 0 0 70px -22px rgba(40,200,90,0.28);
                 }
                 .card-frame::before {
                     content: ""; position: absolute; inset: 0; padding: 1px; border-radius: 32px;
-                    background: linear-gradient(120deg, rgba(94,125,255,0.45), rgba(191,90,242,0.4), rgba(255,102,128,0.45), rgba(255,159,10,0.35));
+                    background: linear-gradient(120deg, rgba(94,235,212,0.4), rgba(94,125,255,0.4), rgba(191,90,242,0.35), rgba(40,200,90,0.45));
                     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
                     -webkit-mask-composite: xor; mask-composite: exclude;
-                    opacity: 0.55; pointer-events: none; z-index: 2;
+                    opacity: 0.5; pointer-events: none; z-index: 2;
                 }
 
                 /* ── Scene 1 — Quanta (server racks) ── */
                 .tint-quanta {
                     background:
-                        radial-gradient(circle at 25% 30%, rgba(94,125,255,0.18), transparent 60%),
-                        radial-gradient(circle at 75% 70%, rgba(191,90,242,0.12), transparent 60%),
-                        linear-gradient(160deg, rgba(238,242,255,0.7) 0%, rgba(219,229,255,0.7) 100%);
+                        radial-gradient(circle at 25% 30%, rgba(94,125,255,0.22), transparent 60%),
+                        radial-gradient(circle at 75% 70%, rgba(40,200,90,0.16), transparent 60%),
+                        linear-gradient(160deg, rgba(10,16,26,0.7) 0%, rgba(8,12,20,0.7) 100%);
                 }
                 .server-rack { position: absolute; bottom: 20%; left: 50%; transform: translateX(-50%); display: flex; gap: 14px; }
-                .rack-col { width: 50px; height: 180px; background: rgba(255,255,255,0.85); border-radius: 8px; padding: 8px 6px; display: flex; flex-direction: column; gap: 4px; box-shadow: 0 8px 24px -8px rgba(94,125,255,0.25); }
-                .rack-row { flex: 1; background: rgba(94,125,255,0.1); border-radius: 2px; position: relative; }
+                .rack-col { width: 50px; height: 180px; background: rgba(18,24,32,0.92); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 8px 6px; display: flex; flex-direction: column; gap: 4px; box-shadow: 0 8px 24px -8px rgba(40,200,90,0.25); }
+                .rack-row { flex: 1; background: rgba(255,255,255,0.05); border-radius: 2px; position: relative; }
                 .rack-row::after { content: ""; position: absolute; right: 3px; top: 50%; transform: translateY(-50%); width: 4px; height: 4px; border-radius: 50%; background: #34c759; animation: led 2s ease-in-out infinite; }
                 .rack-col:nth-child(1) .rack-row:nth-child(1)::after { animation-delay: 0.1s; }
                 .rack-col:nth-child(1) .rack-row:nth-child(2)::after { animation-delay: 0.4s; background: #5e7dff; }
@@ -263,9 +263,9 @@ export default function Experience() {
                 /* ── Scene 2 — ubreakifix (PCB + soldering iron) ── */
                 .tint-ubif {
                     background:
-                        radial-gradient(circle at 30% 30%, rgba(255,179,64,0.25), transparent 60%),
-                        radial-gradient(circle at 70% 60%, rgba(255,102,128,0.18), transparent 60%),
-                        linear-gradient(160deg, rgba(254,243,226,0.7) 0%, rgba(255,226,194,0.7) 100%);
+                        radial-gradient(circle at 30% 30%, rgba(255,179,64,0.22), transparent 60%),
+                        radial-gradient(circle at 70% 60%, rgba(255,102,128,0.16), transparent 60%),
+                        linear-gradient(160deg, rgba(20,14,8,0.7) 0%, rgba(14,10,8,0.7) 100%);
                 }
                 .pcb-wrap { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
                 .pcb { width: 60%; aspect-ratio: 16/10; background: linear-gradient(135deg, #1d4936, #2d6b51); border-radius: 12px; position: relative; box-shadow: 0 20px 60px -15px rgba(45,107,81,0.4); }
@@ -287,9 +287,9 @@ export default function Experience() {
                     background:
                         radial-gradient(circle at 30% 30%, rgba(255,159,10,0.22), transparent 60%),
                         radial-gradient(circle at 70% 70%, rgba(255,102,128,0.15), transparent 60%),
-                        linear-gradient(160deg, rgba(255,250,224,0.7) 0%, rgba(255,233,138,0.6) 100%);
+                        linear-gradient(160deg, rgba(20,16,8,0.7) 0%, rgba(14,10,6,0.7) 100%);
                 }
-                .track { position: absolute; bottom: 25%; left: 0; right: 0; height: 2px; background: rgba(0,0,0,0.1); }
+                .track { position: absolute; bottom: 25%; left: 0; right: 0; height: 2px; background: rgba(255,255,255,0.12); }
                 .car { position: absolute; bottom: 25%; left: 50%; transform: translateX(-50%); animation: carBob 1.2s ease-in-out infinite; }
                 @keyframes carBob { 0%, 100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, -4px); } }
                 .car-body { width: 120px; height: 36px; border-radius: 10px 24px 8px 8px; background: linear-gradient(135deg, #ff9f0a 0%, #ff6d00 100%); box-shadow: 0 20px 40px -10px rgba(255,109,0,0.45); position: relative; }
@@ -300,7 +300,7 @@ export default function Experience() {
                 .car-windshield { position: absolute; top: 4px; left: 30%; right: 14%; height: 18px; background: rgba(0,0,0,0.4); border-radius: 5px 14px 4px 4px; }
                 .lidar-sweep { position: absolute; bottom: 18%; left: 50%; width: 200px; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,159,10,0.7), transparent); transform-origin: left center; animation: lidar 3s linear infinite; }
                 @keyframes lidar { from { transform: rotate(-15deg); opacity: 0; } 50% { opacity: 1; } to { transform: rotate(15deg); opacity: 0; } }
-                .speed-line { position: absolute; height: 1px; background: rgba(0,0,0,0.18); border-radius: 1px; animation: speed 0.7s linear infinite; }
+                .speed-line { position: absolute; height: 1px; background: rgba(255,255,255,0.2); border-radius: 1px; animation: speed 0.7s linear infinite; }
                 .speed-line:nth-child(7) { top: 35%; right: 100%; width: 40px; animation-delay: 0s; }
                 .speed-line:nth-child(8) { top: 45%; right: 100%; width: 60px; animation-delay: 0.2s; }
                 .speed-line:nth-child(9) { top: 55%; right: 100%; width: 30px; animation-delay: 0.4s; }
@@ -309,9 +309,9 @@ export default function Experience() {
                 /* ── Scene 4 — NASA ── */
                 .tint-nasa {
                     background:
-                        radial-gradient(circle at 30% 30%, rgba(94,125,255,0.22), transparent 60%),
+                        radial-gradient(circle at 30% 30%, rgba(94,125,255,0.24), transparent 60%),
                         radial-gradient(circle at 70% 70%, rgba(191,90,242,0.18), transparent 60%),
-                        linear-gradient(180deg, rgba(232,237,255,0.75) 0%, rgba(196,210,255,0.7) 100%);
+                        linear-gradient(180deg, rgba(10,14,26,0.75) 0%, rgba(8,10,20,0.7) 100%);
                 }
                 .satellite-body { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; background: linear-gradient(135deg, #fff 0%, #d2d2d7 100%); border-radius: 12px; box-shadow: 0 20px 50px -10px rgba(94,125,255,0.4); animation: satFloat 4s ease-in-out infinite; }
                 @keyframes satFloat { 0%, 100% { transform: translate(-50%, -50%); } 50% { transform: translate(-50%, calc(-50% - 10px)); } }

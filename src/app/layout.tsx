@@ -19,7 +19,7 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
     title: "John Sebastian Solon - Portfolio",
-    description: "Embedded/Software Engineer with hands-on experience in real-time systems, firmware, sensor fusion, machine learning, and full-stack development",
+    description: "Software and Firmware Engineer with hands-on experience in real-time systems, firmware, sensor fusion, machine learning, and full-stack development",
 };
 
 export default function RootLayout({
@@ -28,7 +28,7 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
+        <html lang="en" suppressHydrationWarning>
             <head>
                 {/* Decide the boot intro before first paint (no flash for returning / reduced-motion visitors). */}
                 <script

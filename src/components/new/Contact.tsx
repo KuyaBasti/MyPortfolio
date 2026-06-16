@@ -25,8 +25,12 @@ export default function Contact() {
                 <div className="flex flex-wrap justify-center gap-[18px]">
                     <a
                         href="mailto:jsvsolon@gmail.com"
-                        className="rounded-full px-[30px] py-[14px] text-[16px] font-medium text-white transition-transform duration-200 hover:scale-[1.04]"
-                        style={{ background: "var(--accent)" }}
+                        className="rounded-full px-[30px] py-[14px] text-[16px] font-semibold transition-transform duration-200 hover:scale-[1.04]"
+                        style={{
+                            background: "var(--green)",
+                            color: "#05140a",
+                            boxShadow: "0 0 0 1px var(--green-dim), 0 0 30px -6px rgba(40,200,90,0.6)",
+                        }}
                     >
                         Say hello
                     </a>
@@ -52,13 +56,13 @@ export default function Contact() {
             <style>{`
                 .btn-glass {
                     padding: 14px 30px; border-radius: 999px;
-                    background: rgba(255,255,255,0.55);
-                    border: 1px solid rgba(255,255,255,0.8);
+                    background: rgba(20,26,34,0.5);
+                    border: 1px solid var(--hairline);
                     backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-                    color: var(--ink); font-size: 16px; font-weight: 500;
-                    transition: transform .25s, background .25s;
+                    color: var(--ink); font-family: var(--font-mono); font-size: 15px; font-weight: 500;
+                    transition: transform .25s, background .25s, border-color .25s, color .25s;
                 }
-                .btn-glass:hover { transform: scale(1.04); background: rgba(255,255,255,0.85); }
+                .btn-glass:hover { transform: scale(1.04); background: rgba(40,200,90,0.1); border-color: var(--green-dim); color: var(--green-bright); }
             `}</style>
         </section>
     );

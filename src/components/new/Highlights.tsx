@@ -12,7 +12,7 @@ export default function Highlights() {
     return (
         <div
             className="mx-auto mt-16 grid max-w-[1100px] grid-cols-1 gap-10 px-[22px] py-16 text-center sm:grid-cols-3"
-            style={{ borderTop: "1px solid rgba(0,0,0,0.08)" }}
+            style={{ borderTop: "1px solid var(--hairline)" }}
         >
             {stats.map((s, i) => (
                 <motion.div
@@ -25,7 +25,7 @@ export default function Highlights() {
                     <div className="iri mb-2 text-[56px] font-semibold tracking-[-0.02em]">
                         {s.value}
                     </div>
-                    <div className="text-[14px] tracking-[0.02em]" style={{ color: "var(--ink-muted)" }}>
+                    <div className="mono text-[13px] tracking-[0.02em]" style={{ color: "var(--ink-muted)" }}>
                         {s.label}
                     </div>
                 </motion.div>
