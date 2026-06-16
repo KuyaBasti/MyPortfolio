@@ -29,11 +29,11 @@ export default function Skills() {
                         transition={{ delay: i * 0.08, duration: 0.6 }}
                         className="rounded-[24px] p-7"
                         style={{
-                            background: "rgba(255,255,255,0.6)",
-                            border: "1px solid rgba(255,255,255,0.8)",
+                            background: "rgba(12,16,22,0.55)",
+                            border: "1px solid var(--hairline)",
                             backdropFilter: "blur(16px)",
                             WebkitBackdropFilter: "blur(16px)",
-                            boxShadow: "0 20px 50px -30px rgba(120,100,200,0.3)",
+                            boxShadow: "0 0 50px -30px rgba(40,200,90,0.5), 0 20px 50px -30px #000",
                         }}
                     >
                         <h3 className="mb-5 text-[18px] font-semibold tracking-[-0.01em]">
@@ -45,9 +45,9 @@ export default function Skills() {
                                     key={item}
                                     className="mono rounded-full px-3 py-1.5 text-[12px]"
                                     style={{
-                                        background: "rgba(94,125,255,0.08)",
+                                        background: "rgba(40,200,90,0.08)",
                                         color: "var(--ink-soft)",
-                                        border: "1px solid rgba(94,125,255,0.15)",
+                                        border: "1px solid rgba(40,200,90,0.2)",
                                     }}
                                 >
                                     {item}

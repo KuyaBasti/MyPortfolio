@@ -43,7 +43,7 @@ export default function About() {
 
                 <div
                     className="mt-12 grid grid-cols-1 gap-8 border-t pt-10 sm:grid-cols-3"
-                    style={{ borderColor: "rgba(0,0,0,0.08)" }}
+                    style={{ borderColor: "var(--hairline)" }}
                 >
                     {facts.map((f) => (
                         <div key={f.label}>
