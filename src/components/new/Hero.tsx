@@ -14,7 +14,7 @@ const SESSION: Line[] = [
     { kind: "cmd", text: "whoami" },
     { kind: "out", text: "John Sebastian Solon" },
     { kind: "cmd", text: "cat role.txt" },
-    { kind: "out", text: "Software & Embedded Engineer — UC Davis CSE '25" },
+    { kind: "out", text: "Software & Firmware Engineer — UC Davis CSE '25" },
     { kind: "cmd", text: "./launch_portfolio.sh" },
     { kind: "sys", text: "[ ok ] bridging hardware ↔ software" },
     { kind: "sys", text: "[ ok ] loading 4 roles · 10+ projects" },
@@ -407,9 +407,9 @@ export default function Hero() {
                         <span className="iri">hardware and software.</span>
                     </h1>
                     <p className="hero-sub">
-                        I&apos;m John Sebastian Solon — a Software &amp; Embedded Engineer who builds
-                        the rare things that work end-to-end: from the firmware on the metal to the
-                        cloud that talks to it.
+                        I&apos;m John Sebastian Solon — a Software, Firmware &amp; Systems Engineer who
+                        builds the rare things that work end-to-end: from the firmware on the metal to
+                        the cloud that talks to it.
                     </p>
                     <div className="hero-cta">
                         <a className="hero-btn" href="#projects">
