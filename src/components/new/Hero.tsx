@@ -8,7 +8,9 @@ interface Line {
     text: string;
 }
 
-const SCRIPT: Line[] = [
+// The real shell session — typed in the docked terminal AFTER the decryption
+// "login" finishes. Also the static content returning visitors see.
+const SESSION: Line[] = [
     { kind: "cmd", text: "whoami" },
     { kind: "out", text: "John Sebastian Solon" },
     { kind: "cmd", text: "cat role.txt" },
@@ -24,12 +26,12 @@ const PROMPT =
 const colorSys = (t: string) => t.replace("[ ok ]", '<span class="ok">[ ok ]</span>');
 
 // The completed session, rendered statically as the default terminal content
-// (what returning / reduced-motion visitors see; the boot typewriter rebuilds it).
+// (what returning / reduced-motion visitors see; the typewriter rebuilds it).
 const FULL_HTML =
-    SCRIPT.map((item, i) => {
+    SESSION.map((item, i) => {
         const inner = item.kind === "sys" ? colorSys(item.text) : item.text;
         const prompt = item.kind === "cmd" ? PROMPT : "";
-        const cursor = i === SCRIPT.length - 1 ? '<span class="cursor"></span>' : "";
+        const cursor = i === SESSION.length - 1 ? '<span class="cursor"></span>' : "";
         return `<div class="tl tl-${item.kind}">${prompt}<span class="txt">${inner}</span>${cursor}</div>`;
     }).join("");
 
@@ -58,7 +60,8 @@ export default function Hero() {
         const rctx = rain.getContext("2d")!;
         const sctx = stat.getContext("2d")!;
 
-        let cancelled = false; // typewriter stop flag
+        let cancelled = false;
+        let skipped = false;
         let docked = false;
         let raf = 0;
         let frame = 0;
@@ -130,32 +133,119 @@ export default function Hero() {
             if (running) sizeCanvases();
         };
 
-        // ── dock (reveal) ───────────────────────────────────────────
-        const dock = () => {
-            if (docked) return;
-            docked = true;
-            cleanupBail();
-            flash.classList.remove("go");
-            void flash.offsetWidth;
-            flash.classList.add("go");
-            overlay.classList.add("out");
-            term.classList.remove("boot");
-            term.style.transition = "transform .9s cubic-bezier(0.7,0,0.2,1), opacity .4s ease";
-            term.style.transform = "none";
-            copy.classList.add("in");
-            wait(() => {
-                stopFX();
-                html.classList.remove("intro-on");
-            }, 950);
-            try {
-                sessionStorage.setItem("introPlayed", "1");
-            } catch {}
+        // ── helpers ─────────────────────────────────────────────────
+        const addLine = (cls: string) => {
+            const d = document.createElement("div");
+            d.className = cls;
+            body.appendChild(d);
+            body.scrollTop = body.scrollHeight;
+            return d;
         };
 
-        // ── typewriter ──────────────────────────────────────────────
-        const renderAll = () => {
+        // ── decryption "login" sequence (the intro) ─────────────────
+        const HEXKEY = "9F3A-7C21-E1C7-04AB-D5E2";
+        const HEX = "0123456789ABCDEF";
+
+        const typeBootLine = (text: string, ok: boolean, next: () => void) => {
+            const el = addLine("bl bl-sys");
+            el.innerHTML = '<span class="ar">›</span> <span class="t"></span><span class="cursor"></span>';
+            const t = el.querySelector(".t") as HTMLElement;
+            const cur = el.querySelector(".cursor") as HTMLElement;
+            let i = 0;
+            const tick = () => {
+                if (cancelled) return;
+                if (i < text.length) {
+                    t.textContent += text[i++];
+                    body.scrollTop = body.scrollHeight;
+                    wait(tick, 26 + Math.random() * 26);
+                } else {
+                    cur.remove();
+                    if (ok) el.insertAdjacentHTML("beforeend", ' <span class="ok2">ok</span>');
+                    wait(next, 240);
+                }
+            };
+            wait(tick, 30);
+        };
+
+        const decryptLine = (next: () => void) => {
+            const el = addLine("bl bl-dec");
+            el.innerHTML = '<span class="ar">›</span> decrypting session key  <span class="key"></span>';
+            const keyEl = el.querySelector(".key") as HTMLElement;
+            let locked = 0;
+            let f = 0;
+            const scr = () => {
+                if (cancelled) return;
+                let out = "";
+                for (let j = 0; j < HEXKEY.length; j++) {
+                    if (j < locked || HEXKEY[j] === "-") out += HEXKEY[j];
+                    else out += HEX[(Math.random() * HEX.length) | 0];
+                }
+                keyEl.textContent = out;
+                f++;
+                if (f % 2 === 0 && locked < HEXKEY.length) locked++;
+                if (locked < HEXKEY.length) wait(scr, 45);
+                else {
+                    keyEl.textContent = HEXKEY;
+                    el.insertAdjacentHTML("beforeend", ' <span class="ok2">decrypted</span>');
+                    wait(next, 300);
+                }
+            };
+            scr();
+        };
+
+        const progressLine = (next: () => void) => {
+            const el = addLine("bl bl-prog");
+            const cells = 22;
+            const start = Date.now();
+            const dur = 950;
+            const tick = () => {
+                if (cancelled) return;
+                const frac = Math.min(1, (Date.now() - start) / dur);
+                const filled = Math.round(frac * cells);
+                el.innerHTML =
+                    '<span class="ar">›</span> authenticating 0xJSS  <span class="bar">[' +
+                    "█".repeat(filled) +
+                    "░".repeat(cells - filled) +
+                    "]</span> <span class=\"pct\">" +
+                    Math.round(frac * 100) +
+                    "%</span>";
+                if (frac < 1) wait(tick, 45);
+                else wait(next, 260);
+            };
+            tick();
+        };
+
+        const grantedLine = (next: () => void) => {
+            const el = addLine("bl bl-granted");
+            el.innerHTML = '<span class="dot2">●</span> ACCESS GRANTED';
+            wait(next, 620);
+        };
+
+        const runBoot = (done: () => void) => {
             body.innerHTML = "";
-            SCRIPT.forEach((item) => {
+            const steps: ((n: () => void) => void)[] = [
+                (n) => typeBootLine("establishing secure shell", true, n),
+                (n) => typeBootLine("handshake · 0xJSS@portfolio", true, n),
+                (n) => decryptLine(n),
+                (n) => progressLine(n),
+                (n) => grantedLine(n),
+            ];
+            let i = 0;
+            const run = () => {
+                if (cancelled) return;
+                if (i >= steps.length) {
+                    wait(done, 360);
+                    return;
+                }
+                steps[i++](run);
+            };
+            run();
+        };
+
+        // ── real session typewriter (after dock) ────────────────────
+        const renderSession = () => {
+            body.innerHTML = "";
+            SESSION.forEach((item) => {
                 const line = document.createElement("div");
                 line.className = "tl tl-" + item.kind;
                 if (item.kind === "cmd") line.innerHTML = PROMPT;
@@ -172,19 +262,12 @@ export default function Hero() {
                 last.appendChild(c);
             }
         };
-        const finishTyping = () => {
-            cancelled = true;
-            renderAll();
-        };
 
         let li = 0;
         const nextLine = () => {
             if (cancelled) return;
-            if (li >= SCRIPT.length) {
-                dock();
-                return;
-            }
-            const item = SCRIPT[li];
+            if (li >= SESSION.length) return; // session done; cursor blinks on welcome
+            const item = SESSION[li];
             const line = document.createElement("div");
             line.className = "tl tl-" + item.kind;
             if (item.kind === "cmd") line.innerHTML = PROMPT;
@@ -210,20 +293,49 @@ export default function Hero() {
                     wait(typeChar, speed + jitter);
                 } else {
                     li++;
-                    if (item.kind === "welcome") {
-                        wait(dock, 700);
-                        return; // keep cursor blinking on welcome line
-                    }
+                    if (item.kind === "welcome") return; // keep cursor blinking
                     cur.remove();
-                    wait(nextLine, item.kind === "cmd" ? 280 : 110);
+                    wait(nextLine, item.kind === "cmd" ? 200 : 90);
                 }
             };
-            wait(typeChar, item.kind === "out" || item.kind === "sys" ? 150 : 30);
+            wait(typeChar, item.kind === "out" || item.kind === "sys" ? 130 : 30);
+        };
+        const typeSession = () => {
+            if (skipped) {
+                renderSession();
+                return;
+            }
+            body.innerHTML = "";
+            li = 0;
+            nextLine();
+        };
+
+        // ── dock (login complete → reveal + type the real session) ──
+        const dock = () => {
+            if (docked) return;
+            docked = true;
+            cleanupBail();
+            flash.classList.remove("go");
+            void flash.offsetWidth;
+            flash.classList.add("go");
+            overlay.classList.add("out");
+            term.classList.remove("boot");
+            term.style.transition = "transform .9s cubic-bezier(0.7,0,0.2,1), opacity .4s ease";
+            term.style.transform = "none";
+            copy.classList.add("in");
+            wait(typeSession, skipped ? 0 : 480);
+            wait(() => {
+                stopFX();
+                html.classList.remove("intro-on");
+            }, 1000);
+            try {
+                sessionStorage.setItem("introPlayed", "1");
+            } catch {}
         };
 
         // ── bail (skip / key / scroll) ──────────────────────────────
         const bail = () => {
-            finishTyping();
+            skipped = true;
             dock();
         };
         const onKey = (e: KeyboardEvent) => {
@@ -242,7 +354,7 @@ export default function Hero() {
         skipBtn?.addEventListener("click", bail);
         window.addEventListener("resize", onResize);
 
-        // ── kick off boot ───────────────────────────────────────────
+        // ── kick off: boot terminal centered, run decryption ────────
         const rect = term.getBoundingClientRect();
         const scale = Math.min(600, innerWidth * 0.9) / rect.width;
         const tx = innerWidth / 2 - (rect.left + rect.width / 2);
@@ -255,7 +367,7 @@ export default function Hero() {
         term.style.opacity = "1";
         body.innerHTML = "";
         startFX();
-        wait(nextLine, 60);
+        wait(() => runBoot(dock), 80);
 
         return () => {
             cancelled = true;
@@ -276,7 +388,7 @@ export default function Hero() {
                 <div className="boot-vig" />
                 <div className="boot-flick" />
                 <div className="boot-hud">
-                    secure shell // 0xJSS · <span className="blip">decrypting session…</span>
+                    secure shell // 0xJSS · <span className="blip">breaching session…</span>
                 </div>
                 <button className="boot-skip" type="button">
                     skip intro ›
@@ -364,6 +476,22 @@ export default function Hero() {
                 .tl-welcome .txt { background: var(--iri); background-size: 200% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: iriShift 8s linear infinite; font-size: 15.5px; }
                 .cursor { display: inline-block; width: 8px; height: 16px; margin-left: 2px; vertical-align: -3px; background: #f0f6fc; animation: termBlink 1s steps(1) infinite; }
                 @keyframes termBlink { 50% { opacity: 0; } }
+
+                /* Decryption boot lines */
+                .bl { white-space: pre-wrap; word-break: break-word; color: #6fe08a; }
+                .bl .ar { color: rgba(86,255,150,0.55); margin-right: 8px; }
+                .bl .t { color: #8fe6a6; }
+                .bl-sys .ok2, .bl-dec .ok2 { color: #9dffc4; }
+                .bl-dec .key { color: #b9ffce; letter-spacing: 0.08em; }
+                .bl-prog .bar { color: #9dffc4; letter-spacing: 0; }
+                .bl-prog .pct { color: #56d364; }
+                .bl-granted { color: #9dffc4; font-weight: 600; letter-spacing: 0.14em; margin-top: 8px; animation: bootGlitch .32s steps(2) 2; }
+                .bl-granted .dot2 { color: #28c840; margin-right: 8px; }
+                @keyframes bootGlitch {
+                    0%,100% { text-shadow: none; transform: translateX(0); }
+                    25% { text-shadow: 2px 0 #ff3b6b, -2px 0 #21d4fd; transform: translateX(1px); }
+                    50% { text-shadow: -2px 0 #ff3b6b, 2px 0 #21d4fd; transform: translateX(-1px); }
+                }
 
                 /* Copy reveal */
                 .hero-copy { transition: opacity .7s ease .2s, transform .7s ease .2s; }
