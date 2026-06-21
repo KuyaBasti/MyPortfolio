@@ -10,7 +10,7 @@ export default function Skills() {
                 className="mono mb-4 text-[13px] font-medium uppercase tracking-[0.06em]"
                 style={{ color: "var(--accent)" }}
             >
-                04 — Skills
+                04 · Skills
             </div>
             <h2
                 className="mb-12 font-semibold leading-[1.1] tracking-[-0.025em]"

@@ -14,11 +14,11 @@ const SESSION: Line[] = [
     { kind: "cmd", text: "whoami" },
     { kind: "out", text: "John Sebastian Solon" },
     { kind: "cmd", text: "cat role.txt" },
-    { kind: "out", text: "Software & Firmware Engineer — UC Davis CSE '25" },
+    { kind: "out", text: "Software & Firmware Engineer · UC Davis CSE '25" },
     { kind: "cmd", text: "./launch_portfolio.sh" },
     { kind: "sys", text: "[ ok ] bridging hardware ↔ software" },
     { kind: "sys", text: "[ ok ] loading 4 roles · 10+ projects" },
-    { kind: "welcome", text: "welcome — let's build something good." },
+    { kind: "welcome", text: "welcome, let's build something good." },
 ];
 
 const PROMPT =
@@ -407,7 +407,7 @@ export default function Hero() {
                         <span className="iri">hardware and software.</span>
                     </h1>
                     <p className="hero-sub">
-                        I&apos;m John Sebastian Solon — a Software, Firmware &amp; Systems Engineer who
+                        I&apos;m John Sebastian Solon, a Software, Firmware &amp; Systems Engineer who
                         builds the rare things that work end-to-end: from the firmware on the metal to
                         the cloud that talks to it.
                     </p>
@@ -426,7 +426,7 @@ export default function Hero() {
                         <span className="hero-dot r" />
                         <span className="hero-dot y" />
                         <span className="hero-dot g" />
-                        <span className="hero-term-title">john@portfolio — zsh</span>
+                        <span className="hero-term-title">john@portfolio · zsh</span>
                     </div>
                     <div
                         className="hero-term-body"
