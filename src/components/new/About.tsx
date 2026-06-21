@@ -22,7 +22,7 @@ export default function About() {
                     className="mono mb-4 text-[13px] font-medium uppercase tracking-[0.06em]"
                     style={{ color: "var(--accent)" }}
                 >
-                    03 — About
+                    03 · About
                 </div>
                 <h2
                     className="mb-7 font-semibold leading-[1.1] tracking-[-0.025em]"
@@ -37,7 +37,7 @@ export default function About() {
                     I&apos;m a Computer Science &amp; Engineering graduate from UC Davis who&apos;s
                     just as at home writing bare-metal C for a satellite IMU as I am shipping a
                     Phoenix/LiveView backend or a ROS2 perception stack. What I enjoy most is the
-                    messy seam where hardware meets software — the place where a misread register
+                    messy seam where hardware meets software: the place where a misread register
                     and a dropped packet turn out to be the same bug.
                 </p>
 

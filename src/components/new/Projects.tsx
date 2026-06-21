@@ -142,7 +142,7 @@ export default function Projects() {
     return (
         <section className="strip" id="projects">
             <div className="strip-head">
-                <div className="eyebrow mono">02 — Projects</div>
+                <div className="eyebrow mono">02 · Projects</div>
                 <h2>
                     Selected <span className="iri">work.</span>
                 </h2>
