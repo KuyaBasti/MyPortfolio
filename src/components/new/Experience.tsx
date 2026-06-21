@@ -2,6 +2,7 @@
 
 import QuantaRack from "@/components/new/visuals/QuantaRack";
 import UbreakifixScreen from "@/components/new/visuals/UbreakifixScreen";
+import F1Lidar from "@/components/new/visuals/F1Lidar";
 
 type Side = "left" | "right";
 
@@ -71,22 +72,7 @@ function Visual({ kind }: { kind: Scene["visual"] }) {
         case "ubif":
             return <UbreakifixScreen />;
         case "f1":
-            return (
-                <>
-                    <div className="track" />
-                    <div className="lidar-sweep" />
-                    <div className="car">
-                        <div className="car-body">
-                            <div className="car-windshield" />
-                            <div className="car-wheel left" />
-                            <div className="car-wheel right" />
-                        </div>
-                    </div>
-                    <div className="speed-line" />
-                    <div className="speed-line" />
-                    <div className="speed-line" />
-                </>
-            );
+            return <F1Lidar />;
         case "nasa":
             return (
                 <>
@@ -207,29 +193,7 @@ export default function Experience() {
 
                 /* ── Scene 2 — ubreakifix visual lives in visuals/UbreakifixScreen.tsx ── */
 
-                /* ── Scene 3 — F1Tenth ── */
-                .tint-f1 {
-                    background:
-                        radial-gradient(circle at 30% 30%, rgba(255,159,10,0.22), transparent 60%),
-                        radial-gradient(circle at 70% 70%, rgba(255,102,128,0.15), transparent 60%),
-                        linear-gradient(160deg, rgba(20,16,8,0.7) 0%, rgba(14,10,6,0.7) 100%);
-                }
-                .track { position: absolute; bottom: 25%; left: 0; right: 0; height: 2px; background: rgba(255,255,255,0.12); }
-                .car { position: absolute; bottom: 25%; left: 50%; transform: translateX(-50%); animation: carBob 1.2s ease-in-out infinite; }
-                @keyframes carBob { 0%, 100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, -4px); } }
-                .car-body { width: 120px; height: 36px; border-radius: 10px 24px 8px 8px; background: linear-gradient(135deg, #ff9f0a 0%, #ff6d00 100%); box-shadow: 0 20px 40px -10px rgba(255,109,0,0.45); position: relative; }
-                .car-wheel { position: absolute; bottom: -10px; width: 22px; height: 22px; border-radius: 50%; background: #1d1d1f; border: 4px solid #515154; animation: spin 0.5s linear infinite; }
-                .car-wheel.left { left: 8px; }
-                .car-wheel.right { right: 14px; }
-                @keyframes spin { to { transform: rotate(360deg); } }
-                .car-windshield { position: absolute; top: 4px; left: 30%; right: 14%; height: 18px; background: rgba(0,0,0,0.4); border-radius: 5px 14px 4px 4px; }
-                .lidar-sweep { position: absolute; bottom: 18%; left: 50%; width: 200px; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,159,10,0.7), transparent); transform-origin: left center; animation: lidar 3s linear infinite; }
-                @keyframes lidar { from { transform: rotate(-15deg); opacity: 0; } 50% { opacity: 1; } to { transform: rotate(15deg); opacity: 0; } }
-                .speed-line { position: absolute; height: 1px; background: rgba(255,255,255,0.2); border-radius: 1px; animation: speed 0.7s linear infinite; }
-                .speed-line:nth-child(7) { top: 35%; right: 100%; width: 40px; animation-delay: 0s; }
-                .speed-line:nth-child(8) { top: 45%; right: 100%; width: 60px; animation-delay: 0.2s; }
-                .speed-line:nth-child(9) { top: 55%; right: 100%; width: 30px; animation-delay: 0.4s; }
-                @keyframes speed { from { transform: translateX(0); opacity: 0.6; } to { transform: translateX(600px); opacity: 0; } }
+                /* ── Scene 3 — F1Tenth visual lives in visuals/F1Lidar.tsx ── */
 
                 /* ── Scene 4 — NASA ── */
                 .tint-nasa {
@@ -259,10 +223,6 @@ export default function Experience() {
                 @keyframes twinkle { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
 
                 @media (prefers-reduced-motion: reduce) {
-                    .scene-sticky .car,
-                    .scene-sticky .car-wheel,
-                    .scene-sticky .lidar-sweep,
-                    .scene-sticky .speed-line,
                     .scene-sticky .satellite-body,
                     .scene-sticky .orbit-ring,
                     .scene-sticky .signal-pulse,
