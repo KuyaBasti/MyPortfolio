@@ -1,5 +1,7 @@
 "use client";
 
+import QuantaRack from "@/components/new/visuals/QuantaRack";
+
 type Side = "left" | "right";
 
 interface Scene {
@@ -20,7 +22,7 @@ const scenes: Scene[] = [
         date: "Apr 2026 → Present",
         titleLead: "Server qualification,",
         titleIri: "at high volume.",
-        desc: "At Quanta Manufacturing, I deploy test infrastructure for large-scale server qualification — PXE, networking, and Python-driven diagnostics — to chase down defects and lift yield.",
+        desc: "At Quanta Manufacturing, I deploy test infrastructure for large-scale server qualification (PXE, networking, and Python-driven diagnostics) to chase down defects and lift yield.",
         meta: ["Linux", "Python", "PXE", "R&D collaboration"],
         tint: "tint-quanta",
         visual: "quanta",
@@ -31,7 +33,7 @@ const scenes: Scene[] = [
         date: "Jul 2025 → Apr 2026",
         titleLead: "Repair,",
         titleIri: "down to the trace.",
-        desc: "As an electronics technician, I performed board-level repairs across phones, tablets, laptops, and consoles — schematic-driven, fine-pitch soldering, and I/O troubleshooting.",
+        desc: "As an electronics technician, I performed board-level repairs across phones, tablets, laptops, and consoles: schematic-driven, fine-pitch soldering, and I/O troubleshooting.",
         meta: ["Soldering", "Schematics", "Rework", "I/O Diagnostics"],
         tint: "tint-ubif",
         visual: "ubif",
@@ -42,7 +44,7 @@ const scenes: Scene[] = [
         date: "Jan 2025 → Jul 2025",
         titleLead: "20 mph autonomy,",
         titleIri: "corner after corner.",
-        desc: "At UCD CORE Lab, I built a ROS2 autonomous racing platform using Monte Carlo localization (1000+ particles at 40Hz), LiDAR–camera fusion, and CNN segmentation — improving lap consistency by 30%.",
+        desc: "At UCD CORE Lab, I built a ROS2 autonomous racing platform using Monte Carlo localization (1000+ particles at 40Hz), LiDAR-camera fusion, and CNN segmentation, improving lap consistency by 30%.",
         meta: ["ROS2", "LiDAR", "SLAM", "Perception"],
         tint: "tint-f1",
         visual: "f1",
@@ -64,22 +66,7 @@ const scenes: Scene[] = [
 function Visual({ kind }: { kind: Scene["visual"] }) {
     switch (kind) {
         case "quanta":
-            return (
-                <>
-                    <div className="server-rack">
-                        {[0, 1, 2].map((c) => (
-                            <div className="rack-col" key={c}>
-                                {[0, 1, 2, 3, 4].map((r) => (
-                                    <div className="rack-row" key={r} />
-                                ))}
-                            </div>
-                        ))}
-                    </div>
-                    <div className="pkt" />
-                    <div className="pkt pkt-2" />
-                    <div className="pkt pkt-3" />
-                </>
-            );
+            return <QuantaRack />;
         case "ubif":
             return (
                 <div className="pcb-wrap">
@@ -138,7 +125,7 @@ export default function Experience() {
                 const text = (
                     <div>
                         <div className="scene-eyebrow mono">
-                            {s.num} — {s.date}
+                            {s.num} · {s.date}
                         </div>
                         <h2 className="scene-title">
                             {s.titleLead} <span className="iri">{s.titleIri}</span>
@@ -228,37 +215,7 @@ export default function Experience() {
                     opacity: 0.5; pointer-events: none; z-index: 2;
                 }
 
-                /* ── Scene 1 — Quanta (server racks) ── */
-                .tint-quanta {
-                    background:
-                        radial-gradient(circle at 25% 30%, rgba(94,125,255,0.22), transparent 60%),
-                        radial-gradient(circle at 75% 70%, rgba(40,200,90,0.16), transparent 60%),
-                        linear-gradient(160deg, rgba(10,16,26,0.7) 0%, rgba(8,12,20,0.7) 100%);
-                }
-                .server-rack { position: absolute; bottom: 20%; left: 50%; transform: translateX(-50%); display: flex; gap: 14px; }
-                .rack-col { width: 50px; height: 180px; background: rgba(18,24,32,0.92); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 8px 6px; display: flex; flex-direction: column; gap: 4px; box-shadow: 0 8px 24px -8px rgba(40,200,90,0.25); }
-                .rack-row { flex: 1; background: rgba(255,255,255,0.05); border-radius: 2px; position: relative; }
-                .rack-row::after { content: ""; position: absolute; right: 3px; top: 50%; transform: translateY(-50%); width: 4px; height: 4px; border-radius: 50%; background: #34c759; animation: led 2s ease-in-out infinite; }
-                .rack-col:nth-child(1) .rack-row:nth-child(1)::after { animation-delay: 0.1s; }
-                .rack-col:nth-child(1) .rack-row:nth-child(2)::after { animation-delay: 0.4s; background: #5e7dff; }
-                .rack-col:nth-child(1) .rack-row:nth-child(3)::after { animation-delay: 0.7s; }
-                .rack-col:nth-child(1) .rack-row:nth-child(4)::after { animation-delay: 1.0s; background: #ff9f0a; }
-                .rack-col:nth-child(1) .rack-row:nth-child(5)::after { animation-delay: 1.3s; }
-                .rack-col:nth-child(2) .rack-row:nth-child(1)::after { animation-delay: 0.3s; background: #bf5af2; }
-                .rack-col:nth-child(2) .rack-row:nth-child(2)::after { animation-delay: 0.6s; }
-                .rack-col:nth-child(2) .rack-row:nth-child(3)::after { animation-delay: 0.9s; background: #5e7dff; }
-                .rack-col:nth-child(2) .rack-row:nth-child(4)::after { animation-delay: 1.2s; }
-                .rack-col:nth-child(2) .rack-row:nth-child(5)::after { animation-delay: 1.5s; background: #34c759; }
-                .rack-col:nth-child(3) .rack-row:nth-child(1)::after { animation-delay: 0.2s; background: #ff9f0a; }
-                .rack-col:nth-child(3) .rack-row:nth-child(2)::after { animation-delay: 0.5s; }
-                .rack-col:nth-child(3) .rack-row:nth-child(3)::after { animation-delay: 0.8s; background: #5e7dff; }
-                .rack-col:nth-child(3) .rack-row:nth-child(4)::after { animation-delay: 1.1s; }
-                .rack-col:nth-child(3) .rack-row:nth-child(5)::after { animation-delay: 1.4s; }
-                @keyframes led { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; box-shadow: 0 0 8px currentColor; } }
-                .pkt { position: absolute; top: 25%; left: -20%; width: 40px; height: 2px; background: linear-gradient(90deg, transparent, #5e7dff, transparent); animation: pktFly 3s ease-out infinite; }
-                .pkt-2 { top: 35%; animation-delay: 1s; }
-                .pkt-3 { top: 18%; animation-delay: 2s; }
-                @keyframes pktFly { from { transform: translateX(0); opacity: 0; } 20% { opacity: 1; } to { transform: translateX(800px); opacity: 0; } }
+                /* ── Scene 1 — Quanta visual lives in visuals/QuantaRack.tsx ── */
 
                 /* ── Scene 2 — ubreakifix (PCB + soldering iron) ── */
                 .tint-ubif {
@@ -334,8 +291,6 @@ export default function Experience() {
                 @keyframes twinkle { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
 
                 @media (prefers-reduced-motion: reduce) {
-                    .scene-sticky .rack-row::after,
-                    .scene-sticky .pkt,
                     .scene-sticky .solder-spark,
                     .scene-sticky .iron,
                     .scene-sticky .car,
