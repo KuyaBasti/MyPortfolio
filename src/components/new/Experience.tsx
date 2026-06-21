@@ -1,6 +1,7 @@
 "use client";
 
 import QuantaRack from "@/components/new/visuals/QuantaRack";
+import UbreakifixScreen from "@/components/new/visuals/UbreakifixScreen";
 
 type Side = "left" | "right";
 
@@ -32,9 +33,9 @@ const scenes: Scene[] = [
         num: "02",
         date: "Jul 2025 → Apr 2026",
         titleLead: "Repair,",
-        titleIri: "down to the trace.",
-        desc: "As an electronics technician, I performed board-level repairs across phones, tablets, laptops, and consoles: schematic-driven, fine-pitch soldering, and I/O troubleshooting.",
-        meta: ["Soldering", "Schematics", "Rework", "I/O Diagnostics"],
+        titleIri: "good as new.",
+        desc: "As a repair technician at ubreakifix, I fixed phones, tablets, laptops, and game consoles: cracked screens, batteries, charge ports, and board-level faults.",
+        meta: ["Screens", "Batteries", "Soldering", "Diagnostics"],
         tint: "tint-ubif",
         visual: "ubif",
         side: "left",
@@ -68,20 +69,7 @@ function Visual({ kind }: { kind: Scene["visual"] }) {
         case "quanta":
             return <QuantaRack />;
         case "ubif":
-            return (
-                <div className="pcb-wrap">
-                    <div className="pcb">
-                        <div className="pcb-trace" />
-                        <div className="pcb-trace" />
-                        <div className="pcb-trace" />
-                        <div className="pcb-comp" />
-                        <div className="pcb-comp" />
-                        <div className="pcb-comp" />
-                        <div className="solder-spark" />
-                        <div className="iron" />
-                    </div>
-                </div>
-            );
+            return <UbreakifixScreen />;
         case "f1":
             return (
                 <>
@@ -217,27 +205,7 @@ export default function Experience() {
 
                 /* ── Scene 1 — Quanta visual lives in visuals/QuantaRack.tsx ── */
 
-                /* ── Scene 2 — ubreakifix (PCB + soldering iron) ── */
-                .tint-ubif {
-                    background:
-                        radial-gradient(circle at 30% 30%, rgba(255,179,64,0.22), transparent 60%),
-                        radial-gradient(circle at 70% 60%, rgba(255,102,128,0.16), transparent 60%),
-                        linear-gradient(160deg, rgba(20,14,8,0.7) 0%, rgba(14,10,8,0.7) 100%);
-                }
-                .pcb-wrap { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
-                .pcb { width: 60%; aspect-ratio: 16/10; background: linear-gradient(135deg, #1d4936, #2d6b51); border-radius: 12px; position: relative; box-shadow: 0 20px 60px -15px rgba(45,107,81,0.4); }
-                .pcb-trace { position: absolute; height: 1.5px; background: rgba(255,200,80,0.6); border-radius: 1px; }
-                .pcb-trace:nth-child(1) { top: 30%; left: 10%; right: 50%; }
-                .pcb-trace:nth-child(2) { top: 50%; left: 30%; right: 20%; }
-                .pcb-trace:nth-child(3) { top: 70%; left: 15%; right: 35%; }
-                .pcb-comp { position: absolute; background: #111; border: 1px solid rgba(255,200,80,0.45); border-radius: 2px; }
-                .pcb-comp:nth-child(4) { top: 20%; left: 15%; width: 10%; height: 8%; }
-                .pcb-comp:nth-child(5) { top: 55%; right: 20%; width: 12%; height: 10%; }
-                .pcb-comp:nth-child(6) { bottom: 15%; left: 40%; width: 8%; height: 6%; }
-                .solder-spark { position: absolute; top: 40%; right: 30%; width: 6px; height: 6px; border-radius: 50%; background: #ffb340; box-shadow: 0 0 18px 4px rgba(255,179,64,0.9); animation: spark 0.9s ease-in-out infinite; }
-                @keyframes spark { 0%, 100% { opacity: 0.4; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.4); } }
-                .iron { position: absolute; top: -8%; right: 24%; width: 4px; height: 100px; background: linear-gradient(to bottom, #999, #ccc); border-radius: 2px; transform-origin: top center; transform: rotate(20deg); animation: ironHover 2.4s ease-in-out infinite; }
-                @keyframes ironHover { 0%, 100% { transform: rotate(20deg) translateY(0); } 50% { transform: rotate(20deg) translateY(-6px); } }
+                /* ── Scene 2 — ubreakifix visual lives in visuals/UbreakifixScreen.tsx ── */
 
                 /* ── Scene 3 — F1Tenth ── */
                 .tint-f1 {
@@ -291,8 +259,6 @@ export default function Experience() {
                 @keyframes twinkle { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
 
                 @media (prefers-reduced-motion: reduce) {
-                    .scene-sticky .solder-spark,
-                    .scene-sticky .iron,
                     .scene-sticky .car,
                     .scene-sticky .car-wheel,
                     .scene-sticky .lidar-sweep,
