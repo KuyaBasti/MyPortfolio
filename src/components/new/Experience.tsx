@@ -3,6 +3,7 @@
 import QuantaRack from "@/components/new/visuals/QuantaRack";
 import UbreakifixScreen from "@/components/new/visuals/UbreakifixScreen";
 import F1Lidar from "@/components/new/visuals/F1Lidar";
+import NasaSatellite from "@/components/new/visuals/NasaSatellite";
 
 type Side = "left" | "right";
 
@@ -74,21 +75,7 @@ function Visual({ kind }: { kind: Scene["visual"] }) {
         case "f1":
             return <F1Lidar />;
         case "nasa":
-            return (
-                <>
-                    <div className="star" />
-                    <div className="star" />
-                    <div className="star" />
-                    <div className="star" />
-                    <div className="star" />
-                    <div className="orbit-ring" />
-                    <div className="orbit-ring orbit-ring-2" />
-                    <div className="signal-pulse" />
-                    <div className="signal-pulse signal-pulse-2" />
-                    <div className="signal-pulse signal-pulse-3" />
-                    <div className="satellite-body" />
-                </>
-            );
+            return <NasaSatellite />;
     }
 }
 
@@ -195,39 +182,7 @@ export default function Experience() {
 
                 /* ── Scene 3 — F1Tenth visual lives in visuals/F1Lidar.tsx ── */
 
-                /* ── Scene 4 — NASA ── */
-                .tint-nasa {
-                    background:
-                        radial-gradient(circle at 30% 30%, rgba(94,125,255,0.24), transparent 60%),
-                        radial-gradient(circle at 70% 70%, rgba(191,90,242,0.18), transparent 60%),
-                        linear-gradient(180deg, rgba(10,14,26,0.75) 0%, rgba(8,10,20,0.7) 100%);
-                }
-                .satellite-body { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; background: linear-gradient(135deg, #fff 0%, #d2d2d7 100%); border-radius: 12px; box-shadow: 0 20px 50px -10px rgba(94,125,255,0.4); animation: satFloat 4s ease-in-out infinite; }
-                @keyframes satFloat { 0%, 100% { transform: translate(-50%, -50%); } 50% { transform: translate(-50%, calc(-50% - 10px)); } }
-                .satellite-body::before, .satellite-body::after { content: ""; position: absolute; top: 10%; height: 80%; width: 60px; background: linear-gradient(180deg, #5e7dff, #335bff); border-radius: 4px; }
-                .satellite-body::before { left: -70px; }
-                .satellite-body::after { right: -70px; }
-                .orbit-ring { position: absolute; top: 50%; left: 50%; width: 360px; height: 360px; border: 1px dashed rgba(94,125,255,0.3); border-radius: 50%; transform: translate(-50%, -50%); animation: rotate 30s linear infinite; }
-                .orbit-ring-2 { width: 460px; height: 460px; border-color: rgba(94,125,255,0.18); animation-duration: 50s; animation-direction: reverse; }
-                @keyframes rotate { to { transform: translate(-50%, -50%) rotate(360deg); } }
-                .signal-pulse { position: absolute; top: 50%; left: 50%; width: 80px; height: 80px; border-radius: 50%; border: 2px solid rgba(94,125,255,0.4); transform: translate(-50%, -50%); animation: signal 2.4s ease-out infinite; }
-                .signal-pulse-2 { animation-delay: 0.8s; }
-                .signal-pulse-3 { animation-delay: 1.6s; }
-                @keyframes signal { 0% { width: 80px; height: 80px; opacity: 1; } 100% { width: 360px; height: 360px; opacity: 0; } }
-                .star { position: absolute; border-radius: 50%; background: #5e7dff; box-shadow: 0 0 6px rgba(94,125,255,0.6); animation: twinkle 2s ease-in-out infinite; }
-                .star:nth-child(1) { top: 10%; left: 20%; width: 3px; height: 3px; animation-delay: 0s; }
-                .star:nth-child(2) { top: 15%; right: 25%; width: 2px; height: 2px; animation-delay: 0.4s; }
-                .star:nth-child(3) { top: 35%; left: 10%; width: 2px; height: 2px; animation-delay: 0.8s; }
-                .star:nth-child(4) { bottom: 20%; right: 15%; width: 3px; height: 3px; animation-delay: 1.2s; }
-                .star:nth-child(5) { bottom: 30%; left: 25%; width: 2px; height: 2px; animation-delay: 1.6s; }
-                @keyframes twinkle { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
-
-                @media (prefers-reduced-motion: reduce) {
-                    .scene-sticky .satellite-body,
-                    .scene-sticky .orbit-ring,
-                    .scene-sticky .signal-pulse,
-                    .scene-sticky .star { animation: none !important; }
-                }
+                /* ── Scene 4 — NASA visual lives in visuals/NasaSatellite.tsx ── */
             `}</style>
         </section>
     );
