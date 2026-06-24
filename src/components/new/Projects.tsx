@@ -1,5 +1,7 @@
 "use client";
 
+import DualGame from "./visuals/DualGame";
+
 type Visual = "dual" | "arm" | "edge" | "dns" | "ml" | "aggie";
 
 interface Card {
@@ -74,13 +76,7 @@ function VisualHeader({ kind }: { kind: Visual }) {
         case "dual":
             return (
                 <div className="pj-img pj-dual">
-                    <div className="ds">
-                        <div className="dot" />
-                    </div>
-                    <div className="link" />
-                    <div className="ds">
-                        <div className="dot" />
-                    </div>
+                    <DualGame />
                 </div>
             );
         case "arm":
@@ -215,17 +211,7 @@ export default function Projects() {
                 }
 
                 /* DUAL */
-                .pj-dual { background: linear-gradient(135deg, rgba(14,18,30,0.9), rgba(12,16,28,0.9)); display:flex; align-items:center; justify-content:center; gap:24px; position: relative; }
-                .pj-dual::after { content:""; position:absolute; inset:0; background: radial-gradient(circle at 25% 35%, rgba(94,125,255,0.25), transparent 55%), radial-gradient(circle at 75% 65%, rgba(191,90,242,0.25), transparent 55%); pointer-events:none; }
-                .pj-dual > * { position: relative; z-index: 1; }
-                .pj-dual .ds { width: 90px; height: 110px; border-radius: 14px; background: rgba(20,26,36,0.92); border: 1px solid rgba(94,125,255,0.25); backdrop-filter: blur(8px); box-shadow: 0 0 30px -8px rgba(94,125,255,0.4); position: relative; overflow: hidden; }
-                .pj-dual .ds::after { content:""; position:absolute; inset:10px; background: linear-gradient(180deg, rgba(94,125,255,0.08), rgba(191,90,242,0.08)); border-radius:8px; }
-                .pj-dual .dot { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:10px; height:10px; border-radius:50%; background: linear-gradient(120deg, #5e7dff, #bf5af2); animation: dualPulse 1.6s ease-in-out infinite; }
-                .pj-dual .ds:nth-child(3) .dot { animation-delay: 0.8s; }
-                .pj-dual .link { width: 44px; height: 2px; background: linear-gradient(90deg, #5e7dff, #bf5af2); border-radius:1px; position: relative; overflow: hidden; }
-                .pj-dual .link::after { content:""; position:absolute; top:-3px; left:-25%; width:25%; height:8px; border-radius:4px; background:#fff; animation: dualWave 1.6s linear infinite; }
-                @keyframes dualPulse { 0%,100% { transform: translate(-50%,-50%) scale(1); opacity:1; } 50% { transform: translate(-50%,-50%) scale(2.2); opacity:0; } }
-                @keyframes dualWave { from { left:-25%; } to { left:125%; } }
+                .pj-dual { background: radial-gradient(ellipse at 50% 50%, #0c1018, #080b12); position: relative; }
 
                 /* ARM */
                 .pj-arm { background: linear-gradient(135deg, rgba(20,14,26,0.9), rgba(16,12,22,0.9)); display:flex; align-items:center; justify-content:center; position: relative; }
@@ -288,7 +274,7 @@ export default function Projects() {
                 @keyframes notifIn { 0%,100% { transform: translateX(-10px); opacity:0; } 20%,80% { transform: translateX(0); opacity:1; } }
 
                 @media (prefers-reduced-motion: reduce) {
-                    .strip [class*="pj-"] :is(.dot, .link::after, .s1, .s2, .g div, .out, .node::after, .bar, .nt) { animation: none !important; }
+                    .strip [class*="pj-"] :is(.s1, .s2, .g div, .out, .node::after, .bar, .nt) { animation: none !important; }
                 }
             `}</style>
         </section>
