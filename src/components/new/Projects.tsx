@@ -1,6 +1,7 @@
 "use client";
 
 import DualGame from "./visuals/DualGame";
+import RoboticArm from "./visuals/RoboticArm";
 
 type Visual = "dual" | "arm" | "edge" | "dns" | "ml" | "aggie";
 
@@ -82,13 +83,7 @@ function VisualHeader({ kind }: { kind: Visual }) {
         case "arm":
             return (
                 <div className="pj-img pj-arm">
-                    <div className="rig">
-                        <div className="s1">
-                            <div className="s2">
-                                <div className="tip" />
-                            </div>
-                        </div>
-                    </div>
+                    <RoboticArm />
                 </div>
             );
         case "edge":
@@ -214,16 +209,7 @@ export default function Projects() {
                 .pj-dual { background: radial-gradient(ellipse at 50% 50%, #0c1018, #080b12); position: relative; }
 
                 /* ARM */
-                .pj-arm { background: linear-gradient(135deg, rgba(20,14,26,0.9), rgba(16,12,22,0.9)); display:flex; align-items:center; justify-content:center; position: relative; }
-                .pj-arm::after { content:""; position:absolute; inset:0; background: radial-gradient(circle at 30% 30%, rgba(191,90,242,0.25), transparent 55%), radial-gradient(circle at 70% 60%, rgba(255,102,128,0.18), transparent 55%); pointer-events:none; }
-                .pj-arm > * { position: relative; z-index: 1; }
-                .pj-arm .rig { width: 130px; height: 130px; position: relative; }
-                .pj-arm .rig::before { content:""; position:absolute; bottom:6px; left:50%; transform:translateX(-50%); width:70px; height:6px; background:linear-gradient(180deg,#aab0ba,#5f636b); border-radius:3px; }
-                .pj-arm .s1 { position:absolute; bottom:12px; left:50%; width:7px; height:70px; background:#9aa0aa; border-radius:3px; transform-origin:bottom center; animation: armSwing 4s ease-in-out infinite; }
-                .pj-arm .s2 { position:absolute; top:-50px; left:-2px; width:7px; height:55px; background:#9aa0aa; border-radius:3px; transform-origin:bottom center; animation: armSwing2 4s ease-in-out infinite; }
-                .pj-arm .tip { position:absolute; top:-8px; left:-5px; width:16px; height:16px; border-radius:50%; background: linear-gradient(120deg, #ff6680, #ff9f0a); box-shadow: 0 0 30px rgba(255,102,128,0.7); }
-                @keyframes armSwing { 0%,100% { transform: translateX(-50%) rotate(-18deg); } 50% { transform: translateX(-50%) rotate(25deg); } }
-                @keyframes armSwing2 { 0%,100% { transform: rotate(40deg); } 50% { transform: rotate(-30deg); } }
+                .pj-arm { background: radial-gradient(ellipse at 65% 40%, #140e1c, #0b0710); position: relative; }
 
                 /* EDGE */
                 .pj-edge { background: linear-gradient(135deg, rgba(10,20,14,0.9), rgba(8,16,12,0.9)); display:flex; align-items:center; justify-content:center; gap:20px; position: relative; }
@@ -274,7 +260,7 @@ export default function Projects() {
                 @keyframes notifIn { 0%,100% { transform: translateX(-10px); opacity:0; } 20%,80% { transform: translateX(0); opacity:1; } }
 
                 @media (prefers-reduced-motion: reduce) {
-                    .strip [class*="pj-"] :is(.s1, .s2, .g div, .out, .node::after, .bar, .nt) { animation: none !important; }
+                    .strip [class*="pj-"] :is(.g div, .out, .node::after, .bar, .nt) { animation: none !important; }
                 }
             `}</style>
         </section>
