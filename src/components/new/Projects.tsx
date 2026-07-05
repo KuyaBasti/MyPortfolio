@@ -2,6 +2,7 @@
 
 import DualGame from "./visuals/DualGame";
 import RoboticArm from "./visuals/RoboticArm";
+import ParallelEdge from "./visuals/ParallelEdge";
 
 type Visual = "dual" | "arm" | "edge" | "dns" | "ml" | "aggie";
 
@@ -89,13 +90,7 @@ function VisualHeader({ kind }: { kind: Visual }) {
         case "edge":
             return (
                 <div className="pj-img pj-edge">
-                    <div className="g">
-                        {Array.from({ length: 36 }).map((_, i) => (
-                            <div key={i} />
-                        ))}
-                    </div>
-                    <span className="arr">→</span>
-                    <div className="out" />
+                    <ParallelEdge />
                 </div>
             );
         case "dns":
@@ -212,18 +207,7 @@ export default function Projects() {
                 .pj-arm { background: radial-gradient(ellipse at 65% 40%, #140e1c, #0b0710); position: relative; }
 
                 /* EDGE */
-                .pj-edge { background: linear-gradient(135deg, rgba(10,20,14,0.9), rgba(8,16,12,0.9)); display:flex; align-items:center; justify-content:center; gap:20px; position: relative; }
-                .pj-edge::after { content:""; position:absolute; inset:0; background: radial-gradient(circle at 30% 30%, rgba(52,199,89,0.25), transparent 55%), radial-gradient(circle at 70% 60%, rgba(94,125,255,0.18), transparent 55%); pointer-events:none; }
-                .pj-edge > * { position: relative; z-index: 1; }
-                .pj-edge .g { display:grid; grid-template-columns: repeat(6, 1fr); gap: 2px; width: 80px; height: 80px; }
-                .pj-edge .g div { background: rgba(52,199,89,0.25); border-radius: 2px; animation: edgeFlash 3s ease-in-out infinite; }
-                .pj-edge .g div:nth-child(3n) { animation-delay: 0.4s; }
-                .pj-edge .g div:nth-child(5n) { animation-delay: 0.8s; }
-                .pj-edge .g div:nth-child(7n) { animation-delay: 1.2s; }
-                @keyframes edgeFlash { 0%,100% { background: rgba(52,199,89,0.2); } 50% { background: rgba(52,199,89,0.85); } }
-                .pj-edge .arr { color: #34c759; font-size: 22px; }
-                .pj-edge .out { width: 80px; height: 80px; border: 3px solid #34c759; border-radius: 12px; animation: edgePulse 3s ease-in-out infinite; }
-                @keyframes edgePulse { 0%,100% { border-radius:20px; opacity:0.7; } 50% { border-radius:6px; opacity:1; } }
+                .pj-edge { background: #060a08; position: relative; }
 
                 /* DNS */
                 .pj-dns { background: linear-gradient(135deg, rgba(12,18,28,0.9), rgba(10,14,24,0.9)); display:flex; align-items:center; justify-content:center; gap:14px; position: relative; }
@@ -260,7 +244,7 @@ export default function Projects() {
                 @keyframes notifIn { 0%,100% { transform: translateX(-10px); opacity:0; } 20%,80% { transform: translateX(0); opacity:1; } }
 
                 @media (prefers-reduced-motion: reduce) {
-                    .strip [class*="pj-"] :is(.g div, .out, .node::after, .bar, .nt) { animation: none !important; }
+                    .strip [class*="pj-"] :is(.node::after, .bar, .nt) { animation: none !important; }
                 }
             `}</style>
         </section>
