@@ -3,6 +3,7 @@
 import DualGame from "./visuals/DualGame";
 import RoboticArm from "./visuals/RoboticArm";
 import ParallelEdge from "./visuals/ParallelEdge";
+import DnsResolver from "./visuals/DnsResolver";
 
 type Visual = "dual" | "arm" | "edge" | "dns" | "ml" | "aggie";
 
@@ -96,9 +97,7 @@ function VisualHeader({ kind }: { kind: Visual }) {
         case "dns":
             return (
                 <div className="pj-img pj-dns">
-                    <div className="node">.</div>
-                    <div className="node">TLD</div>
-                    <div className="node">A</div>
+                    <DnsResolver />
                 </div>
             );
         case "ml":
@@ -210,14 +209,7 @@ export default function Projects() {
                 .pj-edge { background: #060a08; position: relative; }
 
                 /* DNS */
-                .pj-dns { background: linear-gradient(135deg, rgba(12,18,28,0.9), rgba(10,14,24,0.9)); display:flex; align-items:center; justify-content:center; gap:14px; position: relative; }
-                .pj-dns::after { content:""; position:absolute; inset:0; background: radial-gradient(circle at 30% 30%, rgba(94,125,255,0.22), transparent 55%), radial-gradient(circle at 70% 70%, rgba(191,90,242,0.18), transparent 55%); pointer-events:none; }
-                .pj-dns > * { position: relative; z-index: 1; }
-                .pj-dns .node { width: 50px; height: 50px; border-radius: 50%; background: rgba(14,20,30,0.85); backdrop-filter: blur(8px); border: 2px solid #5e7dff; position: relative; display:flex; align-items:center; justify-content:center; font-size:11px; color:#9db4ff; font-weight:600; }
-                .pj-dns .node::after { content:""; position:absolute; inset:-10px; border-radius:50%; border:2px solid #5e7dff; opacity:0; animation: dnsRing 2.4s ease-out infinite; }
-                .pj-dns .node:nth-child(2)::after { animation-delay: 0.8s; }
-                .pj-dns .node:nth-child(3)::after { animation-delay: 1.6s; }
-                @keyframes dnsRing { 0% { transform: scale(0.7); opacity:1; } 100% { transform: scale(2.0); opacity:0; } }
+                .pj-dns { background: radial-gradient(ellipse at 60% 30%, #0a1220, #070b12); position: relative; }
 
                 /* ML */
                 .pj-ml { background: linear-gradient(135deg, rgba(22,16,8,0.9), rgba(16,12,8,0.9)); display:flex; align-items:flex-end; justify-content:center; padding-bottom: 50px; gap: 6px; position: relative; }
@@ -244,7 +236,7 @@ export default function Projects() {
                 @keyframes notifIn { 0%,100% { transform: translateX(-10px); opacity:0; } 20%,80% { transform: translateX(0); opacity:1; } }
 
                 @media (prefers-reduced-motion: reduce) {
-                    .strip [class*="pj-"] :is(.node::after, .bar, .nt) { animation: none !important; }
+                    .strip [class*="pj-"] :is(.bar, .nt) { animation: none !important; }
                 }
             `}</style>
         </section>
