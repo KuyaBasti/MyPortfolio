@@ -3,6 +3,7 @@
 import DualGame from "./visuals/DualGame";
 import RoboticArm from "./visuals/RoboticArm";
 import ParallelEdge from "./visuals/ParallelEdge";
+import SalaryModel from "./visuals/SalaryModel";
 import DnsResolver from "./visuals/DnsResolver";
 
 type Visual = "dual" | "arm" | "edge" | "dns" | "ml" | "aggie";
@@ -103,9 +104,7 @@ function VisualHeader({ kind }: { kind: Visual }) {
         case "ml":
             return (
                 <div className="pj-img pj-ml">
-                    {Array.from({ length: 7 }).map((_, i) => (
-                        <div className="bar" key={i} />
-                    ))}
+                    <SalaryModel />
                 </div>
             );
         case "aggie":
@@ -212,18 +211,7 @@ export default function Projects() {
                 .pj-dns { background: radial-gradient(ellipse at 60% 30%, #0a1220, #070b12); position: relative; }
 
                 /* ML */
-                .pj-ml { background: linear-gradient(135deg, rgba(22,16,8,0.9), rgba(16,12,8,0.9)); display:flex; align-items:flex-end; justify-content:center; padding-bottom: 50px; gap: 6px; position: relative; }
-                .pj-ml::after { content:""; position:absolute; inset:0; background: radial-gradient(circle at 40% 30%, rgba(255,159,10,0.22), transparent 55%), radial-gradient(circle at 70% 70%, rgba(255,102,128,0.18), transparent 55%); pointer-events:none; }
-                .pj-ml > * { position: relative; z-index: 1; }
-                .pj-ml .bar { width: 12px; border-radius: 6px; background: linear-gradient(180deg, #ff9f0a, #ff6680); animation: mlGrow 2s ease-in-out infinite; box-shadow: 0 4px 16px -2px rgba(255,159,10,0.3); }
-                .pj-ml .bar:nth-child(1){ height: 40px; }
-                .pj-ml .bar:nth-child(2){ height: 60px; animation-delay: 0.2s; }
-                .pj-ml .bar:nth-child(3){ height: 50px; animation-delay: 0.4s; }
-                .pj-ml .bar:nth-child(4){ height: 90px; animation-delay: 0.6s; }
-                .pj-ml .bar:nth-child(5){ height: 70px; animation-delay: 0.8s; }
-                .pj-ml .bar:nth-child(6){ height: 110px; animation-delay: 1.0s; }
-                .pj-ml .bar:nth-child(7){ height: 95px; animation-delay: 1.2s; }
-                @keyframes mlGrow { 0%,100% { transform: scaleY(.9); opacity:0.85; } 50% { transform: scaleY(1); opacity:1; } }
+                .pj-ml { background: radial-gradient(ellipse at 55% 35%, #171009, #0e0a07); position: relative; }
 
                 /* AGGIE */
                 .pj-aggie { background: linear-gradient(135deg, rgba(22,12,18,0.9), rgba(16,10,14,0.9)); display:flex; align-items:center; justify-content:center; position: relative; }
@@ -236,7 +224,7 @@ export default function Projects() {
                 @keyframes notifIn { 0%,100% { transform: translateX(-10px); opacity:0; } 20%,80% { transform: translateX(0); opacity:1; } }
 
                 @media (prefers-reduced-motion: reduce) {
-                    .strip [class*="pj-"] :is(.bar, .nt) { animation: none !important; }
+                    .strip [class*="pj-"] .nt { animation: none !important; }
                 }
             `}</style>
         </section>
