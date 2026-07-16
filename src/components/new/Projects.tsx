@@ -4,6 +4,7 @@ import DualGame from "./visuals/DualGame";
 import RoboticArm from "./visuals/RoboticArm";
 import ParallelEdge from "./visuals/ParallelEdge";
 import SalaryModel from "./visuals/SalaryModel";
+import AggiePipeline from "./visuals/AggiePipeline";
 import DnsResolver from "./visuals/DnsResolver";
 
 type Visual = "dual" | "arm" | "edge" | "dns" | "ml" | "aggie";
@@ -110,13 +111,7 @@ function VisualHeader({ kind }: { kind: Visual }) {
         case "aggie":
             return (
                 <div className="pj-img pj-aggie">
-                    <div className="nt">
-                        <div className="ic" />
-                        <div>
-                            <div className="t1">Shift reminder</div>
-                            <div className="t2">Tomorrow at 9:00 AM</div>
-                        </div>
-                    </div>
+                    <AggiePipeline />
                 </div>
             );
     }
@@ -214,18 +209,7 @@ export default function Projects() {
                 .pj-ml { background: radial-gradient(ellipse at 55% 35%, #171009, #0e0a07); position: relative; }
 
                 /* AGGIE */
-                .pj-aggie { background: linear-gradient(135deg, rgba(22,12,18,0.9), rgba(16,10,14,0.9)); display:flex; align-items:center; justify-content:center; position: relative; }
-                .pj-aggie::after { content:""; position:absolute; inset:0; background: radial-gradient(circle at 30% 30%, rgba(255,102,128,0.22), transparent 55%), radial-gradient(circle at 70% 70%, rgba(94,125,255,0.18), transparent 55%); pointer-events:none; }
-                .pj-aggie > * { position: relative; z-index: 1; }
-                .pj-aggie .nt { background: rgba(24,28,34,0.95); border: 1px solid rgba(255,255,255,0.08); backdrop-filter: blur(10px); border-radius: 14px; padding: 12px 16px; min-width: 220px; display:flex; gap:12px; align-items:center; box-shadow: 0 10px 30px -8px rgba(255,102,128,0.3); animation: notifIn 3s ease-in-out infinite; }
-                .pj-aggie .ic { width: 30px; height: 30px; border-radius: 8px; background: linear-gradient(135deg, #ff375f, #bf5af2); flex-shrink: 0; box-shadow: 0 4px 12px -2px rgba(255,55,95,0.5); }
-                .pj-aggie .t1 { font-size: 13px; font-weight: 600; }
-                .pj-aggie .t2 { font-size: 11px; color: var(--ink-muted); margin-top: 2px; }
-                @keyframes notifIn { 0%,100% { transform: translateX(-10px); opacity:0; } 20%,80% { transform: translateX(0); opacity:1; } }
-
-                @media (prefers-reduced-motion: reduce) {
-                    .strip [class*="pj-"] .nt { animation: none !important; }
-                }
+                .pj-aggie { background: radial-gradient(ellipse at 45% 30%, #170d12, #0d080b); position: relative; }
             `}</style>
         </section>
     );
