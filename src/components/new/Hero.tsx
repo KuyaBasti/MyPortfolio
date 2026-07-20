@@ -398,9 +398,6 @@ export default function Hero() {
 
             <div className="hero-grid">
                 <div className="hero-copy" ref={copyRef}>
-                    <div className="hero-eyebrow cmd-eyebrow">
-                        <span className="p">~ %</span> whoami<span className="cur" />
-                    </div>
                     <h1 className="hero-h1">
                         The space between
                         <br />
@@ -414,9 +411,6 @@ export default function Hero() {
                     <div className="hero-cta">
                         <a className="hero-btn" href="#projects">
                             See my work
-                        </a>
-                        <a className="hero-link" href="#contact">
-                            ./get_in_touch <span aria-hidden>›</span>
                         </a>
                     </div>
                 </div>
@@ -444,15 +438,11 @@ export default function Hero() {
                     align-items: center; gap: 56px;
                     max-width: 1180px; margin: 0 auto; padding: 96px 40px 60px;
                 }
-                .hero-eyebrow { margin-bottom: 16px; }
                 .hero-h1 { font-size: clamp(38px, 4.8vw, 76px); font-weight: 600; line-height: 1.05; letter-spacing: -0.025em; margin-bottom: 20px; }
                 .hero-sub { font-size: clamp(17px, 1.5vw, 21px); color: var(--ink-soft); line-height: 1.45; max-width: 540px; margin-bottom: 30px; }
                 .hero-cta { display: flex; gap: 22px; align-items: center; flex-wrap: wrap; }
                 .hero-btn { background: var(--green); color: #05140a; font-weight: 600; padding: 13px 26px; border-radius: 12px; font-size: 16px; transition: transform .2s, box-shadow .2s; box-shadow: 0 0 0 1px var(--green-dim), 0 0 28px -6px rgba(40,200,90,0.5); }
                 .hero-btn:hover { transform: translateY(-1px); box-shadow: 0 0 0 1px var(--green), 0 0 40px -6px rgba(40,200,90,0.75); }
-                .hero-link { color: var(--green-bright); font-family: var(--font-mono); font-size: 15px; }
-                .hero-link span { display: inline-block; transition: transform .2s; }
-                .hero-link:hover span { transform: translateX(2px); }
 
                 /* Terminal */
                 .hero-term {
