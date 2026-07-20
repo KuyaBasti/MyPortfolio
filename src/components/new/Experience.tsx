@@ -108,7 +108,7 @@ export default function Experience() {
                 );
                 return (
                     <div className="scene" key={s.num}>
-                        <div className="scene-sticky">
+                        <div className="scene-inner">
                             {s.side === "left" ? (
                                 <>
                                     {visual}
@@ -126,11 +126,11 @@ export default function Experience() {
             })}
 
             <style>{`
-                .scene { min-height: 200vh; position: relative; }
-                .scene-sticky {
-                    position: sticky; top: 0; height: 100vh;
+                .scene { position: relative; }
+                .scene-inner {
+                    min-height: 100vh;
                     display: grid; grid-template-columns: 1fr 1fr;
-                    align-items: center; padding: 0 5vw; gap: 60px; overflow: hidden;
+                    align-items: center; padding: 80px 5vw; gap: 60px; overflow: hidden;
                 }
                 .scene-eyebrow {
                     font-size: 13px; color: var(--accent);
@@ -154,8 +154,7 @@ export default function Experience() {
                 .scene-visual { height: 70vh; display: flex; align-items: center; justify-content: center; position: relative; }
 
                 @media (max-width: 880px) {
-                    .scene { min-height: auto; }
-                    .scene-sticky { position: relative; height: auto; grid-template-columns: 1fr; padding: 90px 24px; gap: 30px; }
+                    .scene-inner { min-height: auto; grid-template-columns: 1fr; padding: 90px 24px; gap: 30px; }
                     .scene-visual { height: 50vh; }
                 }
 
