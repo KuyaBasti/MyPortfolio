@@ -32,7 +32,7 @@ src/
   components/
     Backdrop.tsx  streams-rain canvas (tab-paused, reduced-motion safe)
     Home.tsx      orchestrator
-    new/          Navbar, Hero (intro+terminal), Highlights, Experience (4 sticky scenes),
+    new/          Navbar, Hero (intro+terminal), Experience (4 sticky scenes),
                   Projects (glass bento), About, Skills, Contact, Footer
     new/visuals/  bespoke per-scene visuals (e.g. QuantaRack)
   data/portfolio.ts   content source (experiences, projects, skills, education, contact)
@@ -40,7 +40,7 @@ src/
 Experience (4 cinematic sticky-scroll scenes) and Projects (6 cards) keep their curated copy +
 visuals inline; `portfolio.ts` is the canonical record — keep them in sync.
 
-Section order: Navbar · Hero · Highlights · Experience (01) · Projects (02) · About (03) · Skills (04) · Contact.
+Section order: Navbar · Hero · Experience (01) · Projects (02) · About (03) · Skills (04) · Contact.
 
 ## Commands
 `npm run dev` · `npm run build` · `npm run lint`
