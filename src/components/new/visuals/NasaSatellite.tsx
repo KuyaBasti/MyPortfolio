@@ -135,13 +135,13 @@ export default function NasaSatellite() {
                 SAT-04 · <b>ASM330LHH</b>
             </div>
             <div className="nsa-hud nsa-tr">
-                alt <b style={{ color: "#9dffc4" }}>10,000 km</b>
+                launch <b style={{ color: "#9dffc4" }}>Sept 2026</b>
             </div>
             <div className="nsa-hud nsa-bl">
                 att r <b ref={rRef}>+1.2°</b> p <b ref={pRef}>-0.4°</b> y <b ref={yRef}>88.6°</b>
             </div>
             <div className="nsa-hud nsa-br">
-                <b>6.6 kHz</b> · 99.9%
+                <b>100 ms</b> · deterministic
             </div>
 
             <style>{`

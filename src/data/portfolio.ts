@@ -113,20 +113,20 @@ export const experiences: Experience[] = [
         year: "2026",
         company: "Quanta Manufacturing",
         companyUrl: "",
-        role: "Test Technician",
+        role: "Test Engineer",
         location: "Fremont, CA",
         date: "April 2026 \u2013 Present",
         details: [
-            "Support the qualification and high-volume production of servers and rack systems by deploying test equipment, managing cable infrastructure and validating networking protocols including PXE boot",
-            "Analyze complex hardware failures and test data using Linux and Python scripts to troubleshoot defects, improve manufacturing yields and provide detailed diagnostic logs",
-            "Collaborate with corporate R&D to install and verify new test scripts, develop comprehensive process instructions (TPI) and enhance existing quality methods to improve product reliability",
+            "Developed Python and Bash automation scripts for hardware, firmware, and network validation, cutting manual testing by 70\u201380% and raising first-pass yield to ~80%",
+            "Co-lead 30 technicians on night shift validating L10 (node) and L11 (rack) GB200/GB300 servers and NVSwitches for Oracle Cloud Infrastructure, roughly doubling validated output from 160 to 300+ racks per month",
+            "Primary escalation point for line outages, root-causing failures across PXE servers, console switches, and power systems; author SOPs converting multi-day diagnoses into routine fixes",
         ],
     },
     {
         year: "2025",
         company: "ubreakifix by Asurion",
         companyUrl: "",
-        role: "Electronics Technician",
+        role: "Repair Technician",
         location: "Yuba City, CA",
         date: "July 2025 \u2013 April 2026",
         details: [
@@ -142,8 +142,9 @@ export const experiences: Experience[] = [
         location: "Davis, CA",
         date: "January 2025 \u2013 July 2025",
         details: [
-            "Developed a ROS2-based autonomous racing platform achieving 20+ mph with Monte Carlo localization (1000+ particles at 40 Hz) and real-time obstacle avoidance",
-            "Built perception and planning pipelines using synchronized LiDAR-camera data, CNN-based segmentation, and SLAM map processing, improving lap consistency by 30%",
+            "Took a 1/10-scale race car from Bluetooth teleop to full autonomy with a ROS 2 stack sustaining 40 Hz Monte Carlo localization (4,000 particles, 240K CUDA ray casts/update) under 1% error on an Nvidia Jetson Xavier NX",
+            "Implemented speed-adaptive pure pursuit, minimum-curvature raceline tracking, and LiDAR follow-the-gap avoidance arbitrated by a C++ occupancy-grid supervisor, delivering the car's first fully autonomous runs at up to 20 mph",
+            "Auto-labeled 1000+ track-boundary frames with language-prompted SAM and trained an end-to-end steering CNN that tracked the optimized raceline to 85–90% of predicted position",
         ],
     },
     {
@@ -154,9 +155,9 @@ export const experiences: Experience[] = [
         location: "Davis, CA",
         date: "September 2023 \u2013 January 2025",
         details: [
-            "Developed bare-metal ASM330LHH IMU drivers in C supporting I2C and SPI across multiple flight board revisions, including register-level configuration and sensor scaling",
-            "Implemented dual-IMU redundancy with runtime sensor selection, health checks, and per-unit calibration, improving attitude sensing reliability by 40%",
-            "Designed high-rate sensor acquisition and interrupt-driven logging using FreeRTOS and hardware timers, achieving 6.6 kHz telemetry with 99.9% timing accuracy",
+            "Developed the bare-metal ASM330LHH IMU driver in C for a 3U CubeSat set to launch in September 2026, adding SPI and dual-IMU redundancy with runtime switching that caught stale sensor data pre-launch; shipped in the final flight build across three board revisions",
+            "Designed a register-level timer/interrupt driver (STM32 TIM6) for the onboard experiment logging subsystem, interrupt-driven and decoupled from application logic via callback registration",
+            "Verified timing against the datasheet with a logic analyzer; acquisition held a deterministic 100 ms (10 Hz) cadence independent of FreeRTOS task scheduling",
         ],
     },
 ];
