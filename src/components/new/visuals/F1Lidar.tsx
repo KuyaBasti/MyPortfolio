@@ -204,7 +204,7 @@ export default function F1Lidar() {
         <div className="f1l" ref={wrapRef}>
             <canvas className="f1l-cv" ref={cvRef} />
             <div className="f1l-hud f1l-tl">
-                MCL · <b>1000</b> particles @ <b>40Hz</b>
+                MCL · <b>4,000</b> particles @ <b>40Hz</b>
             </div>
             <div className="f1l-hud f1l-tr">
                 <span className="v">20</span> mph

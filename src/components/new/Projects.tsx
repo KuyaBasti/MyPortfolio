@@ -41,7 +41,7 @@ const cards: Card[] = [
     {
         eyebrow: "Parallel · GPU",
         title: "Parallel Edge Detection",
-        desc: "Sobel pipeline across OpenMP, Intel SIMD, and CUDA. Tile-based shared-memory convolution; 15× speedup over baseline.",
+        desc: "Canny edge detection across sequential, OpenMP+SIMD, and CUDA pipelines; ~15× speedup from memory coalescing and shared/texture-memory optimization.",
         tech: "C++20 · CUDA · OpenMP · AVX2",
         span: "pj-span-6",
         visual: "edge",
