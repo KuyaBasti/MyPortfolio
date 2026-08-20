@@ -2,193 +2,297 @@
 
 import { useEffect, useRef } from "react";
 
-// Quanta scene visual: a cluster of server racks packed with blinking status
-// indicators, ceiling light strips, and a scan sweep. Layout is generated once
-// with a seeded RNG so SSR and client markup match; the LED blink is pure CSS,
-// and a light JS "activity" flicker runs only while on-screen (skipped for
-// reduced-motion).
+// Quanta scene visual: four racks running the L11 validation pipeline. Units
+// live a lifecycle (dark, PXE boot amber, testing cyan, pass green); a
+// completed rack flashes, ships out, and bumps the monthly counter. Every so
+// often a unit fails red mid-test and a console chip root-causes it (the
+// escalation-point story) before it re-boots and passes. The loop runs only
+// while on-screen and resolves to a mid-shift static frame for
+// reduced-motion. All state is canvas-only and client-side, so SSR-safe.
 
-type Led = { c: string; blink: boolean; delay: string };
-type Unit = { type: "a" | "b" | "c"; groups: Led[][] };
-type Rack = { units: Unit[] };
+const G = "#34c759",
+    Am = "#ffb340",
+    Cy = "#5ad1ff",
+    Rd = "#ff5f57",
+    DK = "#232b35";
 
-const POOL = ["lg", "lg", "lg", "lg", "lc", "lc", "la", "la", "lo", "lr"];
+const LOGS = [
+    "[py] link check 32/32 ok",
+    "[bash] BMC flash · 12 nodes",
+    "[py] nvsw topo verify ok",
+    "[pxe] dhcp offer u04 · 212ms",
+    "[py] stress 30m · thermals ok",
+];
 
-function mulberry32(a: number) {
-    return function () {
-        a |= 0;
-        a = (a + 0x6d2b79f5) | 0;
-        let t = Math.imul(a ^ (a >>> 15), 1 | a);
-        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-    };
-}
-
-const RACKS: Rack[] = (() => {
-    const rng = mulberry32(20260601);
-    const ledGroup = (): Led[] => {
-        const k = 5 + Math.floor(rng() * 4);
-        const g: Led[] = [];
-        for (let i = 0; i < k; i++) {
-            const c = POOL[Math.floor(rng() * POOL.length)];
-            g.push({ c, blink: c !== "lo" && rng() < 0.55, delay: `-${(rng() * 1.6).toFixed(2)}s` });
-        }
-        return g;
-    };
-    const racks: Rack[] = [];
-    for (let r = 0; r < 4; r++) {
-        const units: Unit[] = [];
-        const n = 9 + (r % 2);
-        for (let u = 0; u < n; u++) {
-            const t = rng();
-            const type = t < 0.5 ? "a" : t < 0.8 ? "b" : "c";
-            const groups =
-                type === "b"
-                    ? [ledGroup(), ledGroup()]
-                    : type === "c"
-                      ? [[{ c: "lg", blink: true, delay: "0s" }, { c: "la", blink: false, delay: "0s" }]]
-                      : [ledGroup()];
-            units.push({ type, groups });
-        }
-        racks.push({ units });
-    }
-    return racks;
-})();
-
-function Leds({ group }: { group: Led[] }) {
-    return (
-        <span className="qr-leds">
-            {group.map((l, i) => (
-                <span
-                    key={i}
-                    className={`qr-led ${l.c}${l.blink ? " blink" : ""}`}
-                    style={{ animationDelay: l.delay }}
-                />
-            ))}
-        </span>
-    );
-}
+type Unit = { st: 0 | 1 | 2 | 3 | 4; t: number; dur: number; failed?: boolean };
+type Rack = { units: Unit[]; idx: number; done: number; wait: number; fade: number; glowAll: number };
+type Chip = { ri: number; ui: number; t: number; txt: string };
 
 export default function QuantaRack() {
-    const ref = useRef<HTMLDivElement>(null);
+    const wrapRef = useRef<HTMLDivElement>(null);
+    const cvRef = useRef<HTMLCanvasElement>(null);
 
     useEffect(() => {
-        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-        const el = ref.current;
-        if (!el) return;
-        const leds = Array.from(el.querySelectorAll<HTMLElement>(".qr-led:not(.lo)"));
+        const wrap = wrapRef.current;
+        const cv = cvRef.current;
+        if (!wrap || !cv) return;
+        const ctx = cv.getContext("2d");
+        if (!ctx) return;
+        const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        let W = 0,
+            H = 0,
+            fr = 0,
+            counter = 214,
+            logi = 0;
+        let chip: Chip | null = null;
+        const racks: Rack[] = [];
+
+        function newRack(stagger: number): Rack {
+            const units: Unit[] = [];
+            for (let i = 0; i < 9; i++) units.push({ st: 0, t: 0, dur: 0 });
+            return { units, idx: 0, done: 0, wait: stagger, fade: 1, glowAll: 0 };
+        }
+
+        function seedShift() {
+            for (let r = 0; r < 4; r++) {
+                const rk = newRack(r * 70);
+                for (let k = 0; k < r * 2; k++) rk.units[k].st = 3;
+                rk.idx = r * 2;
+                racks.push(rk);
+            }
+        }
+
+        function layout() {
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+            W = wrap!.clientWidth;
+            H = wrap!.clientHeight;
+            if (!W || !H) return;
+            cv!.width = Math.round(W * dpr);
+            cv!.height = Math.round(H * dpr);
+            cv!.style.width = W + "px";
+            cv!.style.height = H + "px";
+            ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+
+        function stepRack(rk: Rack, ri: number) {
+            if (rk.done > 0) {
+                rk.done--;
+                if (rk.done === 40) rk.glowAll = 1;
+                if (rk.done < 20) rk.fade = rk.done / 20;
+                if (rk.done === 0) {
+                    racks[ri] = newRack(30);
+                    counter++;
+                }
+                return;
+            }
+            if (rk.wait > 0) {
+                rk.wait--;
+                return;
+            }
+            const u = rk.units[rk.idx];
+            if (!u) {
+                rk.done = 70;
+                rk.glowAll = 0;
+                return;
+            }
+            u.t++;
+            if (u.st === 0) {
+                u.st = 1;
+                u.dur = 18 + Math.random() * 14;
+                u.t = 0;
+            } else if (u.st === 1 && u.t > u.dur) {
+                u.st = 2;
+                u.dur = 45 + Math.random() * 40;
+                u.t = 0;
+            } else if (u.st === 2 && u.t > u.dur) {
+                if (!u.failed && Math.random() < 0.09 && !chip) {
+                    u.st = 4;
+                    u.failed = true;
+                    u.t = 0;
+                    u.dur = 55;
+                    chip = {
+                        ri,
+                        ui: rk.idx,
+                        t: 75,
+                        txt: "u0" + (rk.idx + 1) + ": " + (Math.random() < 0.5 ? "no PXE offer · power-cycle" : "link flap · re-seat"),
+                    };
+                } else {
+                    u.st = 3;
+                    rk.idx++;
+                    rk.wait = 6 + Math.random() * 10;
+                }
+            } else if (u.st === 4 && u.t > u.dur) {
+                u.st = 1;
+                u.dur = 16;
+                u.t = 0;
+            }
+        }
+
+        function ledCol(u: Unit): [string, number] {
+            if (u.st === 0) return [DK, 0];
+            if (u.st === 1) return [(fr >> 2) % 2 ? Am : "#7a5a24", 0.6];
+            if (u.st === 2) return [Cy, 0.5 + 0.4 * Math.abs(Math.sin(fr * 0.15 + u.dur))];
+            if (u.st === 3) return [G, 0.9];
+            return [(fr >> 2) % 2 ? Rd : "#7a2a26", 1];
+        }
+
+        function render(advance: boolean) {
+            const c = ctx!;
+            if (!W) layout();
+            if (!W) return;
+            fr++;
+            c.clearRect(0, 0, W, H);
+            const g = c.createLinearGradient(0, 0, 0, H);
+            g.addColorStop(0, "#05070a");
+            g.addColorStop(1, "#070b10");
+            c.fillStyle = g;
+            c.fillRect(0, 0, W, H);
+            c.fillStyle = "rgba(46,255,160,0.5)";
+            c.fillRect(W * 0.28, 4, 70, 4);
+            c.fillRect(W * 0.58, 4, 70, 4);
+
+            const rw = (W - 44 - 3 * 12) / 4;
+            for (let ri = 0; ri < 4; ri++) {
+                const rk = racks[ri];
+                if (advance) stepRack(rk, ri);
+                const x = 22 + ri * (rw + 12),
+                    y = 30,
+                    h = H - 70;
+                c.globalAlpha = rk.fade;
+                c.fillStyle = "#0d1218";
+                c.strokeStyle = rk.glowAll ? G : "rgba(255,255,255,0.08)";
+                c.lineWidth = rk.glowAll ? 1.6 : 1;
+                if (rk.glowAll) {
+                    c.shadowColor = G;
+                    c.shadowBlur = 14;
+                }
+                c.beginPath();
+                c.roundRect(x, y, rw, h, 6);
+                c.fill();
+                c.stroke();
+                c.shadowBlur = 0;
+
+                const uh = (h - 10) / 9;
+                for (let ui = 0; ui < 9; ui++) {
+                    const u = rk.units[ui],
+                        uy = y + 5 + ui * uh;
+                    c.fillStyle =
+                        u.st === 2 ? "rgba(90,209,255,0.07)" : u.st === 3 ? "rgba(52,199,89,0.06)" : "rgba(255,255,255,0.02)";
+                    c.beginPath();
+                    c.roundRect(x + 4, uy, rw - 8, uh - 3, 2);
+                    c.fill();
+                    c.fillStyle = "rgba(255,255,255,0.05)";
+                    for (let v = 0; v < Math.floor((rw - 30) / 4); v++)
+                        c.fillRect(x + 8 + v * 4, uy + uh * 0.32, 1.5, uh * 0.36);
+                    const lc = ledCol(u);
+                    for (let li = 0; li < 3; li++) {
+                        const col =
+                            li === 0 ? lc[0] : u.st === 3 ? G : u.st === 0 ? DK : li === 1 && u.st === 2 ? Cy : DK;
+                        c.fillStyle = col;
+                        if (lc[1] > 0 && li === 0) {
+                            c.shadowColor = lc[0];
+                            c.shadowBlur = 6 * lc[1];
+                        }
+                        c.beginPath();
+                        c.arc(x + rw - 9 - li * 7, uy + uh / 2 - 1.5, 2, 0, 6.28);
+                        c.fill();
+                        c.shadowBlur = 0;
+                    }
+                    if (u.st === 1) {
+                        c.font = "7px 'JetBrains Mono', monospace";
+                        c.fillStyle = Am;
+                        c.textAlign = "left";
+                        c.fillText("PXE", x + 8, uy + uh * 0.28);
+                    }
+                }
+                c.globalAlpha = 1;
+            }
+
+            if (chip) {
+                chip.t--;
+                const x = 22 + chip.ri * (rw + 12),
+                    y = 30 + 5 + chip.ui * ((H - 70 - 10) / 9);
+                const cw = 178;
+                let cx2 = Math.min(W - cw - 8, x + rw + 6);
+                if (chip.ri >= 2) cx2 = x - cw - 6;
+                const cy2 = Math.max(8, y - 6);
+                c.globalAlpha = Math.min(1, chip.t / 12);
+                c.fillStyle = "rgba(10,14,20,0.95)";
+                c.strokeStyle = "rgba(255,95,87,0.6)";
+                c.lineWidth = 1;
+                c.beginPath();
+                c.roundRect(cx2, cy2, cw, 20, 6);
+                c.fill();
+                c.stroke();
+                c.font = "9px 'JetBrains Mono', monospace";
+                c.fillStyle = "#ffb3ae";
+                c.textAlign = "left";
+                c.fillText(chip.txt, cx2 + 9, cy2 + 13);
+                c.globalAlpha = 1;
+                if (chip.t <= 0) chip = null;
+            }
+
+            c.font = "10px 'JetBrains Mono', monospace";
+            c.textAlign = "left";
+            c.fillStyle = "rgba(157,255,196,0.8)";
+            c.fillText("L11 · rack validation", 14, 19);
+            c.textAlign = "right";
+            c.fillStyle = "rgba(230,232,238,0.75)";
+            c.fillText("racks " + counter + "/300 · aug", W - 14, 19);
+            if (fr % 160 === 0) logi = (logi + 1) % LOGS.length;
+            c.textAlign = "left";
+            c.fillStyle = "rgba(150,170,160,0.6)";
+            c.fillText(LOGS[logi], 14, H - 12);
+            c.textAlign = "right";
+            c.fillStyle = "rgba(150,170,160,0.45)";
+            c.fillText("first-pass 80.2%", W - 14, H - 12);
+        }
+
+        layout();
+        seedShift();
+        if (!W) return;
+
+        if (reduce) {
+            // Static mid-shift frame: passes banked, one unit booting, one testing.
+            racks[0].units[3].st = 1;
+            racks[0].units[3].dur = 20;
+            racks[1].units[4].st = 2;
+            racks[1].units[4].dur = 60;
+            fr = 3; // steady lit branches for flicker-based colors
+            render(false);
+            return;
+        }
+
         let timer: number | null = null;
-        const tick = () => {
-            for (let i = 0; i < 4; i++) {
-                const l = leds[(Math.random() * leds.length) | 0];
-                if (!l) continue;
-                l.style.opacity = "0.2";
-                window.setTimeout(() => {
-                    l.style.opacity = "";
-                }, 200);
+        const start = () => {
+            if (timer == null) timer = window.setInterval(() => render(true), 30);
+        };
+        const stop = () => {
+            if (timer != null) {
+                clearInterval(timer);
+                timer = null;
             }
         };
-        const io = new IntersectionObserver(
-            ([e]) => {
-                if (e.isIntersecting) {
-                    if (timer == null) timer = window.setInterval(tick, 600);
-                } else if (timer != null) {
-                    clearInterval(timer);
-                    timer = null;
-                }
-            },
-            { threshold: 0.15 },
-        );
-        io.observe(el);
+        const onResize = () => layout();
+        window.addEventListener("resize", onResize);
+        render(true);
+        const io = new IntersectionObserver(([e]) => (e.isIntersecting ? start() : stop()), { threshold: 0.15 });
+        io.observe(wrap);
         return () => {
-            if (timer != null) clearInterval(timer);
+            stop();
             io.disconnect();
+            window.removeEventListener("resize", onResize);
         };
     }, []);
 
     return (
-        <div className="qr" ref={ref}>
-            <div className="qr-ceiling">
-                <i />
-                <i />
-            </div>
-            <div className="qr-racks">
-                {RACKS.map((rk, ri) => (
-                    <div className="qr-rack" key={ri}>
-                        <div className="qr-top">
-                            <i className="lg blink" />
-                            <i className="lc" />
-                        </div>
-                        {rk.units.map((u, ui) => (
-                            <div className="qr-ru" key={ui}>
-                                <span className="qr-h" />
-                                {u.type === "a" && (
-                                    <>
-                                        <span className="qr-vent" />
-                                        <Leds group={u.groups[0]} />
-                                    </>
-                                )}
-                                {u.type === "b" && (
-                                    <>
-                                        <Leds group={u.groups[0]} />
-                                        <span className="qr-vent" />
-                                        <Leds group={u.groups[1]} />
-                                    </>
-                                )}
-                                {u.type === "c" && (
-                                    <>
-                                        <span className="qr-vent" style={{ opacity: 0.3 }} />
-                                        <Leds group={u.groups[0]} />
-                                    </>
-                                )}
-                            </div>
-                        ))}
-                    </div>
-                ))}
-                <div className="qr-scan" />
-            </div>
-            <div className="qr-floor" />
-            <div className="qr-tag">
-                rack-row 07 · <b>qualification</b>
-            </div>
-
+        <div className="qrk" ref={wrapRef}>
+            <canvas ref={cvRef} />
             <style>{`
-                .qr { position: absolute; inset: 0; overflow: hidden;
-                      background: radial-gradient(ellipse at 50% 120%, rgba(40,90,70,0.18), transparent 60%), linear-gradient(180deg, #05070a, #070b10); }
-                .qr-ceiling { position: absolute; top: 0; left: 0; right: 0; height: 26px; display: flex; justify-content: center; gap: 60px; }
-                .qr-ceiling i { width: 70px; height: 5px; border-radius: 3px; background: #2effa0; box-shadow: 0 0 18px 3px rgba(46,255,160,0.45); opacity: 0.7; }
-                .qr-floor { position: absolute; left: 0; right: 0; bottom: 0; height: 60px; background: linear-gradient(180deg, transparent, rgba(40,120,90,0.07)); }
-                .qr-floor::before { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(90deg, transparent 0 38px, rgba(255,255,255,0.03) 38px 39px); }
-                .qr-racks { position: absolute; left: 22px; right: 22px; top: 34px; bottom: 30px; display: flex; gap: 12px; align-items: stretch; }
-                .qr-rack { flex: 1; display: flex; flex-direction: column; border-radius: 6px 6px 3px 3px; padding: 4px; gap: 3px;
-                           background: linear-gradient(180deg, #11161d, #0a0e13); border: 1px solid rgba(255,255,255,0.07);
-                           box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 14px 30px -16px #000; position: relative; }
-                .qr-rack::after { content: ""; position: absolute; inset: 0; border-radius: 6px; background: linear-gradient(105deg, rgba(120,200,255,0.05), transparent 40%); pointer-events: none; }
-                .qr-top { height: 13px; flex-shrink: 0; border-radius: 3px; background: #161c24; display: flex; align-items: center; justify-content: flex-end; gap: 4px; padding: 0 5px; border: 1px solid rgba(255,255,255,0.05); }
-                .qr-top i { width: 4px; height: 4px; border-radius: 50%; }
-                .qr-ru { flex: 1; display: flex; align-items: center; gap: 5px; padding: 0 5px; border-radius: 2px;
-                         background: linear-gradient(180deg, #0e1219, #0b0f15); border: 1px solid rgba(255,255,255,0.04); min-height: 0; }
-                .qr-h { width: 3px; height: 60%; border-radius: 2px; background: #2b333d; flex-shrink: 0; }
-                .qr-vent { flex: 1; height: 60%; border-radius: 1px; background: repeating-linear-gradient(90deg, rgba(255,255,255,0.05) 0 1px, transparent 1px 3px); opacity: 0.5; }
-                .qr-leds { display: flex; gap: 3px; flex-shrink: 0; }
-                .qr-led { width: 4px; height: 4px; border-radius: 50%; }
-                .qr .lg { background: #34c759; box-shadow: 0 0 5px #34c759; }
-                .qr .la { background: #ffb340; box-shadow: 0 0 5px #ffb340; }
-                .qr .lc { background: #5ad1ff; box-shadow: 0 0 5px #5ad1ff; }
-                .qr .lr { background: #ff5f57; box-shadow: 0 0 5px #ff5f57; }
-                .qr .lo { background: #2a323c; box-shadow: none; }
-                .qr .blink { animation: qrBlink 1.6s steps(1) infinite; }
-                @keyframes qrBlink { 50% { opacity: 0.25; } }
-                .qr-scan { position: absolute; left: 22px; right: 22px; top: 34px; height: 60px; pointer-events: none;
-                           background: linear-gradient(180deg, rgba(46,255,160,0.10), transparent); animation: qrScan 5s linear infinite; }
-                @keyframes qrScan { 0% { transform: translateY(-40px); opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { transform: translateY(330px); opacity: 0; } }
-                .qr-tag { position: absolute; left: 16px; bottom: 8px; font-family: var(--font-mono); font-size: 10px; color: rgba(150,170,160,0.55); letter-spacing: 0.08em; }
-                .qr-tag b { color: var(--green-bright); font-weight: 500; }
-
-                @media (prefers-reduced-motion: reduce) {
-                    .qr .blink, .qr-scan, .qr-ceiling i, .qr-top i { animation: none !important; }
-                    .qr-scan { display: none; }
-                }
+                .qrk { position: absolute; inset: 0; overflow: hidden;
+                       background: radial-gradient(ellipse at 50% 120%, rgba(40,90,70,0.18), transparent 60%), linear-gradient(180deg, #05070a, #070b10); }
+                .qrk canvas { position: absolute; inset: 0; display: block; }
             `}</style>
         </div>
     );
