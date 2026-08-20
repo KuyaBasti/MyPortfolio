@@ -1,114 +1,92 @@
-# John Sebastian Solon - Portfolio
+# John Sebastian Solon · Portfolio
 
-My personal portfolio website showcasing my work in embedded systems, robotics, and software engineering. Built with Next.js, TypeScript, and Tailwind CSS.
+**A dark Neo/Matrix portfolio that boots like a machine and proves its claims like a resume.** Live at [johnsolon.com](https://johnsolon.com).
 
-## About
+First visit: a decryption boot sequence plays (handshake, key decrypt, ACCESS GRANTED), docks itself into a macOS-style terminal, and types a real shell session. Behind everything, a calm "streams" of Matrix code rains down. Every job and project gets its own hand-built canvas animation: a satellite bound for orbit, a two-screen space shooter, a LiDAR race car, a recursive DNS walk. No stock art, no screenshots, no template.
 
-I'm John Sebastian Solon, a Computer Science and Engineering student at UC Davis with a passion for embedded systems, autonomous technologies, and real-time programming. This portfolio showcases my journey from embedded systems development to cutting-edge robotics research.
+> **Status:** live in production on Vercel. All four experience scenes and all six project cards have bespoke visuals. Every number on the site matches the August 2026 resume. Two resume projects (DraftMaster, Centavo) do not have cards yet.
 
-The site features smooth animations, responsive design, and modern web development practices. Built from scratch to demonstrate both technical skills and attention to detail.
+## Table of Contents
 
-## File Structure
+- [What It Is](#what-it-is)
+- [How a Visit Works, End to End](#how-a-visit-works-end-to-end)
+- [Repository Map](#repository-map)
+- [Design Principles](#design-principles)
+- [Project Status](#project-status)
+- [Documentation](#documentation)
+
+## What It Is
+
+A single-page Next.js 15 (App Router) site: **Navbar · Hero · Experience (01) · Projects (02) · About (03) · Skills (04) · Contact**, all rendered over a page-wide ambient rain backdrop.
+
+- **Hero**: split layout. Big iridescent headline on the left, a working terminal on the right that types `whoami`, `cat role.txt`, and `./launch_portfolio.sh`. The boot intro plays **once per session** and is skippable; returning visitors land on the completed session instantly (replay with `?intro=play`).
+- **Experience**: four full-viewport scenes (Quanta, ubreakifix, F1Tenth, NASA), each pairing curated copy with a bespoke animated visual: a burn-in server rack, a phone screen repair, a particle-filter LiDAR map, a satellite over Earth.
+- **Projects**: a six-card bento grid where every card header is a live canvas: the DUAL! two-screen shooter, a G-code console plotter, a parallel Sobel row sweep, a recursive DNS resolution walk, a neural-net forward pass, and a Postgres-to-SendGrid reminder pipeline.
+- **Claims**: every metric shown (**4,000 particles @ 40 Hz**, **100 ms deterministic cadence**, **~15x speedup**, **160 to 300+ racks/mo**) comes from the resume, which is the source of truth.
+
+## How a Visit Works, End to End
 
 ```
-MyPortfolio/
-├── public/                     # Static assets
-│   ├── corelab.png            # CORE Lab logo
-│   ├── sss.png                # Project images
-│   ├── ucdavis.png            # UC Davis logo
-│   ├── yubacollege.png        # Yuba College logo
-│   └── *.svg                  # Icon assets
-├── src/
-│   ├── app/                   # Next.js App Router
-│   │   ├── favicon.ico
-│   │   ├── globals.css        # Global styles
-│   │   ├── layout.tsx         # Root layout
-│   │   └── page.tsx           # Home page
-│   ├── components/            # React components
-│   │   ├── About.tsx          # About section
-│   │   ├── AboutHero.tsx      # Hero section for about
-│   │   ├── Contact.tsx        # Contact form
-│   │   ├── Education.tsx      # Education timeline
-│   │   ├── Home.tsx           # Landing section
-│   │   ├── Navbar.tsx         # Navigation component
-│   │   ├── Projects.tsx       # Projects showcase
-│   │   ├── SkillSection.tsx   # Skills & technologies
-│   │   ├── Work.tsx           # Work experience
-│   │   └── ui/                # Reusable UI components
-│   │       ├── AnimatedCard.tsx      # Animated card component
-│   │       ├── Button.tsx            # Custom button
-│   │       ├── FlipText.tsx          # Text flip animation
-│   │       ├── FloatingNavbar.tsx    # Floating navigation
-│   │       ├── Gradient.tsx          # Gradient backgrounds
-│   │       ├── IconCloud.tsx         # 3D icon cloud
-│   │       ├── TacetMark.tsx         # Decorative marks
-│   │       ├── TextDecoder.tsx       # Text decoder effect
-│   │       ├── TextGenerate.tsx      # Text generation effect
-│   │       ├── TextHover.tsx         # Text hover effects
-│   │       ├── TextSlider.tsx        # Text sliding animation
-│   │       └── Timeline.tsx          # Timeline component
-│   ├── fonts/                 # Custom fonts
-│   │   ├── ClashDisplay-*     # Clash Display font family
-│   │   └── FiraCode-Regular.ttf # Code font
-│   ├── hooks/                 # Custom React hooks
-│   │   ├── useActive.ts       # Active section detection
-│   │   └── useMouse.ts        # Mouse position tracking
-│   └── lib/
-│       └── utils.ts           # Utility functions
-├── eslint.config.mjs          # ESLint configuration
-├── next.config.ts             # Next.js configuration
-├── package.json               # Dependencies & scripts
-├── postcss.config.mjs         # PostCSS configuration
-├── tsconfig.json              # TypeScript configuration
-└── README.md                  # Project documentation
+URL hit
+  |
+  v
+layout.tsx inline <head> script (runs BEFORE paint)
+  |  checks: sessionStorage introPlayed? | ?intro=play | prefers-reduced-motion
+  v
+html.intro-on ----------------------------> html.intro-off
+  |                                            |
+  v                                            v
+boot overlay: rain + static +               hero renders docked:
+handshake -> decrypt key ->                 completed terminal session,
+ACCESS GRANTED glitch                       zero intro animation
+  |
+  v
+overlay docks into the hero terminal frame
+  |
+  v
+typewriter replays the real session, hero copy fades in
+  |
+  v
+scroll: each canvas visual wakes only while on-screen
+        (IntersectionObserver), pauses off-screen,
+        and renders a static frame under reduced-motion
 ```
 
-## Experience & Projects Featured
+## Repository Map
 
-- **Davis Autonomous Race Car (DARC)**: Real-time navigation systems using ROS2 on Nvidia Jetson Xavier NX with LiDAR and computer vision
-- **NASA CubeSatellite Project**: Flight software development with custom RTOS and embedded protocols (SPI, I2C, UART)
-- **Robotics Engineering**: Kinematic robotic arm controller with G-Code parsing and embedded assembly programming
-- **Academic Excellence**: Student tutor for advanced mathematics, physics, and computer science courses
+| Path | What |
+| --- | --- |
+| `src/app/` | `globals.css` (design tokens, `.iri`, backdrop), `layout.tsx` (fonts + pre-paint intro gate), `page.tsx` |
+| `src/components/Backdrop.tsx` | Page-wide streams-rain canvas: throttled, tab-paused, reduced-motion safe |
+| `src/components/Home.tsx` | Section orchestrator |
+| `src/components/new/` | `Navbar`, `Hero` (intro + terminal), `Experience` (4 scenes), `Projects` (bento grid), `About`, `Skills`, `Contact`, `Footer` |
+| `src/components/new/visuals/` | The ten bespoke canvas/SVG visuals (4 scene + 6 card) |
+| `src/data/portfolio.ts` | Canonical content record: experiences, projects, skills, education, contact |
+| `public/` | Static assets |
 
-## Tech Stack
+## Design Principles
 
-### Portfolio Website
-- Next.js 15 with App Router
-- React 19 and TypeScript
-- Tailwind CSS for styling
-- Framer Motion for animations
-- Responsive design patterns
+- **One dark world.** Near-black `#05070a`, phosphor green `#28c840`/`#9dffc4`, a cooler iridescent gradient for display type. The boot logs you in and you stay in the machine: no theme flips, no white flashes.
+- **The visuals are the proof.** Each scene/card animation depicts the actual work (the real protocol, the real pipeline), not decoration. HUD labels carry real numbers.
+- **Animation earns its frame.** Every loop is gated by IntersectionObserver, paused off-screen or on hidden tabs, and resolves to a designed static frame under `prefers-reduced-motion`.
+- **SSR-safe by construction.** Any render-time randomness uses a seeded RNG (mulberry32) so server and client markup match: no hydration mismatches, no `Math.random()` in render paths.
+- **Resume is the source of truth.** If the site and the resume disagree, the site is wrong.
+- **Copy rule:** no em dashes in visible text. En dashes only for date ranges.
+- **Ship via PR.** Branch, PR, merge; merging `main` deploys to johnsolon.com through Vercel. Never commit straight to main.
 
-### Core Expertise
-- **Embedded Systems**: C++, STM32, Real-time Programming
-- **Robotics**: ROS2, Sensor Fusion, LiDAR Integration
-- **Protocols**: SPI, I2C, UART, Custom RTOS
-- **AI/ML**: Computer Vision, Autonomous Navigation
-- **Tools**: Nvidia Jetson, Intel RealSense, G-Code Processing
+## Project Status
 
-## Education & Background
+| Stage | What | Status |
+| --- | --- | --- |
+| Dark Neo/Matrix redesign | Full visual system: tokens, backdrop, dark sections | ✅ |
+| Decryption boot intro | Pre-paint gate, boot overlay, dock, typed session | ✅ |
+| Experience scene visuals | QuantaRack, UbreakifixScreen, F1Lidar, NasaSatellite | ✅ |
+| Project card visuals | DualGame, RoboticArm, ParallelEdge, DnsResolver, SalaryModel, AggiePipeline | ✅ |
+| Resume sync | All site claims reconciled to the Aug 2026 resume | ✅ |
+| DraftMaster card | Dota 2 draft simulator card + bespoke visual | ⬜ |
+| Centavo card | Local-first finance tracker card + bespoke visual | ⬜ |
 
-- **University of California, Davis** - Bachelor of Science in Computer Science and Engineering (Expected 2025)
-- **GPA**: 3.5 in Computer Science and Engineering Department
-- **Focus Areas**: Embedded Systems, Real-time Systems, Robotics, Autonomous Systems
-- **Research**: Prof. Shima Nazari's CORE Lab - Autonomous Vehicle Systems
+## Documentation
 
-## Current Focus
-
-- Developing autonomous navigation systems for F1Tenth racing competition
-- Advancing computer vision pipelines for dynamic obstacle detection
-- Integrating multi-sensor fusion with LiDAR and depth camera technologies
-- Contributing to open-source robotics and embedded systems projects
-
-## Development
-
-```bash
-npm install
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) to view the portfolio in your browser.
-
----
-
-*"Building tomorrow's technology, one line of code at a time."*
+- [SYSTEM-DESIGN.md](SYSTEM-DESIGN.md): the developer map. Architecture flowchart, the flows that matter, a full render trace, subsystem deep dives, and the design-decision log.
+- [CLAUDE.md](CLAUDE.md): working agreements for AI-assisted development on this repo (identity, copy rules, structure, commands).
