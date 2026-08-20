@@ -134,7 +134,7 @@ Tokens live in `src/app/globals.css`: near-black background, ink ramp, phosphor 
 | --- | --- | --- | --- | --- |
 | Backdrop | Ambient streams rain + scanlines + vignette | green | `src/components/Backdrop.tsx` | ✅ |
 | Hero boot + terminal | Decrypt login, docked zsh session | green | `src/components/new/Hero.tsx` | ✅ |
-| QuantaRack | Server racks under burn-in, LED churn | green/amber | `src/components/new/visuals/QuantaRack.tsx` | ✅ |
+| QuantaRack | L11 validation wave: PXE boot, test, pass, escalation chips | green/amber | `src/components/new/visuals/QuantaRack.tsx` | ✅ |
 | UbreakifixScreen | Phone screen swap, crack to clean | green | `src/components/new/visuals/UbreakifixScreen.tsx` | ✅ |
 | F1Lidar | Particle-filter localization, LiDAR fan | amber | `src/components/new/visuals/F1Lidar.tsx` | ✅ |
 | NasaSatellite | Satellite over Earth, IMU telemetry | cyan/green | `src/components/new/visuals/NasaSatellite.tsx` | ✅ |
