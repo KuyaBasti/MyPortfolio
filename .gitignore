@@ -44,6 +44,3 @@ next-env.d.ts
 
 # cursor
 .cursor/
-
-# design mockups
-mockups/

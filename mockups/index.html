@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Apple-Inspired Mockups · Portfolio · John Sebastian Solon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", system-ui, sans-serif;
+    background: #f5f5f7;
+    color: #1d1d1f;
+    -webkit-font-smoothing: antialiased;
+    padding: 60px 32px 100px;
+  }
+  .container { max-width: 1280px; margin: 0 auto; }
+  header { text-align: center; margin-bottom: 60px; }
+  h1 {
+    font-size: clamp(40px, 5vw, 64px);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    margin-bottom: 16px;
+  }
+  header p {
+    font-size: 18px; color: #6e6e73;
+    max-width: 700px; margin: 0 auto;
+    line-height: 1.5;
+  }
+  .legend {
+    display: inline-flex; align-items: center; gap: 8px;
+    margin-top: 16px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px; color: #86868b;
+    padding: 6px 14px; border-radius: 999px;
+    background: #fff; border: 1px solid #e6e6e6;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
+  }
+  .card {
+    background: #fff;
+    border-radius: 22px;
+    overflow: hidden;
+    border: 1px solid #e6e6e6;
+    transition: transform .4s cubic-bezier(0.28,0.16,0.22,1),
+                box-shadow .4s;
+    text-decoration: none;
+    color: inherit;
+    display: flex; flex-direction: column;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 30px 60px -20px rgba(0,0,0,0.2);
+  }
+  .preview {
+    aspect-ratio: 16/10;
+    border-bottom: 1px solid #e6e6e6;
+    overflow: hidden;
+    position: relative;
+  }
+  .preview iframe {
+    width: 200%; height: 200%;
+    transform: scale(0.5);
+    transform-origin: top left;
+    border: none;
+    pointer-events: none;
+  }
+  .card-body { padding: 24px 26px 28px; flex: 1; display: flex; flex-direction: column; }
+  .card-num {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px; color: #0071e3;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .card-title {
+    font-size: 22px; font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 8px;
+  }
+  .card-desc {
+    font-size: 14px; color: #6e6e73; line-height: 1.55;
+    margin-bottom: 18px; flex: 1;
+  }
+  .card-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+  .tag {
+    font-size: 11px; padding: 3px 10px; border-radius: 999px;
+    background: #f5f5f7; color: #515154;
+  }
+  .card-cta {
+    color: #0071e3; font-size: 14px; font-weight: 500;
+    margin-top: auto;
+  }
+  .card-cta::after { content: " →"; transition: transform .2s; display: inline-block; }
+  .card:hover .card-cta::after { transform: translateX(3px); }
+
+  footer {
+    text-align: center; margin-top: 60px;
+    font-size: 13px; color: #86868b;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>Pick a direction.</h1>
+    <p>Apple-inspired explorations for your portfolio. The hybrid (#06) combines your favorite pieces from #1, #2, and #3. Click any card to open the full experience.</p>
+    <div class="legend">Click any card · Open full-screen mockup</div>
+  </header>
+
+  <div class="grid">
+
+    <a class="card" href="./6-hybrid.html" target="_blank" style="grid-column: 1 / -1; outline: 2px solid #0071e3; outline-offset: 4px;">
+      <div class="preview"><iframe src="./6-hybrid.html" loading="lazy"></iframe></div>
+      <div class="card-body">
+        <div class="card-num" style="color:#0071e3;">Mockup 06 · ★ Your hybrid</div>
+        <div class="card-title">The Hybrid — header of #1 + animations of #2 + colors of #3</div>
+        <div class="card-desc">Classic Apple hero structure (eyebrow + bold gradient heading + two CTA buttons), the full-viewport sticky cinematic scenes for each experience from #2 (server racks, soldering iron, F1 car with LiDAR sweep, satellite with orbit rings), and the iridescent shifting color transitions from #3 (pastel rainbow ambient blobs drifting across the whole page, plus the continuously-animated gradient text).</div>
+        <div class="card-tags">
+          <span class="tag">classic header</span><span class="tag">cinematic scenes</span><span class="tag">iridescent colors</span><span class="tag">pastel ambient</span>
+        </div>
+        <div class="card-cta">Open hybrid</div>
+      </div>
+    </a>
+
+    <a class="card" href="./1-classic-apple.html" target="_blank">
+      <div class="preview"><iframe src="./1-classic-apple.html" loading="lazy"></iframe></div>
+      <div class="card-body">
+        <div class="card-num">Mockup 01</div>
+        <div class="card-title">Classic Apple</div>
+        <div class="card-desc">The straight-from-apple.com vibe. Pure white, signature Apple blue, massive Inter display headings, smooth scroll-reveal animations. Sticky blurred nav. Closest to apple.com today.</div>
+        <div class="card-tags">
+          <span class="tag">white</span><span class="tag">apple blue</span><span class="tag">scroll-reveal</span><span class="tag">bento grid</span>
+        </div>
+        <div class="card-cta">View mockup</div>
+      </div>
+    </a>
+
+    <a class="card" href="./2-cinematic-light.html" target="_blank">
+      <div class="preview"><iframe src="./2-cinematic-light.html" loading="lazy"></iframe></div>
+      <div class="card-body">
+        <div class="card-num">Mockup 02</div>
+        <div class="card-title">Cinematic Light</div>
+        <div class="card-desc">Apple iPhone-page style. Each experience gets its own full-viewport panel with a side-by-side animated visual that holds in place while text scrolls. Most dramatic, most immersive.</div>
+        <div class="card-tags">
+          <span class="tag">full-viewport</span><span class="tag">sticky scenes</span><span class="tag">side-by-side</span><span class="tag">parallax</span>
+        </div>
+        <div class="card-cta">View mockup</div>
+      </div>
+    </a>
+
+    <a class="card" href="./3-liquid-glass.html" target="_blank">
+      <div class="preview"><iframe src="./3-liquid-glass.html" loading="lazy"></iframe></div>
+      <div class="card-body">
+        <div class="card-num">Mockup 03</div>
+        <div class="card-title">Liquid Glass</div>
+        <div class="card-desc">Apple Intelligence / iOS 26 vibe. Pastel rainbow ambient blobs, frosted-glass cards with iridescent borders, gradient text that shifts. Floating pill nav. Dreamiest, most modern.</div>
+        <div class="card-tags">
+          <span class="tag">glassmorphism</span><span class="tag">pastel orbs</span><span class="tag">iridescent</span><span class="tag">floating nav</span>
+        </div>
+        <div class="card-cta">View mockup</div>
+      </div>
+    </a>
+
+    <a class="card" href="./4-monochrome-editorial.html" target="_blank">
+      <div class="preview"><iframe src="./4-monochrome-editorial.html" loading="lazy"></iframe></div>
+      <div class="card-body">
+        <div class="card-num">Mockup 04</div>
+        <div class="card-title">Monochrome Editorial</div>
+        <div class="card-desc">apple.com/design or fashion-magazine vibe. Pure black on pure white. Massive editorial typography with italic accents. Hairline borders, table-style experience layout, deeply minimal.</div>
+        <div class="card-tags">
+          <span class="tag">black &amp; white</span><span class="tag">editorial</span><span class="tag">hairline</span><span class="tag">minimal</span>
+        </div>
+        <div class="card-cta">View mockup</div>
+      </div>
+    </a>
+
+    <a class="card" href="./5-bento-forward.html" target="_blank">
+      <div class="preview"><iframe src="./5-bento-forward.html" loading="lazy"></iframe></div>
+      <div class="card-body">
+        <div class="card-num">Mockup 05</div>
+        <div class="card-title">Bento Forward</div>
+        <div class="card-desc">Apple Mac mini / AirPods Pro vibe. Short hero, then a giant bento grid where everything — projects and experiences — sits as a colorful tile. Vibrant per-tile gradients, App Store energy.</div>
+        <div class="card-tags">
+          <span class="tag">bento grid</span><span class="tag">vibrant tiles</span><span class="tag">mixed sizes</span><span class="tag">app store</span>
+        </div>
+        <div class="card-cta">View mockup</div>
+      </div>
+    </a>
+
+  </div>
+
+  <footer>
+    All mockups are self-contained HTML — open them directly to test full animations and responsive layouts.
+  </footer>
+</div>
+
+</body>
+</html>

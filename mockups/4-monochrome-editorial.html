@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mockup 4 — Monochrome Editorial · John Sebastian Solon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", system-ui, sans-serif;
+    background: #fff;
+    color: #000;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    font-weight: 400;
+  }
+  a { color: inherit; text-decoration: none; }
+  .mono { font-family: "JetBrains Mono", ui-monospace, monospace; }
+
+  /* NAV */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    height: 60px;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid #e6e6e6;
+  }
+  .nav-inner {
+    max-width: 1440px; height: 100%;
+    margin: 0 auto; padding: 0 40px;
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .nav-brand { font-weight: 700; }
+  .nav-links { display: flex; gap: 36px; }
+  .nav-links a { position: relative; transition: color .2s; }
+  .nav-links a::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: -4px;
+    height: 1px; background: #000; transform: scaleX(0); transform-origin: left;
+    transition: transform .3s cubic-bezier(0.28,0.16,0.22,1);
+  }
+  .nav-links a:hover::after { transform: scaleX(1); }
+  .nav-meta { display: flex; gap: 24px; opacity: 0.5; }
+
+  /* HERO — editorial cover style */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    padding: 88px 40px 40px;
+    border-bottom: 1px solid #e6e6e6;
+  }
+  .hero-top {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;
+    color: #888;
+    border-bottom: 1px solid #e6e6e6;
+    padding-bottom: 16px;
+    margin-bottom: 40px;
+  }
+  .hero-top .vol { font-weight: 600; color: #000; }
+  .hero-center {
+    display: flex; align-items: center;
+    padding: 40px 0;
+  }
+  .hero h1 {
+    font-size: clamp(80px, 13vw, 220px);
+    font-weight: 800;
+    line-height: 0.82;
+    letter-spacing: -0.045em;
+    margin: 0;
+  }
+  .hero h1 .line {
+    display: block;
+    opacity: 0; transform: translateY(40px);
+    animation: rise 1.1s cubic-bezier(0.28,0.16,0.22,1) forwards;
+  }
+  .hero h1 .line:nth-child(1) { animation-delay: 0.1s; }
+  .hero h1 .line:nth-child(2) { animation-delay: 0.25s; }
+  .hero h1 .line:nth-child(3) { animation-delay: 0.4s; font-style: italic; font-weight: 300; letter-spacing: -0.03em; }
+  @keyframes rise { to { opacity: 1; transform: translateY(0); } }
+
+  .hero-bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 32px;
+    padding-top: 24px;
+    border-top: 1px solid #e6e6e6;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .hero-bottom .lbl {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em;
+    color: #888; margin-bottom: 6px;
+  }
+  .hero-bottom .val {
+    font-size: 14px;
+  }
+  @media (max-width: 880px) {
+    .hero-bottom { grid-template-columns: 1fr 1fr; }
+    .hero { padding: 88px 24px 32px; }
+  }
+
+  /* SECTION */
+  .section {
+    padding: 120px 40px;
+    max-width: 1440px; margin: 0 auto;
+    border-bottom: 1px solid #e6e6e6;
+  }
+  @media (max-width: 880px) { .section { padding: 80px 24px; } }
+  .section-head {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 60px;
+    margin-bottom: 80px;
+    align-items: end;
+  }
+  @media (max-width: 880px) { .section-head { grid-template-columns: 1fr; gap: 24px; } }
+  .section-num {
+    font-size: 13px; font-weight: 600;
+    border-top: 1px solid #000;
+    padding-top: 12px;
+    letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .section-title {
+    font-size: clamp(48px, 7vw, 96px);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.035em;
+  }
+  .section-title .it { font-style: italic; font-weight: 300; }
+
+  /* EXPERIENCE — editorial table */
+  .exp-list {
+    border-top: 1px solid #000;
+  }
+  .exp-row {
+    border-bottom: 1px solid #e6e6e6;
+    padding: 36px 0;
+    display: grid;
+    grid-template-columns: 100px 200px 1fr 150px;
+    gap: 32px;
+    align-items: start;
+    transition: padding .4s cubic-bezier(0.28,0.16,0.22,1);
+    position: relative;
+    cursor: pointer;
+  }
+  .exp-row::before {
+    content: ""; position: absolute; left: 0; top: 0; height: 100%;
+    width: 100%;
+    background: #f5f5f5;
+    transform: scaleX(0); transform-origin: left;
+    transition: transform .5s cubic-bezier(0.28,0.16,0.22,1);
+    z-index: -1;
+  }
+  .exp-row:hover::before { transform: scaleX(1); }
+  .exp-row:hover { padding-left: 20px; padding-right: 20px; }
+  .exp-num {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: #888;
+  }
+  .exp-when {
+    font-size: 14px; letter-spacing: -0.005em;
+  }
+  .exp-when .when-end {
+    color: #888; font-size: 12px; margin-top: 4px;
+  }
+  .exp-detail .role {
+    font-size: 28px; font-weight: 600; letter-spacing: -0.015em;
+    line-height: 1.1; margin-bottom: 6px;
+  }
+  .exp-detail .co {
+    font-size: 15px; color: #555;
+    margin-bottom: 14px;
+  }
+  .exp-detail .points {
+    list-style: none;
+  }
+  .exp-detail .points li {
+    font-size: 14px; line-height: 1.55; color: #333;
+    margin-bottom: 6px; padding-left: 16px; position: relative;
+  }
+  .exp-detail .points li::before {
+    content: "→"; position: absolute; left: 0; color: #000;
+  }
+  .exp-loc {
+    text-align: right;
+    font-size: 13px; color: #555;
+  }
+  @media (max-width: 880px) {
+    .exp-row { grid-template-columns: 1fr; gap: 12px; padding: 28px 0; }
+    .exp-row:hover { padding-left: 0; padding-right: 0; }
+    .exp-loc { text-align: left; }
+  }
+
+  /* PROJECTS — editorial grid */
+  .proj-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px 60px;
+  }
+  @media (max-width: 880px) { .proj-list { grid-template-columns: 1fr; gap: 60px; } }
+  .proj {
+    display: block;
+    transition: transform .5s cubic-bezier(0.28,0.16,0.22,1);
+  }
+  .proj:hover { transform: translateY(-4px); }
+  .proj-figure {
+    aspect-ratio: 5/4;
+    background: #f5f5f5;
+    border: 1px solid #e6e6e6;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 24px;
+    transition: border-color .3s;
+  }
+  .proj:hover .proj-figure { border-color: #000; }
+  .proj-meta {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 8px;
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: #888;
+  }
+  .proj-meta .num { font-weight: 600; color: #000; }
+  .proj-title {
+    font-size: 32px; font-weight: 600; letter-spacing: -0.015em;
+    line-height: 1.1; margin-bottom: 12px;
+  }
+  .proj-desc { font-size: 15px; color: #555; line-height: 1.55; max-width: 480px; }
+  .proj-tech {
+    margin-top: 16px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px; color: #888;
+    border-top: 1px solid #e6e6e6;
+    padding-top: 12px;
+  }
+
+  /* PROJECT VISUALS — pure mono */
+  .pv-dual {
+    display: flex; align-items: center; justify-content: center;
+    gap: 32px; background: #fafafa;
+  }
+  .pv-dual .screen {
+    width: 100px; height: 130px; border: 1.5px solid #000;
+    background: #fff; position: relative;
+  }
+  .pv-dual .screen::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 14px;
+    border-bottom: 1px solid #000;
+  }
+  .pv-dual .dot {
+    position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%);
+    width: 10px; height: 10px; border-radius: 50%; background: #000;
+    animation: dotPulse 1.6s ease-in-out infinite;
+  }
+  .pv-dual .screen:nth-child(2) .dot { animation-delay: 0.8s; }
+  @keyframes dotPulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    50%      { transform: translate(-50%, -50%) scale(2); opacity: 0.2; }
+  }
+  .pv-dual .wire {
+    width: 60px; height: 1px; background: #000; position: relative;
+    overflow: hidden;
+  }
+  .pv-dual .wire::after {
+    content: ""; position: absolute; left: -25%; top: -2px;
+    width: 25%; height: 5px; background: #000;
+    animation: wireMove 1.6s linear infinite;
+  }
+  @keyframes wireMove { from { left: -25%; } to { left: 125%; } }
+
+  .pv-arm {
+    background: #fafafa;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .pv-arm .rig { width: 160px; height: 160px; position: relative; }
+  .pv-arm .rig::before {
+    content: ""; position: absolute; bottom: 6px; left: 50%; transform: translateX(-50%);
+    width: 80px; height: 4px; background: #000;
+  }
+  .pv-arm .s1 {
+    position: absolute; bottom: 10px; left: 50%; width: 4px; height: 88px;
+    background: #000; transform-origin: bottom center;
+    animation: armSwing 4s ease-in-out infinite;
+  }
+  .pv-arm .s2 {
+    position: absolute; top: -64px; left: -1px; width: 4px; height: 68px;
+    background: #000; transform-origin: bottom center;
+    animation: armSwing2 4s ease-in-out infinite;
+  }
+  .pv-arm .tip {
+    position: absolute; top: -8px; left: -6px; width: 16px; height: 16px;
+    border-radius: 50%; background: #000;
+  }
+  @keyframes armSwing { 0%, 100% { transform: translateX(-50%) rotate(-15deg); } 50% { transform: translateX(-50%) rotate(20deg); } }
+  @keyframes armSwing2 { 0%, 100% { transform: rotate(35deg); } 50% { transform: rotate(-25deg); } }
+
+  .pv-edge {
+    background: #fafafa;
+    display: flex; align-items: center; justify-content: center;
+    gap: 28px;
+  }
+  .pv-edge .grid {
+    display: grid; grid-template-columns: repeat(8, 1fr); gap: 1px;
+    width: 96px; height: 96px;
+  }
+  .pv-edge .grid div {
+    background: #e6e6e6;
+    animation: edgeFlash 3s ease-in-out infinite;
+  }
+  .pv-edge .grid div:nth-child(3n) { animation-delay: 0.4s; }
+  .pv-edge .grid div:nth-child(5n) { animation-delay: 0.8s; }
+  .pv-edge .grid div:nth-child(7n) { animation-delay: 1.2s; }
+  @keyframes edgeFlash {
+    0%, 100% { background: #e6e6e6; }
+    50%      { background: #000; }
+  }
+  .pv-edge .arr { font-size: 28px; font-weight: 300; }
+  .pv-edge .out {
+    width: 96px; height: 96px; border: 1.5px solid #000;
+    animation: edgePulse 3s ease-in-out infinite;
+  }
+  @keyframes edgePulse {
+    0%, 100% { border-radius: 16px; }
+    50%      { border-radius: 2px; }
+  }
+
+  .pv-dns {
+    background: #fafafa;
+    display: flex; align-items: center; justify-content: center;
+    gap: 16px;
+  }
+  .pv-dns .node {
+    width: 56px; height: 56px; border-radius: 50%;
+    border: 1.5px solid #000;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 600;
+    position: relative;
+  }
+  .pv-dns .node::after {
+    content: ""; position: absolute; inset: -8px;
+    border: 1px solid #000; border-radius: 50%;
+    opacity: 0; animation: dnsRing 2.4s ease-out infinite;
+  }
+  .pv-dns .node:nth-child(2)::after { animation-delay: 0.8s; }
+  .pv-dns .node:nth-child(3)::after { animation-delay: 1.6s; }
+  @keyframes dnsRing {
+    0%   { transform: scale(0.7); opacity: 0.8; }
+    100% { transform: scale(2.0); opacity: 0; }
+  }
+  .pv-dns .arr { font-size: 22px; font-weight: 300; }
+
+  .pv-ml {
+    background: #fafafa;
+    display: flex; align-items: flex-end; justify-content: center;
+    padding-bottom: 50px; gap: 8px;
+  }
+  .pv-ml .bar {
+    width: 14px; background: #000;
+    animation: mlGrow 2s ease-in-out infinite;
+  }
+  .pv-ml .bar:nth-child(1) { height: 50px; }
+  .pv-ml .bar:nth-child(2) { height: 75px; animation-delay: .2s; }
+  .pv-ml .bar:nth-child(3) { height: 60px; animation-delay: .4s; }
+  .pv-ml .bar:nth-child(4) { height: 110px; animation-delay: .6s; }
+  .pv-ml .bar:nth-child(5) { height: 85px; animation-delay: .8s; }
+  .pv-ml .bar:nth-child(6) { height: 135px; animation-delay: 1.0s; }
+  .pv-ml .bar:nth-child(7) { height: 115px; animation-delay: 1.2s; }
+  @keyframes mlGrow {
+    0%, 100% { transform: scaleY(.85); }
+    50%      { transform: scaleY(1); }
+  }
+
+  .pv-aggie {
+    background: #fafafa;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .pv-aggie .stack { display: flex; flex-direction: column; gap: 8px; }
+  .pv-aggie .nt {
+    background: #fff; border: 1.5px solid #000;
+    padding: 14px 18px; min-width: 240px;
+    display: flex; gap: 14px; align-items: center;
+    animation: notifSlide 4s ease-in-out infinite;
+  }
+  .pv-aggie .nt:nth-child(2) { animation-delay: .5s; }
+  .pv-aggie .nt:nth-child(3) { animation-delay: 1.0s; }
+  .pv-aggie .ic {
+    width: 32px; height: 32px; background: #000; flex-shrink: 0;
+  }
+  .pv-aggie .t1 { font-size: 13px; font-weight: 600; }
+  .pv-aggie .t2 { font-size: 11px; color: #555; margin-top: 2px; }
+  @keyframes notifSlide {
+    0%, 100% { transform: translateX(-10px); opacity: 0; }
+    20%, 80% { transform: translateX(0); opacity: 1; }
+  }
+
+  /* QUOTE */
+  .pull-quote {
+    padding: 160px 40px;
+    max-width: 1440px; margin: 0 auto;
+    text-align: center;
+    border-bottom: 1px solid #e6e6e6;
+  }
+  .pull-quote q {
+    font-size: clamp(40px, 6vw, 80px);
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+    display: block;
+    max-width: 1100px;
+    margin: 0 auto 32px;
+  }
+  .pull-quote q::before { content: """; }
+  .pull-quote q::after  { content: """; }
+  .pull-quote cite {
+    font-size: 12px; font-style: normal;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: #888;
+  }
+
+  /* CONTACT */
+  .contact {
+    padding: 160px 40px;
+    max-width: 1440px; margin: 0 auto;
+    text-align: center;
+  }
+  .contact h2 {
+    font-size: clamp(72px, 11vw, 180px);
+    font-weight: 800;
+    line-height: 0.9;
+    letter-spacing: -0.045em;
+    margin-bottom: 32px;
+  }
+  .contact h2 .it { font-style: italic; font-weight: 300; }
+  .contact p {
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #555;
+    margin-bottom: 40px;
+  }
+  .contact-cta {
+    display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+  }
+  .ed-btn {
+    padding: 18px 36px;
+    border: 1.5px solid #000;
+    font-size: 13px; font-weight: 500;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    transition: background .25s, color .25s;
+    position: relative; overflow: hidden;
+  }
+  .ed-btn.dark { background: #000; color: #fff; }
+  .ed-btn:hover { background: #fff; color: #000; }
+  .ed-btn:not(.dark):hover { background: #000; color: #fff; }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid #000;
+    padding: 40px;
+    display: flex; justify-content: space-between;
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: #555;
+  }
+  @media (max-width: 720px) { footer { flex-direction: column; gap: 12px; padding: 24px; } }
+
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-brand">John Sebastian Solon — Portfolio</div>
+    <div class="nav-links">
+      <a href="#exp">Experience</a>
+      <a href="#proj">Work</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="nav-meta mono">
+      <span>Vol. 04</span><span>2026</span>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-top">
+    <span><span class="vol">VOL. 04</span> · ISSUE NO. 01</span>
+    <span>YUBA CITY · CALIFORNIA · MMXXVI</span>
+    <span>JSS / PORTFOLIO</span>
+  </div>
+
+  <div class="hero-center">
+    <h1>
+      <span class="line">A study in</span>
+      <span class="line">software, silicon,</span>
+      <span class="line">&amp; precision.</span>
+    </h1>
+  </div>
+
+  <div class="hero-bottom">
+    <div>
+      <div class="lbl">Name</div>
+      <div class="val">John Sebastian Solon</div>
+    </div>
+    <div>
+      <div class="lbl">Discipline</div>
+      <div class="val">Software &amp; Embedded Engineer</div>
+    </div>
+    <div>
+      <div class="lbl">Education</div>
+      <div class="val">UC Davis, CSE '25</div>
+    </div>
+    <div>
+      <div class="lbl">Available</div>
+      <div class="val">For new work, 2026</div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="exp">
+  <div class="section-head">
+    <div class="section-num mono">§ 01 / EXPERIENCE</div>
+    <h2 class="section-title">A career, <span class="it">in motion.</span></h2>
+  </div>
+
+  <div class="exp-list">
+    <article class="exp-row">
+      <div class="exp-num mono">01</div>
+      <div class="exp-when mono">
+        <div>APR 2026</div>
+        <div class="when-end">→ PRESENT</div>
+      </div>
+      <div class="exp-detail">
+        <div class="role">Test Technician</div>
+        <div class="co">Quanta Manufacturing</div>
+        <ul class="points">
+          <li>Support qualification and high-volume production of servers and rack systems.</li>
+          <li>Linux &amp; Python diagnostics to troubleshoot defects and improve manufacturing yields.</li>
+          <li>Install and verify new test scripts with corporate R&amp;D; author process instructions.</li>
+        </ul>
+      </div>
+      <div class="exp-loc">Fremont, CA</div>
+    </article>
+
+    <article class="exp-row">
+      <div class="exp-num mono">02</div>
+      <div class="exp-when mono">
+        <div>JUL 2025</div>
+        <div class="when-end">→ APR 2026</div>
+      </div>
+      <div class="exp-detail">
+        <div class="role">Electronics Technician</div>
+        <div class="co">ubreakifix by Asurion</div>
+        <ul class="points">
+          <li>Diagnosed and repaired phones, tablets, laptops, and consoles.</li>
+          <li>Board-level repairs: HDMI replacement, fine-pitch soldering, I/O troubleshooting.</li>
+        </ul>
+      </div>
+      <div class="exp-loc">Yuba City, CA</div>
+    </article>
+
+    <article class="exp-row">
+      <div class="exp-num mono">03</div>
+      <div class="exp-when mono">
+        <div>JAN 2025</div>
+        <div class="when-end">→ JUL 2025</div>
+      </div>
+      <div class="exp-detail">
+        <div class="role">Software Engineer Intern</div>
+        <div class="co">UCD CORE Lab — F1Tenth</div>
+        <ul class="points">
+          <li>ROS2 autonomous racing platform at 20+ mph with Monte Carlo localization.</li>
+          <li>LiDAR–camera fusion + CNN segmentation; 30% improvement in lap consistency.</li>
+        </ul>
+      </div>
+      <div class="exp-loc">Davis, CA</div>
+    </article>
+
+    <article class="exp-row">
+      <div class="exp-num mono">04</div>
+      <div class="exp-when mono">
+        <div>SEP 2023</div>
+        <div class="when-end">→ JAN 2025</div>
+      </div>
+      <div class="exp-detail">
+        <div class="role">Firmware Engineer</div>
+        <div class="co">NASA — Space and Satellite Systems</div>
+        <ul class="points">
+          <li>Bare-metal ASM330LHH IMU drivers in C across multiple flight board revisions.</li>
+          <li>Dual-IMU redundancy with health checks; 40% better attitude sensing reliability.</li>
+          <li>FreeRTOS sensor acquisition at 6.6 kHz with 99.9% timing accuracy.</li>
+        </ul>
+      </div>
+      <div class="exp-loc">Davis, CA</div>
+    </article>
+  </div>
+</section>
+
+<section class="pull-quote">
+  <q>The best engineers write code that respects the metal it runs on.</q>
+  <cite>— Working philosophy</cite>
+</section>
+
+<section class="section" id="proj">
+  <div class="section-head">
+    <div class="section-num mono">§ 02 / WORK</div>
+    <h2 class="section-title">Selected <span class="it">projects.</span></h2>
+  </div>
+
+  <div class="proj-list">
+    <article class="proj">
+      <div class="proj-figure pv-dual">
+        <div class="screen"><div class="dot"></div></div>
+        <div class="wire"></div>
+        <div class="screen"><div class="dot"></div></div>
+      </div>
+      <div class="proj-meta mono">
+        <span class="num">No. 01</span><span>Embedded · IoT</span>
+      </div>
+      <h3 class="proj-title">DUAL! Inspired Game</h3>
+      <p class="proj-desc">A two-player real-time embedded game on CC3200 microcontrollers with SPI OLED rendering, a custom UART protocol for synchronized gameplay, and AWS-backed score persistence.</p>
+      <div class="proj-tech">C · ARM Cortex-M4 · SPI · UART · I2C · AWS IoT · Lambda · Flask</div>
+    </article>
+
+    <article class="proj">
+      <div class="proj-figure pv-arm">
+        <div class="rig"><div class="s1"><div class="s2"><div class="tip"></div></div></div></div>
+      </div>
+      <div class="proj-meta mono">
+        <span class="num">No. 02</span><span>Embedded · Kinematics</span>
+      </div>
+      <h3 class="proj-title">Robotic Arm</h3>
+      <p class="proj-desc">A 2-link planar robotic arm interpreting G-code commands with real-time inverse kinematics, linear and circular arc interpolation, and direct RS-232 servo control.</p>
+      <div class="proj-tech">C++ · Inverse Kinematics · G-code Parser · RS-232</div>
+    </article>
+
+    <article class="proj">
+      <div class="proj-figure pv-edge">
+        <div class="grid">
+          <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+          <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+          <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+          <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+          <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+          <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+          <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+          <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+        </div>
+        <span class="arr">→</span>
+        <div class="out"></div>
+      </div>
+      <div class="proj-meta mono">
+        <span class="num">No. 03</span><span>Parallel · GPU</span>
+      </div>
+      <h3 class="proj-title">Parallel Edge Detection</h3>
+      <p class="proj-desc">A Sobel edge detection pipeline across sequential, OpenMP+SIMD, and CUDA implementations with optimized memory coalescing — 15× speedup over baseline.</p>
+      <div class="proj-tech">C++20 · CUDA · OpenMP · Intel AVX2 · CMake · Google Test</div>
+    </article>
+
+    <article class="proj">
+      <div class="proj-figure pv-dns">
+        <div class="node">.</div>
+        <span class="arr">→</span>
+        <div class="node">TLD</div>
+        <span class="arr">→</span>
+        <div class="node">A</div>
+      </div>
+      <div class="proj-meta mono">
+        <span class="num">No. 04</span><span>Systems · Networking</span>
+      </div>
+      <h3 class="proj-title">High-Performance DNS Resolver</h3>
+      <p class="proj-desc">A thread-safe recursive DNS resolver in Go with hash-partitioned caching, RWMutex isolation, smart nameserver selection, and full A/AAAA/NS/CNAME/SOA/PTR support.</p>
+      <div class="proj-tech">Go · DNS Protocol · RWMutex · Caching</div>
+    </article>
+
+    <article class="proj">
+      <div class="proj-figure pv-ml">
+        <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+        <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+      </div>
+      <div class="proj-meta mono">
+        <span class="num">No. 05</span><span>Machine Learning</span>
+      </div>
+      <h3 class="proj-title">Salary Prediction Model</h3>
+      <p class="proj-desc">A salary prediction system using demographic and professional features across 6,684 records. Random Forest reached R²=0.848 and is served through a Flask web interface.</p>
+      <div class="proj-tech">Python · scikit-learn · Flask · Pandas · NumPy</div>
+    </article>
+
+    <article class="proj">
+      <div class="proj-figure pv-aggie">
+        <div class="stack">
+          <div class="nt"><div class="ic"></div><div><div class="t1">Shift reminder</div><div class="t2">Tomorrow, 9:00 AM</div></div></div>
+          <div class="nt"><div class="ic"></div><div><div class="t1">Hours logged</div><div class="t2">4.5h this week</div></div></div>
+        </div>
+      </div>
+      <div class="proj-meta mono">
+        <span class="num">No. 06</span><span>Full-stack · HackDavis</span>
+      </div>
+      <h3 class="proj-title">Aggie Reminder</h3>
+      <p class="proj-desc">A volunteer management system built at HackDavis '24, tracking hours and sending automated email reminders two days before each event via SendGrid and Apps Script.</p>
+      <div class="proj-tech">Node.js · Express · PostgreSQL · SendGrid · Apps Script</div>
+    </article>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <h2>Let's <span class="it">make.</span></h2>
+  <p>jsvsolon@gmail.com</p>
+  <div class="contact-cta">
+    <a class="ed-btn dark" href="mailto:jsvsolon@gmail.com">Send an email</a>
+    <a class="ed-btn" href="https://github.com/KuyaBasti">GitHub</a>
+    <a class="ed-btn" href="https://linkedin.com/in/jssolon">LinkedIn</a>
+  </div>
+</section>
+
+<footer>
+  <span>© MMXXVI · John Sebastian Solon</span>
+  <span>Set in Inter. Designed with intent.</span>
+</footer>
+
+</body>
+</html>
