@@ -14,7 +14,11 @@ Merging `main` deploys johnsolon.com via Vercel. This skill therefore ends at th
    **No AI co-author trailers.**
 4. Push and open the PR with `gh pr create`: summary of what changed and how it
    was verified.
-5. Hand John the PR link and **stop**.
+5. Hand John the PR link.
+6. Open the companion docs PR: branch again (`docs-*`), update the README.md /
+   SYSTEM-DESIGN.md rows that describe the changed area, `gh pr create`. Code and
+   docs are always two separate PRs (the PR #24 / PR #25 pattern), and both wait
+   for John's approval.
 
 ## Hard rule
 

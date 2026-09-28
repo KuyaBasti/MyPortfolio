@@ -21,9 +21,11 @@ points here. Workflow playbooks live in `.claude/skills/`, subagent definitions 
 
 ## Standing Rules (non-negotiable)
 
-1. **Ship via PR.** Branch, commit, `gh pr create` to `main`, hand over the link, stop.
-   Merging `main` deploys to johnsolon.com via Vercel. **Never merge a PR without
-   John's explicit approval, given per PR.**
+1. **Ship via PR, always as a pair.** Branch, commit, `gh pr create` to `main`, hand
+   over the link, stop. Every code PR gets a companion docs PR (`docs-*` branch)
+   updating README.md / SYSTEM-DESIGN.md to reflect it, the way PR #24 (code) was
+   followed by PR #25 (docs). Merging `main` deploys to johnsolon.com via Vercel.
+   **Never merge a PR without John's explicit approval, given per PR.**
 2. **No AI co-author trailers** in commit messages.
 3. **One change at a time, John picks.** Design and copy changes are proposed as
    options (usually 3 prototypes); never a bundled sweep or wholesale redesign.
