@@ -45,5 +45,13 @@ next-env.d.ts
 # cursor
 .cursor/
 
+# claude code: local config stays untracked; skills/ and agents/ are committed
+.claude/*
+!.claude/skills/
+!.claude/agents/
+
+# local design prototypes (never shipped)
+/public/prototypes/
+
 # design mockups
 mockups/
