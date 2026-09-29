@@ -39,7 +39,7 @@ flowchart TD
 
     subgraph CONTENT["content layer"]
         DATA["src/data/portfolio.ts<br/>canonical record"]
-        RESUME["resume, Aug 2026<br/>source of truth"] --> DATA
+        RESUME["resume, Sept 2026<br/>source of truth"] --> DATA
         HERO["Hero<br/>headline + terminal"]
         EXP["Experience<br/>4 curated scenes"]
         PROJ["Projects<br/>6-card bento grid"]
@@ -118,7 +118,7 @@ Ten visuals share one skeleton (DPR sizing, IO gating, 30 ms loop, static reduce
 
 - **Seeded randomness for anything SSR-rendered.** Star fields and rack layouts that render as SVG/DOM use `mulberry32` with a fixed seed so hydration matches. Canvas-only state may use `Math.random()` freely because it never renders on the server.
 - **Real mechanics over mood.** Each visual simulates the actual system: the DNS walk really walks root to TLD to authoritative and caches the answer; the edge-detection sweep runs a real Sobel convolution on a procedural scene; the arm solves real two-link inverse kinematics with a fixed elbow branch so it cannot flip solutions.
-- **HUD numbers are claims.** Anything printed in a visual's HUD (`4,000 particles @ 40Hz`, `100 ms · deterministic`, `launch Sept 2026`) must match the resume, same as body copy.
+- **HUD numbers are claims.** Anything printed in a visual's HUD (`4,000 particles · 240K rays`, `100 ms · deterministic`, `launch Sept 2026`, `racks 286/400`) must match the resume, same as body copy. When the resume drops a claim, its HUD label goes too.
 
 ### 4. Content pipeline
 
@@ -173,6 +173,6 @@ Tokens live in `src/app/globals.css`: near-black background, ink ramp, phosphor 
 | 3 | Four Experience scene visuals | ✅ |
 | 4 | Six Project card visuals | ✅ |
 | 5 | Structural trims: hero dedup, stats band removal, scroll unpin | ✅ |
-| 6 | Resume sync: every claim reconciled to the Aug 2026 resume | ✅ |
+| 6 | Resume sync: every claim reconciled to the Aug 2026 resume, re-synced to the Sept 2026 resume | ✅ |
 | 7 | DraftMaster + Centavo cards with bespoke visuals | ⬜ |
 | 8 | Copy dedup pass (hero sub, repeated tagline) | ⬜ |

@@ -4,7 +4,7 @@
 
 First visit: a decryption boot sequence plays (handshake, key decrypt, ACCESS GRANTED), docks itself into a macOS-style terminal, and types a real shell session. Behind everything, a calm "streams" of Matrix code rains down. Every job and project gets its own hand-built canvas animation: a satellite bound for orbit, a two-screen space shooter, a LiDAR race car, a recursive DNS walk. No stock art, no screenshots, no template.
 
-> **Status:** live in production on Vercel. All four experience scenes and all six project cards have bespoke visuals. Every number on the site matches the August 2026 resume. Two resume projects (DraftMaster, Centavo) do not have cards yet.
+> **Status:** live in production on Vercel. All four experience scenes and all six project cards have bespoke visuals. Every number on the site matches the September 2026 resume. Two newer projects (DraftMaster, Centavo) do not have cards yet.
 
 ## Table of Contents
 
@@ -20,9 +20,9 @@ First visit: a decryption boot sequence plays (handshake, key decrypt, ACCESS GR
 A single-page Next.js 15 (App Router) site: **Navbar · Hero · Experience (01) · Projects (02) · About (03) · Skills (04) · Contact**, all rendered over a page-wide ambient rain backdrop.
 
 - **Hero**: split layout. Big iridescent headline on the left, a working terminal on the right that types `whoami`, `cat role.txt`, and `./launch_portfolio.sh`. The boot intro plays **once per session** and is skippable; returning visitors land on the completed session instantly (replay with `?intro=play`).
-- **Experience**: four full-viewport scenes (Quanta, ubreakifix, F1Tenth, NASA), each pairing curated copy with a bespoke animated visual: a burn-in server rack, a phone screen repair, a particle-filter LiDAR map, a satellite over Earth.
+- **Experience**: four full-viewport scenes (Quanta, uBreakiFix, F1Tenth, NASA), each pairing curated copy with a bespoke animated visual: a rack validation wave, a phone screen repair, a particle-filter LiDAR map, a satellite over Earth.
 - **Projects**: a six-card bento grid where every card header is a live canvas: the DUAL! two-screen shooter, a G-code console plotter, a parallel Sobel row sweep, a recursive DNS resolution walk, a neural-net forward pass, and a Postgres-to-SendGrid reminder pipeline.
-- **Claims**: every metric shown (**4,000 particles @ 40 Hz**, **100 ms deterministic cadence**, **~15x speedup**, **160 to 300+ racks/mo**) comes from the resume, which is the source of truth.
+- **Claims**: every metric shown (**4,000 particles, 240K ray casts per update**, **100 ms deterministic cadence**, **~15x on the CPU engine**, **160 to 400+ racks/mo**) comes from the resume, which is the source of truth.
 
 ## How a Visit Works, End to End
 
@@ -82,7 +82,7 @@ scroll: each canvas visual wakes only while on-screen
 | Decryption boot intro | Pre-paint gate, boot overlay, dock, typed session | ✅ |
 | Experience scene visuals | QuantaRack, UbreakifixScreen, F1Lidar, NasaSatellite | ✅ |
 | Project card visuals | DualGame, RoboticArm, ParallelEdge, DnsResolver, SalaryModel, AggiePipeline | ✅ |
-| Resume sync | All site claims reconciled to the Aug 2026 resume | ✅ |
+| Resume sync | All site claims reconciled to the Aug 2026 resume, then re-synced to the Sept 2026 resume | ✅ |
 | DraftMaster card | Dota 2 draft simulator card + bespoke visual | ⬜ |
 | Centavo card | Local-first finance tracker card + bespoke visual | ⬜ |
 
