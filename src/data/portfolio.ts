@@ -117,21 +117,21 @@ export const experiences: Experience[] = [
         location: "Fremont, CA",
         date: "April 2026 \u2013 Present",
         details: [
-            "Developed Python and Bash automation scripts for hardware, firmware, and network validation, cutting manual testing by 70\u201380% and raising first-pass yield to ~80%",
-            "Co-lead 30 technicians on night shift validating L10 (node) and L11 (rack) GB200/GB300 servers and NVSwitches for Oracle Cloud Infrastructure, roughly doubling validated output from 160 to 300+ racks per month",
-            "Primary escalation point for line outages, root-causing failures across PXE servers, console switches, and power systems; author SOPs converting multi-day diagnoses into routine fixes",
+            "Co-lead 30 technicians on night shift validating Nvidia GB200/GB300 NVL72 racks at node (L10) and rack (L11) level for a hyperscaler customer, increasing output from 160 to 400+ racks per month",
+            "Own the rollout of diag and firmware releases into production: Bash rsync deploys for L10 and L11 with backup-then-verify, an exclude list that strips logs and per-serial test state so only code ships, and propagation to every peer PXE server so the whole line runs one version",
+            "Isolate control runs so new firmware and diag qualify on the live production line without contaminating it: a serial-keyed lock-out flag the production flow honors, PXE-side process interception, and MAC-keyed iPXE redirection that boots one tray to a different payload while the rest of the line is untouched",
+            "Primary escalation point for line outages across PXE servers, console switches, and power distribution, root-causing NVSwitch firmware-version mismatches that cause switches to fail interconnect testing",
         ],
     },
     {
         year: "2025",
-        company: "ubreakifix by Asurion",
+        company: "uBreakiFix by Asurion",
         companyUrl: "",
         role: "Repair Technician",
         location: "Yuba City, CA",
         date: "July 2025 \u2013 April 2026",
         details: [
-            "Diagnosed and repaired consumer electronics including smartphones, tablets, laptops, and game consoles",
-            "Performed board-level repairs including HDMI port replacement, fine-pitch soldering, and power and I/O troubleshooting using schematics and rework tools",
+            "Diagnosed and repaired smartphones, tablets, laptops, and game consoles at the component level",
         ],
     },
     {
@@ -142,9 +142,9 @@ export const experiences: Experience[] = [
         location: "Davis, CA",
         date: "January 2025 \u2013 July 2025",
         details: [
-            "Took a 1/10-scale race car from Bluetooth teleop to full autonomy with a ROS 2 stack sustaining 40 Hz Monte Carlo localization (4,000 particles, 240K CUDA ray casts/update) under 1% error on an Nvidia Jetson Xavier NX",
-            "Implemented speed-adaptive pure pursuit, minimum-curvature raceline tracking, and LiDAR follow-the-gap avoidance arbitrated by a C++ occupancy-grid supervisor, delivering the car's first fully autonomous runs at up to 20 mph",
-            "Auto-labeled 1000+ track-boundary frames with language-prompted SAM and trained an end-to-end steering CNN that tracked the optimized raceline to 85–90% of predicted position",
+            "Took a 1/10-scale race car from Bluetooth teleop to full autonomy with a ROS 2 Foxy stack with odometry-triggered Monte Carlo localization (4,000 particles, 240K CUDA ray casts/update) on an Nvidia Jetson Xavier NX, validated by overlaying the filter's predicted scan on the live scan in RViz",
+            "Integrated and tuned speed-adaptive pure pursuit, minimum-lap-time raceline tracking (TUM optimizer, Pacejka tire model, g-g acceleration limit), and LiDAR follow-the-gap avoidance arbitrated by a C++ occupancy-grid supervisor, delivering the car's first fully autonomous laps at ~3 m/s commanded off the optimizer's velocity profile",
+            "Auto-labeled track-boundary frames at a 3.4% miss rate with language-prompted SAM, and trained a PilotNet CNN on the masks to 0.105 rad steering MAE on a held-out set",
         ],
     },
     {
@@ -155,9 +155,9 @@ export const experiences: Experience[] = [
         location: "Davis, CA",
         date: "September 2023 \u2013 January 2025",
         details: [
-            "Developed the bare-metal ASM330LHH IMU driver in C for a 3U CubeSat set to launch in September 2026, adding SPI and dual-IMU redundancy with runtime switching that caught stale sensor data pre-launch; shipped in the final flight build across three board revisions",
-            "Designed a register-level timer/interrupt driver (STM32 TIM6) for the onboard experiment logging subsystem, interrupt-driven and decoupled from application logic via callback registration",
-            "Verified timing against the datasheet with a logic analyzer; acquisition held a deterministic 100 ms (10 Hz) cadence independent of FreeRTOS task scheduling",
+            "Developed the bare-metal IMU driver in C for a 3U CubeSat set to launch in September 2026, implementing both the software-I2C and hardware-SPI register paths (mode 3, 2.5 MHz, software chip-select) plus runtime selection between two IMUs; the SPI path brought the IMU up on the board revision that moved it off bit-banged I2C, and fed the only live sensor input to the attitude-control loops",
+            "Designed a register-level timer/interrupt driver (STM32 TIM6) for the onboard experiment logging subsystem, interrupt-driven to fit the CubeSat's solar-power and CPU budget and decoupled from application logic via callback registration",
+            "Verified timing on hardware with a logic analyzer; acquisition held a deterministic 100 ms (10 Hz) cadence independent of FreeRTOS task scheduling",
         ],
     },
 ];
@@ -181,14 +181,13 @@ export const projects: Project[] = [
     {
         title: "DUAL! Inspired Game",
         description:
-            "Two-player real-time embedded game on CC3200 MCUs with SPI OLED rendering and custom UART protocol for synchronized gameplay",
-        technologies: ["C", "ARM Cortex-M4", "AWS IoT", "SPI", "UART", "I2C", "Flask", "Lambda"],
+            "Two-player embedded game across two bare-metal CC3200 MCUs with no shared game state, handing projectiles off over UART",
+        technologies: ["C", "ARM Cortex-M4", "AWS IoT", "SPI", "UART", "I2C", "Flask"],
         link: "https://dihan922.github.io/dual-webpage/",
         github: "https://github.com/KuyaBasti/DUAL-Game",
         details: [
-            "Designed a two-player real-time embedded game on CC3200 MCUs with SPI OLED rendering and a custom UART protocol for synchronized gameplay",
-            "Implemented tilt-based controls using an I2C accelerometer, IR remote input for username entry, and state-driven game logic with ammo cooldowns",
-            "Integrated AWS IoT and Lambda to persist and display scores via a Flask backend, bridging embedded firmware with cloud services",
+            "Developed a two-player embedded game across 2 bare-metal CC3200 MCUs with no shared game state: tilt control from a BMA222 accelerometer over I2C, a 128×128 SSD1351 OLED driven framebuffer-free over SPI, and projectile handoff as an 11-byte packet over a 115200-baud UART link, reconstructed mirrored on the peer's screen",
+            "Decoded an IR remote via SysTick pulse-width timing for in-game text entry, and pushed live scores over TLS to an AWS IoT device shadow backing a Flask scoreboard",
         ],
         category: "Embedded Systems",
     },
@@ -264,17 +263,14 @@ export const projects: Project[] = [
         category: "Embedded Systems",
     },
     {
-        title: "High-Performance DNS Resolver",
+        title: "DNS Resolver",
         description:
-            "Thread-safe DNS resolver in Go with recursive resolution from root servers, intelligent caching, and comprehensive protocol support",
+            "Concurrent recursive DNS resolver in Go with an iterative root-down delegation walk over a hash-partitioned, TTL-aware cache",
         technologies: ["Go", "Concurrent Programming", "DNS Protocol", "Hash-Partitioned Cache", "RWMutex", "Network Programming"],
         link: null,
         github: "https://github.com/KuyaBasti/DNSResolver",
         details: [
-            "Built DNS resolver from scratch in Go with recursive resolution starting from root servers",
-            "Implemented thread-safe design using RWMutex and hash-partitioned cache to reduce lock contention",
-            "Engineered intelligent caching with TTL-based expiration, attack prevention, and O(1) average lookup time",
-            "Supported A, AAAA, NS, CNAME, SOA, and PTR records with automatic CNAME chain resolution",
+            "Built a concurrent recursive DNS resolver in Go performing an iterative root-down delegation walk over a hash-partitioned, TTL-aware cache (FNV-1a sharding, per-shard RWMutex), validated under 4,000+ concurrent goroutines at shard counts from 1 to 1024",
         ],
         category: "Systems Programming",
     },
@@ -311,15 +307,12 @@ export const projects: Project[] = [
     {
         title: "Parallel Edge Detection",
         description:
-            "Image processing pipeline with OpenMP, Intel SIMD intrinsics, and CUDA GPU acceleration achieving 15x speedup",
+            "Edge detection as OpenMP+AVX and CUDA engines against a sequential reference, hitting ~15x on the CPU engine with byte-identical output",
         technologies: ["C++20", "CUDA", "OpenMP", "Intel SIMD (AVX)", "CMake", "Google Test", "GPU Programming"],
         link: null,
         github: "https://github.com/KuyaBasti/ParallelEdgeDetection",
         details: [
-            "Built edge detection pipeline achieving 15x speedup with CUDA GPU acceleration over sequential baseline",
-            "Implemented Gaussian blur, Sobel gradient calculation, and hysteresis threshold edge linking",
-            "Engineered CUDA implementation with optimized memory coalescing and shared memory tile-based convolution",
-            "Created OpenMP implementation with Intel SIMD intrinsics (AVX/AVX2) for 8x vectorized float processing",
+            "Implemented Gaussian-blur → Sobel-gradient → hysteresis-threshold edge detection as OpenMP+AVX and CUDA engines against a provided sequential reference, hitting ~15x on the CPU engine with byte-identical output via row-major loop restructuring, 8-wide intrinsics, and 32×32 coalesced CUDA blocks over constant-memory kernels",
         ],
         category: "Parallel Programming",
     },
@@ -330,15 +323,15 @@ export const projects: Project[] = [
 export const skillCategories: SkillCategory[] = [
     {
         title: "Languages",
-        items: ["C", "C++", "Java", "Python", "Go", "Assembly", "CUDA", "JavaScript", "TypeScript", "SQL", "Bash", "CSS", "Kotlin", "C#"],
+        items: ["C", "C++", "Java", "Python", "Go", "Assembly", "CUDA", "JavaScript", "TypeScript", "SQL", "Bash", "Kotlin"],
     },
     {
         title: "Frameworks",
-        items: ["ROS2", "Phoenix LiveView", "Node.js", "React", "Flask", "Unity", "TensorFlow", "PyTorch", "OpenCV", "Docker", "PostgreSQL/PostGIS"],
+        items: ["ROS2", "FreeRTOS", "Phoenix LiveView", "Node.js", "React", "Flask", "TensorFlow", "PyTorch", "OpenCV"],
     },
     {
         title: "Cloud/Infra",
-        items: ["AWS IoT", "S3", "CloudFront", "Cognito", "Lambda", "Route 53", "Terraform"],
+        items: ["AWS IoT", "S3", "CloudFront", "Cognito", "Lambda", "Route 53", "Terraform", "Docker", "PostgreSQL/PostGIS"],
     },
     {
         title: "Protocols/APIs",

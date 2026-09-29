@@ -204,7 +204,7 @@ export default function ParallelEdge() {
             c.fillText(
                 hold > 0 || (reduce && allDone)
                     ? "4.2 ms · 15.2× vs serial"
-                    : "rows " + Math.round(BH) + " · chunk " + Math.round(SH) + " · AVX2 inner loop",
+                    : "rows " + Math.round(BH) + " · chunk " + Math.round(SH) + " · 8-wide AVX loop",
                 W - 12,
                 H - 9
             );

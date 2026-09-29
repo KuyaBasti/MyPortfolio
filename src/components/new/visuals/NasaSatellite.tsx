@@ -132,7 +132,7 @@ export default function NasaSatellite() {
                 </g>
             </svg>
             <div className="nsa-hud nsa-tl">
-                SAT-04 · <b>ASM330LHH</b>
+                3U CubeSat · <b>SPI IMU</b>
             </div>
             <div className="nsa-hud nsa-tr">
                 launch <b style={{ color: "#9dffc4" }}>Sept 2026</b>
