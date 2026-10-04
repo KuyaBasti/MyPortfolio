@@ -204,14 +204,14 @@ export default function F1Lidar() {
         <div className="f1l" ref={wrapRef}>
             <canvas className="f1l-cv" ref={cvRef} />
             <div className="f1l-hud f1l-tl">
-                MCL · <b>4,000</b> particles @ <b>40Hz</b>
+                MCL · <b>4,000</b> particles · <b>240K</b> rays
             </div>
             <div className="f1l-hud f1l-tr">
-                <span className="v">20</span> mph
+                <span className="v">~3</span> m/s
             </div>
             <div className="f1l-hud f1l-bl">
                 <i />
-                pose locked · 0.4° err
+                pose locked · scan overlay
             </div>
 
             <style>{`

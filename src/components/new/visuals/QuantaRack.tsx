@@ -17,11 +17,11 @@ const G = "#34c759",
     DK = "#232b35";
 
 const LOGS = [
-    "[py] link check 32/32 ok",
-    "[bash] BMC flash · 12 nodes",
-    "[py] nvsw topo verify ok",
-    "[pxe] dhcp offer u04 · 212ms",
-    "[py] stress 30m · thermals ok",
+    "[bash] rsync diag · verify ok",
+    "[bash] sync → peer PXE ok",
+    "[ipxe] MAC redirect · 1 tray",
+    "[pxe] lock-out · control run",
+    "[nvsw] interconnect test ok",
 ];
 
 type Unit = { st: 0 | 1 | 2 | 3 | 4; t: number; dur: number; failed?: boolean };
@@ -43,7 +43,7 @@ export default function QuantaRack() {
         let W = 0,
             H = 0,
             fr = 0,
-            counter = 214,
+            counter = 286,
             logi = 0;
         let chip: Chip | null = null;
         const racks: Rack[] = [];
@@ -115,7 +115,7 @@ export default function QuantaRack() {
                         ri,
                         ui: rk.idx,
                         t: 75,
-                        txt: "u0" + (rk.idx + 1) + ": " + (Math.random() < 0.5 ? "no PXE offer · power-cycle" : "link flap · re-seat"),
+                        txt: "u0" + (rk.idx + 1) + ": " + (Math.random() < 0.5 ? "no PXE offer · power-cycle" : "nvsw fw mismatch · flagged"),
                     };
                 } else {
                     u.st = 3;
@@ -239,14 +239,14 @@ export default function QuantaRack() {
             c.fillText("L11 · rack validation", 14, 19);
             c.textAlign = "right";
             c.fillStyle = "rgba(230,232,238,0.75)";
-            c.fillText("racks " + counter + "/300 · aug", W - 14, 19);
+            c.fillText("racks " + counter + "/400 · mo", W - 14, 19);
             if (fr % 160 === 0) logi = (logi + 1) % LOGS.length;
             c.textAlign = "left";
             c.fillStyle = "rgba(150,170,160,0.6)";
             c.fillText(LOGS[logi], 14, H - 12);
             c.textAlign = "right";
             c.fillStyle = "rgba(150,170,160,0.45)";
-            c.fillText("first-pass 80.2%", W - 14, H - 12);
+            c.fillText("GB200/GB300", W - 14, H - 12);
         }
 
         layout();
