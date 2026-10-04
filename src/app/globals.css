@@ -21,9 +21,6 @@
 
   /* Cooler / cyber iridescent gradient for headlines */
   --iri: linear-gradient(120deg, #5eead4 0%, #5e7dff 38%, #bf5af2 68%, #ff6680 100%);
-
-  --font-sans: var(--font-inter), -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
-  --font-mono: var(--font-jetbrains), ui-monospace, "JetBrains Mono", monospace;
 }
 
 * {
@@ -35,6 +32,10 @@ html {
 }
 
 body {
+  /* next/font sets --font-inter and --font-jetbrains on <body>, not :root;
+     a :root var() to them is undefined, which voids the whole stack. */
+  --font-sans: var(--font-inter), -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, "JetBrains Mono", monospace;
   background: var(--bg);
   color: var(--ink);
   font-family: var(--font-sans);
