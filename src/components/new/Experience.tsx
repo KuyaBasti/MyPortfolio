@@ -16,6 +16,7 @@ interface Scene {
     meta: string[];
     tint: string;
     visual: "quanta" | "ubif" | "f1" | "nasa";
+    link?: { label: string; href: string };
     side: Side; // which side the visual sits on (desktop)
 }
 
@@ -25,7 +26,7 @@ const scenes: Scene[] = [
         date: "Apr 2026 → Present",
         titleLead: "Server qualification,",
         titleIri: "at high volume.",
-        desc: "Night shift on the server floor, co-leading 30 technicians validating GB200/GB300 NVL72 racks for a hyperscaler customer, from 160 to 400+ racks a month. I own the diag and firmware rollout, and qualify new releases on the live line without contaminating it.",
+        desc: "Validating NVIDIA GB200/GB300 racks at node (L10) and rack (L11) level for a hyperscaler customer. Night-shift co-lead: I roll out diag and firmware releases across our PXE servers, qualify changes with isolated control runs, and handle line outages.",
         meta: ["160 → 400+ racks/mo", "NVL72 · L10/L11", "Bash · rsync", "PXE · iPXE"],
         tint: "tint-quanta",
         visual: "quanta",
@@ -36,7 +37,7 @@ const scenes: Scene[] = [
         date: "Jul 2025 → Apr 2026",
         titleLead: "Repair,",
         titleIri: "good as new.",
-        desc: "As a repair technician at uBreakiFix, I fixed phones, tablets, laptops, and game consoles: cracked screens, batteries, charge ports, and board-level faults.",
+        desc: "Diagnosed and repaired smartphones, tablets, laptops and game consoles at the component level, including board-level rework and fine-pitch soldering.",
         meta: ["Screens", "Batteries", "Soldering", "Diagnostics"],
         tint: "tint-ubif",
         visual: "ubif",
@@ -47,10 +48,11 @@ const scenes: Scene[] = [
         date: "Jan 2025 → Jul 2025",
         titleLead: "Full autonomy,",
         titleIri: "corner after corner.",
-        desc: "From Bluetooth teleop to the car's first fully autonomous laps at ~3 m/s. Monte Carlo localization runs 4,000 particles and 240K CUDA ray casts per update on a Jetson Xavier NX, tracking a minimum-lap-time raceline.",
+        desc: "Part of a team that took a 1/10-scale race car from Bluetooth teleop to its first fully autonomous laps, using ROS 2 on an NVIDIA Jetson Xavier NX.",
         meta: ["4,000 particles", "240K ray casts/update", "~3 m/s", "ROS2 · LiDAR"],
         tint: "tint-f1",
         visual: "f1",
+        link: { label: "Watch the demo", href: "https://www.youtube.com/watch?v=dcUj0-wVvGQ" },
         side: "right",
     },
     {
@@ -58,7 +60,7 @@ const scenes: Scene[] = [
         date: "Sep 2023 → Jan 2025",
         titleLead: "Bare metal,",
         titleIri: "bound for orbit.",
-        desc: "Bare-metal IMU driver in C for a 3U CubeSat set to launch September 2026, with software-I2C and hardware-SPI register paths and runtime selection between two IMUs. The SPI path fed the only live sensor input to the attitude-control loops.",
+        desc: "Developed the bare-metal IMU driver (I2C and SPI) and the experiment-logging timer in C on an STM32 for a 3U CubeSat, now handed off to NASA for launch.",
         meta: ["launches Sept 2026", "10 Hz deterministic", "SPI mode 3 · 2.5 MHz", "Bare-metal C · FreeRTOS"],
         tint: "tint-nasa",
         visual: "nasa",
@@ -92,6 +94,11 @@ export default function Experience() {
                             {s.titleLead} <span className="iri">{s.titleIri}</span>
                         </h2>
                         <p className="scene-desc">{s.desc}</p>
+                        {s.link && (
+                            <a className="scene-link mono" href={s.link.href} target="_blank" rel="noopener noreferrer">
+                                {s.link.label} ↗
+                            </a>
+                        )}
                         <div className="scene-meta">
                             {s.meta.map((m) => (
                                 <span key={m}>{m}</span>
@@ -145,6 +152,12 @@ export default function Experience() {
                     font-size: 20px; color: var(--ink-soft); line-height: 1.5;
                     max-width: 520px; margin-bottom: 24px;
                 }
+                .scene-link {
+                    display: inline-block; margin: -8px 0 24px; font-size: 13px; color: var(--accent);
+                    letter-spacing: 0.04em; text-decoration: none; border-bottom: 1px solid rgba(40,200,64,0.35);
+                    transition: border-color .2s;
+                }
+                .scene-link:hover { border-color: var(--accent); }
                 .scene-meta { display: flex; gap: 24px; flex-wrap: wrap; font-size: 13px; color: var(--ink-soft); }
                 .scene-meta span { display: flex; align-items: center; gap: 6px; }
                 .scene-meta span::before {

@@ -23,7 +23,7 @@ const cards: Card[] = [
     {
         eyebrow: "Featured · Embedded",
         title: "DUAL! Inspired Game",
-        desc: "Two-player game across two bare-metal CC3200 MCUs with no shared game state: BMA222 tilt over I2C, a framebuffer-free SPI OLED, and projectiles handed off as 11-byte UART packets, with live scores pushed to an AWS IoT device shadow.",
+        desc: "A two-player game running on two bare-metal CC3200 boards with no shared game state: tilt steering from an accelerometer, an OLED driven over SPI, and projectiles handed board to board over UART so each screen mirrors the other's shot. Live scores go to AWS IoT and show up on a Flask scoreboard.",
         tech: "C · ARM Cortex-M4 · SPI · UART · I2C · AWS IoT · Flask",
         span: "pj-span-7",
         visual: "dual",
@@ -32,7 +32,7 @@ const cards: Card[] = [
     {
         eyebrow: "Embedded",
         title: "Robotic Arm",
-        desc: "G-code interpreter with real-time inverse kinematics on a 2-link planar arm via RS-232 servo control.",
+        desc: "A G-code interpreter that drives a 2-link planar arm over RS-232, solving the inverse kinematics in real time so the arm draws what the file describes.",
         tech: "C++ · IK · G-code · RS-232",
         span: "pj-span-5",
         visual: "arm",
@@ -41,7 +41,7 @@ const cards: Card[] = [
     {
         eyebrow: "Parallel · GPU",
         title: "Parallel Edge Detection",
-        desc: "Gaussian blur, Sobel, and hysteresis thresholding as OpenMP+AVX and CUDA engines: ~15× on the CPU engine with byte-identical output, plus 32×32 coalesced CUDA blocks over constant-memory kernels.",
+        desc: "Edge detection (Gaussian blur, Sobel, hysteresis threshold) written three ways: a sequential reference, an OpenMP+AVX engine, and a CUDA engine. The CPU engine runs about 15x faster than the reference with byte-identical output.",
         tech: "C++20 · CUDA · OpenMP · AVX",
         span: "pj-span-6",
         visual: "edge",
@@ -50,7 +50,7 @@ const cards: Card[] = [
     {
         eyebrow: "Systems · Go",
         title: "DNS Resolver",
-        desc: "Concurrent recursive resolver in Go: an iterative root-down delegation walk over a TTL-aware cache, FNV-1a sharded with a per-shard RWMutex, validated under 4,000+ concurrent goroutines.",
+        desc: "A recursive DNS resolver in Go that walks delegations from the root servers down and caches answers in a hash-partitioned, TTL-aware cache. Tested under 4,000+ concurrent goroutines.",
         tech: "Go · DNS · RWMutex · Caching",
         span: "pj-span-6",
         visual: "dns",
@@ -59,7 +59,7 @@ const cards: Card[] = [
     {
         eyebrow: "Machine Learning",
         title: "Salary Prediction Model",
-        desc: "Random Forest with R²=0.848 over 6,684 records, served through an interactive Flask UI.",
+        desc: "A salary prediction model trained on 6,684 records. The Random Forest came out on top at R² = 0.848, and a small Flask app serves the predictions.",
         tech: "Python · scikit-learn · Flask",
         span: "pj-span-5",
         visual: "ml",
@@ -68,7 +68,7 @@ const cards: Card[] = [
     {
         eyebrow: "Full-stack · HackDavis '24",
         title: "Aggie Reminder",
-        desc: "Volunteer scheduling and reminder system built with Node, Postgres, and SendGrid-powered automated reminders.",
+        desc: "A volunteer scheduling and reminder tool built at HackDavis 2024: Node and Postgres on the back end, with SendGrid sending the automated reminders.",
         tech: "Node · Express · Postgres · SendGrid",
         span: "pj-span-7",
         visual: "aggie",
