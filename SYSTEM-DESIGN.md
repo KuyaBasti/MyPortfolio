@@ -122,7 +122,7 @@ Ten visuals share one skeleton (DPR sizing, IO gating, 30 ms loop, static reduce
 
 ### 4. Content pipeline
 
-`src/data/portfolio.ts` is the canonical record (experiences, projects, skills, education, contact). The Experience scenes and Project cards additionally carry curated display copy inline in their components, tuned for the page; the rule is that curated copy and canonical data stay in sync, and both defer to the resume when they disagree. This is a deliberate duplication: the data file holds complete resume-grade bullets, the components hold the short cinematic cut.
+`src/data/portfolio.ts` is the canonical record (experiences, projects, skills, education, contact). The Experience scenes and Project cards additionally carry curated display copy inline in their components, tuned for the page; the rule is that curated copy and canonical data stay in sync, and both defer to the resume when they disagree. This is a deliberate duplication: the data file holds complete resume-grade bullets, the components hold the short plain-prose cut, written in the same voice as John's LinkedIn entries (experiences reuse that text verbatim).
 
 ### 5. Design system
 
@@ -158,7 +158,7 @@ Tokens live in `src/app/globals.css`: near-black background, ink ramp, phosphor 
 | DPR handling | Backing store at `devicePixelRatio` capped at 2 | Retina-crisp lines without paying 3x pixel cost on high-DPR phones |
 | Intro gating | Inline pre-paint script + `html` class | The intro decision must precede first paint; anything later flashes the wrong state |
 | Styling | Tokens in `globals.css`, bespoke CSS in scoped `<style>` blocks | Section animations live next to their markup; tokens stay global |
-| Content | Canonical `portfolio.ts` plus curated inline copy | Data file keeps resume-grade completeness; components keep the cinematic cut; resume wins conflicts |
+| Content | Canonical `portfolio.ts` plus curated inline copy | Data file keeps resume-grade completeness; components keep the plain LinkedIn-voice cut; resume wins conflicts |
 | Prototyping | 3 standalone HTML files in `public/prototypes/`, untracked | Compare real motion in the browser before committing to a component; deleted after the pick ships |
 | Shipping | Branch to PR to merge, never direct to main | Merging main deploys to production via Vercel; PRs keep every visual change reviewable |
 | Copy | No em dashes in visible text | House rule: they read as AI-generated |
