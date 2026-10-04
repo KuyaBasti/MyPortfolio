@@ -16,6 +16,8 @@ interface Scene {
     meta: string[];
     tint: string;
     visual: "quanta" | "ubif" | "f1" | "nasa";
+    role: string;
+    company: string;
     link?: { label: string; href: string };
     side: Side; // which side the visual sits on (desktop)
 }
@@ -30,6 +32,8 @@ const scenes: Scene[] = [
         meta: ["160 → 400+ racks/mo", "NVL72 · L10/L11", "Bash · rsync", "PXE · iPXE"],
         tint: "tint-quanta",
         visual: "quanta",
+        role: "Test Engineer | Hyperscaler NPI",
+        company: "Quanta Manufacturing",
         side: "right",
     },
     {
@@ -41,6 +45,8 @@ const scenes: Scene[] = [
         meta: ["Screens", "Batteries", "Soldering", "Diagnostics"],
         tint: "tint-ubif",
         visual: "ubif",
+        role: "Repair Technician",
+        company: "uBreakiFix by Asurion",
         side: "left",
     },
     {
@@ -52,6 +58,8 @@ const scenes: Scene[] = [
         meta: ["4,000 particles", "240K ray casts/update", "~3 m/s", "ROS2 · LiDAR"],
         tint: "tint-f1",
         visual: "f1",
+        role: "Software Engineer Intern",
+        company: "UCD CORE Lab · F1Tenth",
         link: { label: "Watch the demo", href: "https://www.youtube.com/watch?v=dcUj0-wVvGQ" },
         side: "right",
     },
@@ -64,6 +72,8 @@ const scenes: Scene[] = [
         meta: ["launches Sept 2026", "10 Hz deterministic", "SPI mode 3 · 2.5 MHz", "Bare-metal C · FreeRTOS"],
         tint: "tint-nasa",
         visual: "nasa",
+        role: "Firmware Engineer",
+        company: "Space and Satellite Systems · UC Davis",
         side: "left",
     },
 ];
@@ -89,6 +99,10 @@ export default function Experience() {
                     <div>
                         <div className="scene-eyebrow mono">
                             {s.num} · {s.date}
+                        </div>
+                        <div className="scene-role mono">
+                            <span className="scene-role-title">{s.role}</span>
+                            <span className="scene-role-co">{s.company}</span>
                         </div>
                         <h2 className="scene-title">
                             {s.titleLead} <span className="iri">{s.titleIri}</span>
@@ -143,6 +157,17 @@ export default function Experience() {
                     font-size: 13px; color: var(--accent);
                     letter-spacing: 0.08em; text-transform: uppercase;
                     margin-bottom: 16px; font-weight: 500;
+                }
+                .scene-role {
+                    display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px;
+                    font-size: 14px; margin: -4px 0 18px;
+                }
+                .scene-role-title { color: var(--ink); font-weight: 500; }
+                .scene-role-co { color: var(--ink-soft); }
+                .scene-role-co::before { content: "·"; margin-right: 10px; color: var(--ink-faint); }
+                @media (max-width: 560px) {
+                    .scene-role { flex-direction: column; gap: 2px; }
+                    .scene-role-co::before { content: none; }
                 }
                 .scene-title {
                     font-size: clamp(48px, 6vw, 88px); font-weight: 600;
