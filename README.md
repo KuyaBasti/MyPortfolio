@@ -2,9 +2,9 @@
 
 **A dark Neo/Matrix portfolio that boots like a machine and proves its claims like a resume.** Live at [johnsolon.com](https://johnsolon.com).
 
-First visit: a decryption boot sequence plays (handshake, key decrypt, ACCESS GRANTED), docks itself into a macOS-style terminal, and types a real shell session. Behind everything, a calm "streams" of Matrix code rains down. Every job and project gets its own hand-built canvas animation: a satellite bound for orbit, a two-screen space shooter, a LiDAR race car, a recursive DNS walk. No stock art, no screenshots, no template.
+First visit: a decryption boot sequence plays (handshake, key decrypt, ACCESS GRANTED), docks itself into a macOS-style terminal, and types a real shell session. Behind everything, a calm "streams" of Matrix code rains down. Every job and project gets its own hand-built canvas animation: a satellite bound for orbit, a two-screen space shooter, a LiDAR race car, a recursive DNS walk, a Dota 2 match replayed from real engine output. No stock art, no screenshots, no template.
 
-> **Status:** live in production on Vercel. All four experience scenes and all six project cards have bespoke visuals. Every number on the site matches the September 2026 resume. Two newer projects (DraftMaster, Centavo) do not have cards yet.
+> **Status:** live in production on Vercel. All four experience scenes and all seven project cards have bespoke visuals. Every number on the site matches the September 2026 resume, or, for projects not on it (DraftMaster), the project's own repo. One newer project (Centavo) does not have a card yet.
 
 ## Table of Contents
 
@@ -21,7 +21,7 @@ A single-page Next.js 15 (App Router) site: **Navbar · Hero · Experience (01) 
 
 - **Hero**: split layout. Big iridescent headline on the left, a working terminal on the right that types `whoami`, `cat role.txt`, and `./launch_portfolio.sh`. The boot intro plays **once per session** and is skippable; returning visitors land on the completed session instantly (replay with `?intro=play`).
 - **Experience**: four full-viewport scenes (Quanta, uBreakiFix, F1Tenth, NASA), each pairing curated copy with a bespoke animated visual: a rack validation wave, a phone screen repair, a particle-filter LiDAR map, a satellite over Earth.
-- **Projects**: a six-card bento grid where every card header is a live canvas: the DUAL! two-screen shooter, a G-code console plotter, a parallel Sobel row sweep, a recursive DNS resolution walk, a neural-net forward pass, and a Postgres-to-SendGrid reminder pipeline.
+- **Projects**: a seven-card bento grid where every card header is a live canvas: the DUAL! two-screen shooter, a G-code console plotter, a parallel Sobel row sweep, a recursive DNS resolution walk, a neural-net forward pass, a Postgres-to-SendGrid reminder pipeline, and DraftMaster's minimap replaying three real engine-simulated matches (one draft on two seeds with opposite winners, then a new draft).
 - **Claims**: every metric shown (**4,000 particles, 240K ray casts per update**, **100 ms deterministic cadence**, **~15x on the CPU engine**, **160 to 400+ racks/mo**) comes from the resume, which is the source of truth.
 
 ## How a Visit Works, End to End
@@ -60,7 +60,9 @@ scroll: each canvas visual wakes only while on-screen
 | `src/components/Backdrop.tsx` | Page-wide streams-rain canvas: throttled, tab-paused, reduced-motion safe |
 | `src/components/Home.tsx` | Section orchestrator |
 | `src/components/new/` | `Navbar`, `Hero` (intro + terminal), `Experience` (4 scenes), `Projects` (bento grid), `About`, `Skills`, `Contact`, `Footer` |
-| `src/components/new/visuals/` | The ten bespoke canvas/SVG visuals (4 scene + 6 card) |
+| `src/components/new/visuals/` | The eleven bespoke canvas/SVG visuals (4 scene + 7 card) |
+| `src/components/new/visuals/draftmaster/` | DraftMaster replay: pure, unit-tested logic ported from DraftMaster's Match Viewer (`replay.ts`) and the exported match data (`matches.ts`, generated) |
+| `scripts/export-draftmaster-matches.mjs` | Regenerates `matches.ts` from DraftMaster's real sim files (`node scripts/export-draftmaster-matches.mjs ../DotaAnalysis`) |
 | `src/data/portfolio.ts` | Canonical content record: experiences, projects, skills, education, contact |
 | `public/` | Static assets |
 
@@ -83,7 +85,7 @@ scroll: each canvas visual wakes only while on-screen
 | Experience scene visuals | QuantaRack, UbreakifixScreen, F1Lidar, NasaSatellite | ✅ |
 | Project card visuals | DualGame, RoboticArm, ParallelEdge, DnsResolver, SalaryModel, AggiePipeline | ✅ |
 | Resume sync | All site claims reconciled to the Aug 2026 resume, then re-synced to the Sept 2026 resume | ✅ |
-| DraftMaster card | Dota 2 draft simulator card + bespoke visual | ⬜ |
+| DraftMaster card | Dota 2 draft simulator card, replaying real engine output on a minimap | ✅ |
 | Centavo card | Local-first finance tracker card + bespoke visual | ⬜ |
 
 ## Documentation
