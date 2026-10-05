@@ -6,8 +6,9 @@ import ParallelEdge from "./visuals/ParallelEdge";
 import SalaryModel from "./visuals/SalaryModel";
 import AggiePipeline from "./visuals/AggiePipeline";
 import DnsResolver from "./visuals/DnsResolver";
+import DraftMaster from "./visuals/DraftMaster";
 
-type Visual = "dual" | "arm" | "edge" | "dns" | "ml" | "aggie";
+type Visual = "dual" | "arm" | "edge" | "dns" | "ml" | "aggie" | "draft";
 
 interface Card {
     eyebrow: string;
@@ -74,6 +75,15 @@ const cards: Card[] = [
         visual: "aggie",
         href: "https://github.com/KuyaBasti/Aggie-Reminder-",
     },
+    {
+        eyebrow: "Simulation · ML",
+        title: "DraftMaster",
+        desc: "Dota 2 draft simulator: pick two teams and a deterministic 30s-tick engine plays out a full, watchable match. Seeded Monte Carlo runs 200 sims in about a second, and the win model is trained on 59K+ ranked matches.",
+        tech: "Python · scikit-learn · DuckDB · TypeScript · Fastify · React",
+        span: "pj-span-12",
+        visual: "draft",
+        href: "https://github.com/KuyaBasti/DotaAnalysis",
+    },
 ];
 
 function VisualHeader({ kind }: { kind: Visual }) {
@@ -112,6 +122,12 @@ function VisualHeader({ kind }: { kind: Visual }) {
             return (
                 <div className="pj-img pj-aggie">
                     <AggiePipeline />
+                </div>
+            );
+        case "draft":
+            return (
+                <div className="pj-img pj-draft">
+                    <DraftMaster />
                 </div>
             );
     }
@@ -189,6 +205,7 @@ export default function Projects() {
                 .pj-span-7 { grid-column: span 7; }
                 .pj-span-5 { grid-column: span 5; }
                 .pj-span-6 { grid-column: span 6; }
+                .pj-span-12 { grid-column: span 12; }
                 @media (max-width: 880px) {
                     .pj-span-7, .pj-span-5, .pj-span-6 { grid-column: span 12; }
                 }
@@ -210,6 +227,9 @@ export default function Projects() {
 
                 /* AGGIE */
                 .pj-aggie { background: radial-gradient(ellipse at 45% 30%, #170d12, #0d080b); position: relative; }
+
+                /* DRAFTMASTER */
+                .pj-draft { background: radial-gradient(ellipse at 20% 50%, #0d1310, #07090b); position: relative; }
             `}</style>
         </section>
     );
