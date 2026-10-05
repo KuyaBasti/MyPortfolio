@@ -1,0 +1,137 @@
+#!/usr/bin/env node
+// Exports real DraftMaster engine output (DotaAnalysis data/sims/*.json) into
+// the compact replay module the DraftMaster card animates.
+//
+//   node scripts/export-draftmaster-matches.mjs ../DotaAnalysis [seed ...]
+//
+// Encoding (see src/components/new/visuals/draftmaster/replay.ts):
+//   heroes  10 display names, radiant 0-4 then dire 5-9, roster order
+//   nw      per tick, 10 per-hero net worths * 10 (the engine emits one decimal,
+//           so team totals, which are their sums, stay exact)
+//   pos     per tick, 10 heroes x (x, y) * 2, engine 0..100 map units
+//   beats   [0 fight, t, x*2, y*2, winner, deathMask, flags(1 fb, 2 comeback), swing]
+//           [1 objective, t, attacker, structure(1-3 towers, 4 rax, 5 ancient), lane(0 top, 1 mid, 2 bot, -1)]
+//           [2 roshan, t, team]
+import { readFileSync, writeFileSync } from "node:fs";
+import { join, resolve } from "node:path";
+
+const [, , repoArg, ...seedArgs] = process.argv;
+if (!repoArg) {
+    console.error("usage: export-draftmaster-matches.mjs <DotaAnalysis path> [seed ...]");
+    process.exit(1);
+}
+const SEEDS = seedArgs.length ? seedArgs.map(Number) : [42, 7, 2102622878];
+const TICK = 30;
+const OUT = resolve("src/components/new/visuals/draftmaster/matches.ts");
+
+const TEAM = { radiant: 0, dire: 1 };
+const STRUCTURE = { "tier-1 tower": 1, "tier-2 tower": 2, "tier-3 tower": 3, barracks: 4, ancient: 5 };
+const LANE = { top: 0, mid: 1, bot: 2 };
+
+function fail(msg) {
+    throw new Error(msg);
+}
+
+function exportMatch(file) {
+    const sim = JSON.parse(readFileSync(file, "utf8"));
+    const tl = sim.timeline;
+    const economy = tl.filter((e) => e.type === "economy");
+    const positions = tl.filter((e) => e.type === "positions");
+    if (economy.length !== positions.length) fail(`${sim.id}: economy/positions tick mismatch`);
+    const ticks = positions.length;
+    positions.forEach((e, i) => {
+        if (e.t !== TICK * (i + 1)) fail(`${sim.id}: positions tick ${i} at t=${e.t}`);
+        if (economy[i].t !== e.t) fail(`${sim.id}: economy tick ${i} at t=${economy[i].t}`);
+    });
+
+    const names = (list) => list.map((h) => h.hero);
+    const heroes = [...names(positions[0].payload.radiant_heroes), ...names(positions[0].payload.dire_heroes)];
+    if (heroes.length !== 10 || new Set(heroes).size !== 10) fail(`${sim.id}: roster is not 10 unique heroes`);
+    const index = new Map(heroes.map((h, i) => [h, i]));
+    const idx = (name) => index.get(name) ?? fail(`${sim.id}: unknown hero ${name}`);
+
+    const nw = [];
+    for (const e of economy) {
+        const byHero = new Map(
+            [...e.payload.radiant_heroes, ...e.payload.dire_heroes].map((h) => [h.hero, h.net_worth]),
+        );
+        for (const h of heroes) nw.push(Math.round(byHero.get(h) * 10));
+    }
+
+    const pos = [];
+    for (const e of positions) {
+        const byHero = new Map([...e.payload.radiant_heroes, ...e.payload.dire_heroes].map((h) => [h.hero, h]));
+        for (const h of heroes) {
+            const p = byHero.get(h) ?? fail(`${sim.id}: ${h} missing at t=${e.t}`);
+            pos.push(Math.round(p.x * 2), Math.round(p.y * 2));
+        }
+    }
+
+    const beats = [];
+    for (const e of tl) {
+        const p = e.payload;
+        if (e.type === "fight") {
+            let mask = 0;
+            for (const n of [...p.radiant_deaths, ...p.dire_deaths]) mask |= 1 << idx(n);
+            const flags = (p.first_blood ? 1 : 0) | (p.comeback ? 2 : 0);
+            beats.push([0, e.t, Math.round(p.x * 2), Math.round(p.y * 2), TEAM[p.winner], mask, flags, Math.round(p.swing)]);
+        } else if (e.type === "objective") {
+            const s = STRUCTURE[p.structure] ?? fail(`${sim.id}: unknown structure ${p.structure}`);
+            beats.push([1, e.t, TEAM[p.team], s, p.lane == null ? -1 : LANE[p.lane]]);
+        } else if (e.type === "roshan") {
+            beats.push([2, e.t, TEAM[p.team]]);
+        }
+    }
+
+    const winner = TEAM[sim.summary.winner];
+    const last = beats[beats.length - 1];
+    if (last[0] !== 1 || last[3] !== 5 || last[2] !== winner || last[1] !== sim.summary.duration_seconds)
+        fail(`${sim.id}: timeline does not end on the winner taking the ancient`);
+
+    return {
+        id: sim.id,
+        seed: sim.seed,
+        dur: sim.summary.duration_seconds,
+        winner,
+        events: tl.length,
+        ticks,
+        heroes,
+        nw,
+        pos,
+        beats,
+    };
+}
+
+const matches = SEEDS.map((s) => exportMatch(join(repoArg, "data/sims", `sim.7.41e-seed${s}.json`)));
+
+const body = matches
+    .map(
+        (m) => `    {
+        id: ${JSON.stringify(m.id)},
+        seed: ${m.seed},
+        dur: ${m.dur},
+        winner: ${m.winner},
+        events: ${m.events},
+        ticks: ${m.ticks},
+        heroes: ${JSON.stringify(m.heroes)},
+        nw: ${JSON.stringify(m.nw)},
+        pos: ${JSON.stringify(m.pos)},
+        beats: ${JSON.stringify(m.beats)},
+    }`,
+    )
+    .join(",\n");
+
+writeFileSync(
+    OUT,
+    `// Generated by scripts/export-draftmaster-matches.mjs from real DraftMaster
+// engine output (DotaAnalysis data/sims). Do not edit by hand; re-run the script.
+import type { Match } from "./replay";
+
+export const MATCHES: Match[] = [
+${body},
+];
+`,
+);
+for (const m of matches)
+    console.log(`${m.id}: ${m.ticks} ticks, ${m.beats.length} beats, winner ${m.winner ? "dire" : "radiant"}`);
+console.log(`wrote ${OUT}`);

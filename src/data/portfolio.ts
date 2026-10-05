@@ -275,6 +275,20 @@ export const projects: Project[] = [
         category: "Systems Programming",
     },
     {
+        title: "DraftMaster",
+        description:
+            "Dota 2 draft simulator: draft two teams and a deterministic engine plays out a full, watchable match grounded in real ranked data",
+        technologies: ["Python", "scikit-learn", "DuckDB", "TypeScript", "Fastify", "React"],
+        link: null,
+        github: "https://github.com/KuyaBasti/DotaAnalysis",
+        details: [
+            "Built a Dota 2 draft simulator with a deterministic 30s-tick engine and seeded Monte Carlo (200 sims in about a second)",
+            "Trained the win model on 59K+ ranked matches",
+            "Match Viewer replays each simulated game on a minimap with an event feed, net-worth graph, and win probability",
+        ],
+        category: "Simulation & Machine Learning",
+    },
+    {
         title: "IR Signal AWS Messaging",
         description:
             "IR remote-based text messaging system for CC3200 with T9 input, OLED display, and AWS cloud integration",
