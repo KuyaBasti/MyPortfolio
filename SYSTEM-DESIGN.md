@@ -1,6 +1,6 @@
 # johnsolon.com · system design
 
-> **How a URL becomes a Matrix boot sequence.** A pre-paint script decides whether you get the cinematic login or the finished terminal. A page-wide rain canvas sets the world. A canonical data file feeds seven sections, and ten hand-rolled canvas visuals animate the actual work: each one waking only when you scroll to it, and each one carrying a designed static frame for reduced motion. Everything ships branch to PR to Vercel.
+> **How a URL becomes a Matrix boot sequence.** A pre-paint script decides whether you get the cinematic login or the finished terminal. A page-wide rain canvas sets the world. A canonical data file feeds seven sections, and eleven hand-rolled canvas visuals animate the actual work: each one waking only when you scroll to it, and each one carrying a designed static frame for reduced motion. Everything ships branch to PR to Vercel.
 
 This is the developer map: every component, built or planned, and how a visit moves through them. The product story and quickstart live in [README.md](README.md).
 
@@ -42,7 +42,7 @@ flowchart TD
         RESUME["resume, Sept 2026<br/>source of truth"] --> DATA
         HERO["Hero<br/>headline + terminal"]
         EXP["Experience<br/>4 curated scenes"]
-        PROJ["Projects<br/>6-card bento grid"]
+        PROJ["Projects<br/>7-card bento grid"]
         REST["About / Skills / Contact"]
         DATA --> EXP
         DATA --> PROJ
@@ -53,15 +53,23 @@ flowchart TD
         CONV["DPR-aware canvas, cap 2x<br/>IntersectionObserver start/stop<br/>30 ms interval loop<br/>seeded RNG for SSR safety<br/>reduced-motion static frame"]
         SCENES["QuantaRack · UbreakifixScreen<br/>F1Lidar · NasaSatellite"]
         CARDS["DualGame · RoboticArm<br/>ParallelEdge · DnsResolver<br/>SalaryModel · AggiePipeline"]
-        DRAFT["DraftMaster card"]:::planned
+        DRAFT["DraftMaster<br/>replays real engine output"]
         CENT["Centavo card"]:::planned
         CONV --- SCENES
         CONV --- CARDS
+        CONV --- DRAFT
+    end
+
+    subgraph REPLAY["DraftMaster replay data"]
+        SIMS["DotaAnalysis data/sims<br/>real engine timelines"] --> EXPORT["scripts/export-draftmaster-matches.mjs"]
+        EXPORT --> MATCHES["draftmaster/matches.ts<br/>3 matches, ~11 KB gzipped"]
+        MATCHES --> LOGIC["draftmaster/replay.ts<br/>pure, unit-tested"]
     end
 
     EXP --> SCENES
     PROJ --> CARDS
-    PROJ -.-> DRAFT
+    PROJ --> DRAFT
+    LOGIC --> DRAFT
     PROJ -.-> CENT
 
     subgraph SHIP["shipping loop"]
@@ -77,7 +85,7 @@ flowchart TD
     classDef planned stroke-dasharray: 5 5,opacity:0.7
 ```
 
-Dashed nodes are planned, not started. The shipping loop is how every visual on the site was built: three throwaway HTML prototypes, one pick, one port, one PR.
+Dashed nodes are planned, not started. The shipping loop is how the visuals on the site were built: three throwaway HTML prototypes, one pick, one port, one PR. DraftMaster is the exception: it went straight from a repo deep-read to a PR, with the PR itself as the review gate.
 
 ## The three flows that matter
 
@@ -114,10 +122,11 @@ The gate must decide before first paint, so it is an inline blocking script in `
 
 ### 3. The canvas visual engine
 
-Ten visuals share one skeleton (DPR sizing, IO gating, 30 ms loop, static reduced-motion frame, full cleanup) and differ only in their simulation. Conventions that matter:
+Eleven visuals share one skeleton (DPR sizing, IO gating, 30 ms loop, static reduced-motion frame, full cleanup) and differ only in what drives the frame. Conventions that matter:
 
 - **Seeded randomness for anything SSR-rendered.** Star fields and rack layouts that render as SVG/DOM use `mulberry32` with a fixed seed so hydration matches. Canvas-only state may use `Math.random()` freely because it never renders on the server.
 - **Real mechanics over mood.** Each visual simulates the actual system: the DNS walk really walks root to TLD to authoritative and caches the answer; the edge-detection sweep runs a real Sobel convolution on a procedural scene; the arm solves real two-link inverse kinematics with a fixed elbow branch so it cannot flip solutions.
+- **Replay real output when it exists.** DraftMaster does not re-simulate its engine. `scripts/export-draftmaster-matches.mjs` exports three real sim files from the DotaAnalysis repo, and the card replays them through `draftmaster/replay.ts`, a pure module ported from DraftMaster's own Match Viewer (same map tables, odds constants, marker lifetimes, and hero tags). Every frame is a pure function of (match, clock), so the reduced-motion frame is just the render at 24:12 of seed 42, and the logic is covered by Vitest (`npm test`). It sizes itself with a `ResizeObserver` on the card rather than window `resize`, because a card can change width without the window changing.
 - **HUD numbers are claims.** Anything printed in a visual's HUD (`4,000 particles · 240K rays`, `100 ms · deterministic`, `launch Sept 2026`, `racks 286/400`) must match the resume, same as body copy. When the resume drops a claim, its HUD label goes too.
 
 ### 4. Content pipeline
@@ -144,14 +153,16 @@ Tokens live in `src/app/globals.css`: near-black background, ink ramp, phosphor 
 | DnsResolver | Recursive walk, cache hit vs miss | blue/cyan | `src/components/new/visuals/DnsResolver.tsx` | ✅ |
 | SalaryModel | Neural-net forward pass, salary count-up | amber/pink | `src/components/new/visuals/SalaryModel.tsx` | ✅ |
 | AggiePipeline | Postgres to cron to SendGrid reminders | rose | `src/components/new/visuals/AggiePipeline.tsx` | ✅ |
-| DraftMaster card | Dota 2 draft simulator visual | tbd | not started | ⬜ |
+| DraftMaster | Real engine matches replayed: minimap, roster chips, feed, net-worth lead | radiant green/dire red/gold | `src/components/new/visuals/DraftMaster.tsx` | ✅ |
 | Centavo card | Reconcile-or-reject ledger visual | tbd | not started | ⬜ |
 
 ## Design decisions
 
 | Decision | Choice | Why |
 | --- | --- | --- |
-| Scene/card visuals | Hand-rolled canvas, no Lottie/video/GIF | Full control over the simulation (real IK, real Sobel, real DNS walk), tiny payload, one drawing vocabulary across all ten |
+| Scene/card visuals | Hand-rolled canvas, no Lottie/video/GIF | Full control over the simulation (real IK, real Sobel, real DNS walk), tiny payload, one drawing vocabulary across all eleven |
+| Data-backed visuals | Replay exported real output (DraftMaster) instead of re-implementing the system | A JS port of the engine would drift from the real one; exported timelines are the engine's own truth, at ~11 KB gzipped for three matches |
+| Testing | Vitest on pure visual logic (`npm test`) plus a browser pass | Replay math, map ownership, and feed text are asserted against real data; the canvas itself is verified visually |
 | Animation timer | `setInterval(render, 30)` gated by IO, not free-running rAF | Uniform pacing, trivially pausable, and the IO gate makes background cost zero; rAF's tab-throttling behavior varies |
 | SSR randomness | Seeded `mulberry32` for anything server-rendered | Identical server/client markup; hydration mismatches were the first bug this repo hit |
 | Reduced motion | Designed static frames, not blank boxes | Accessibility without losing the information the visual carries |
@@ -174,5 +185,6 @@ Tokens live in `src/app/globals.css`: near-black background, ink ramp, phosphor 
 | 4 | Six Project card visuals | ✅ |
 | 5 | Structural trims: hero dedup, stats band removal, scroll unpin | ✅ |
 | 6 | Resume sync: every claim reconciled to the Aug 2026 resume, re-synced to the Sept 2026 resume | ✅ |
-| 7 | DraftMaster + Centavo cards with bespoke visuals | ⬜ |
-| 8 | Copy dedup pass (hero sub, repeated tagline) | ⬜ |
+| 7 | DraftMaster card replaying real engine output | ✅ |
+| 8 | Centavo card with bespoke visual | ⬜ |
+| 9 | Copy dedup pass (hero sub, repeated tagline) | ⬜ |
