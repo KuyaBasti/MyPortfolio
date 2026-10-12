@@ -1,26 +1,24 @@
 "use client";
 
-import Backdrop from "@/components/Backdrop";
-import Navbar from "@/components/new/Navbar";
-import Hero from "@/components/new/Hero";
-import Experience from "@/components/new/Experience";
-import Projects from "@/components/new/Projects";
-import About from "@/components/new/About";
+import Film from "@/components/chapters/Film";
+import TopBar from "@/components/chapters/TopBar";
+import Hero from "@/components/chapters/Hero";
+import Experience from "@/components/chapters/Experience";
+import Projects from "@/components/chapters/Projects";
+import Origin from "@/components/chapters/Origin";
 import Skills from "@/components/new/Skills";
-import Contact from "@/components/new/Contact";
 import Footer from "@/components/new/Footer";
 
 export default function Home() {
     return (
         <>
-            <Backdrop />
-            <Navbar />
+            <Film />
+            <TopBar />
             <Hero />
             <Experience />
             <Projects />
-            <About />
+            <Origin />
             <Skills />
-            <Contact />
             <Footer />
         </>
     );
