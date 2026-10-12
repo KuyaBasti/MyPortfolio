@@ -16,7 +16,7 @@ points here. Workflow playbooks live in `.claude/skills/`, subagent definitions 
 |---|---|---|
 | Facts | John's resume, provided in chat | The only source for claims: titles, employers, dates, numbers, metrics. Reformulate, never fabricate. A claim not backed by the resume or the project's real repo stays off the site. |
 | Content | `src/data/portfolio.ts` | Canonical in-repo record of experiences, projects, skills, education, contact. |
-| Curated copy | `Experience.tsx` (4 scenes), `Projects.tsx` (6 cards) | Copy and visuals are inline and hand-tuned. Keep them in sync with `portfolio.ts`; when they disagree, flag it, never silently pick one. |
+| Curated copy | `chapters/Experience.tsx` (4 chapters), `chapters/Projects.tsx` (8 cards), `chapters/Origin.tsx` | Copy is inline and hand-tuned. Keep it in sync with `portfolio.ts`; when they disagree, flag it, never silently pick one. Origin's story uses only what John stated himself plus resume facts. |
 | Project truth | Each project's own repository | Before designing a card or visual, deep-read the actual repo (`repo-scholar` agent). Never design from a title alone. |
 
 ## Standing Rules (non-negotiable)
@@ -66,44 +66,53 @@ Launch several in parallel when the tasks are independent (for example three
 
 ## Stack
 
-Next.js 15 (App Router) · TypeScript · React 19 · Tailwind v4 · Framer Motion (`motion` pkg)
-· Inter + JetBrains Mono · deployed on Vercel.
+Next.js 15 (App Router) · TypeScript · React 19 · Tailwind v4 · three.js (lazy-imported inside
+each chapter scene) · Framer Motion (`motion` pkg) · Inter + JetBrains Mono + Noto Sans Tagalog
+(the Baybayin name) · Vitest · deployed on Vercel.
 
 ## Design: dark "Neo / Matrix"
 
 - Near-black bg `#05070a`, phosphor-green accent `#28c840` / bright `#9dffc4`, light ink `#e6e8ee`.
 - Cooler/cyber iridescent gradient (`--iri`) for big headlines; `.iri` helper.
-- Page-wide ambient **streams rain** backdrop (refined Matrix code, calmer than the intro).
-- Mono terminal accents: command eyebrows, blinking cursors, `.mono` labels.
-- A first-visit **decryption boot intro** (handshake, decrypt key, ACCESS GRANTED) that docks
-  into a terminal, then types the real shell session. Plays once/session, skippable.
-- Tokens are CSS vars in `src/app/globals.css`. Bespoke per-section animation CSS lives in
-  scoped `<style>` blocks inside each component. Gate every animation behind
-  `@media (prefers-reduced-motion: reduce)`.
+- One plain near-black page with a fixed film grain and vignette; the hero adds a drifting
+  dust field and two light leaks. No page-wide rain, no boot overlay.
+- The hero **decrypts the name**: cipher glyphs lock in left to right into the gradient.
+- Each experience chapter pairs copy with a framed **three.js scene that plays on its own
+  clock**: never scroll-driven, no pinning, no snap, no text inside the canvas.
+- Project cards keep the iridescent rings, three per row.
+- Mono terminal accents: eyebrows, labels, chips.
+- Tokens are CSS vars in `src/app/globals.css` (including `--lb` top bar height and `--pad`
+  gutter). Bespoke per-section CSS lives in scoped `<style>` blocks inside each component.
+  Gate every animation behind `@media (prefers-reduced-motion: reduce)` and every loop behind
+  IntersectionObserver and `visibilitychange`.
 
 ## Structure
 
 ```
 src/
-  app/            globals.css (tokens, .iri, backdrop), layout.tsx (fonts + pre-paint intro script), page.tsx
+  app/            globals.css (tokens, .iri, layout tokens), layout.tsx (fonts via next/font), page.tsx
   components/
-    Backdrop.tsx  streams-rain canvas (tab-paused, reduced-motion safe)
     Home.tsx      orchestrator
-    new/          Navbar, Hero (intro+terminal), Experience (4 sticky scenes),
-                  Projects (glass bento), About, Skills, Contact, Footer
-    new/visuals/  bespoke per-scene visuals (e.g. QuantaRack)
+    chapters/     Film (grain + vignette), TopBar, Hero (dust + name decrypt),
+                  Experience (4 chapters), Projects (three-up sheet), Origin
+    chapters/scenes/  AisleScene, PhoneScene, RaceScene, OrbitScene (three.js, one per role)
+    new/          Skills, Footer
+    new/visuals/  the eight project card visuals (+ draftmaster/ and centavo/ logic, unit-tested)
   data/portfolio.ts   content source (experiences, projects, skills, education, contact)
 scripts/copy-lint.mjs deterministic copy-rule check (em dashes)
+scripts/export-draftmaster-matches.mjs regenerates the DraftMaster replay data
 ```
 
-Section order: Navbar · Hero · Experience (01) · Projects (02) · About (03) · Skills (04) · Contact.
+Section order: TopBar · Hero · Experience (chapters 01 to 04) · Projects (05) · Origin (06) · Skills · Footer.
+There is no Contact section; the footer is one line.
 
 ## Verification gate
 
-`npm run build` · `npm run lint` · `npm run copy-lint` · browser pass via the
-`portfolio-dev` preview (console clean, visuals animate in view, reduced-motion
-shows a static frame). Details in the `verify` skill.
+`npm run build` · `npm test` · `npm run lint` · `npm run copy-lint` · browser pass via the
+`portfolio-dev` preview (console clean, scenes and visuals animate in view, reduced-motion
+shows a static frame, no horizontal overflow at 390 px). Details in the `verify` skill.
+Never run `next build` while a dev server is up on the same checkout.
 
 ## Commands
 
-`npm run dev` · `npm run build` · `npm run lint` · `npm run copy-lint`
+`npm run dev` · `npm run build` · `npm test` · `npm run lint` · `npm run copy-lint`
