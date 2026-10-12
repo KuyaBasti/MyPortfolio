@@ -1,8 +1,8 @@
 # johnsolon.com · system design
 
-> **How a URL becomes a Matrix boot sequence.** A pre-paint script decides whether you get the cinematic login or the finished terminal. A page-wide rain canvas sets the world. A canonical data file feeds seven sections, and eleven hand-rolled canvas visuals animate the actual work: each one waking only when you scroll to it, and each one carrying a designed static frame for reduced motion. Everything ships branch to PR to Vercel.
+> **How a URL becomes a decrypted name and four living chapters.** The hero scrambles the name into cipher glyphs and locks it back in. Four three.js scenes, one per role, play on their own clocks inside framed panels and render only while on screen. A canonical data file feeds the copy, eight hand-rolled canvas visuals animate the project cards, and every moving thing carries a designed static frame for reduced motion. Everything ships branch to PR to Vercel.
 
-This is the developer map: every component, built or planned, and how a visit moves through them. The product story and quickstart live in [README.md](README.md).
+This is the developer map: every component and how a visit moves through them. The product story lives in [README.md](README.md).
 
 ## Table of Contents
 
@@ -18,46 +18,53 @@ This is the developer map: every component, built or planned, and how a visit mo
 
 ```mermaid
 flowchart TD
-    URL["visitor hits johnsolon.com"] --> GATE
-
-    subgraph INTRO["intro gate + boot"]
-        GATE["layout.tsx inline head script<br/>pre-paint check"] -->|"first visit"| ON["html.intro-on"]
-        GATE -->|"introPlayed / reduced-motion"| OFF["html.intro-off"]
-        ON --> BOOT["boot overlay<br/>rain + static + handshake<br/>decrypt key, ACCESS GRANTED"]
-        BOOT --> DOCK["overlay docks into<br/>hero terminal frame"]
-        DOCK --> TYPE["typewriter replays session<br/>whoami, cat role.txt, launch"]
-    end
+    URL["visitor hits johnsolon.com"] --> HOME
 
     subgraph SHELL["page shell"]
-        BACKDROP["Backdrop.tsx<br/>streams-rain canvas<br/>+ scanlines + vignette"]
-        NAV["Navbar"]
         HOME["Home.tsx orchestrator"]
+        FILM["Film<br/>fixed grain + vignette"]
+        BAR["TopBar<br/>Experience · Project · Origin"]
     end
 
-    OFF --> HERO
-    TYPE --> HERO
+    subgraph HERO["Hero"]
+        DUST["dust canvas<br/>three.js points, lazy import"]
+        NAME["name decrypt<br/>cipher glyphs lock in left to right<br/>per-line gradient slices"]
+        LINE["current-role line"]
+        NAME --> LINE
+    end
 
     subgraph CONTENT["content layer"]
         DATA["src/data/portfolio.ts<br/>canonical record"]
         RESUME["resume, Sept 2026<br/>source of truth"] --> DATA
-        HERO["Hero<br/>headline + terminal"]
-        EXP["Experience<br/>4 curated scenes"]
-        PROJ["Projects<br/>7-card bento grid"]
-        REST["About / Skills / Contact"]
+        EXP["Experience<br/>4 chapters: copy + framed scene"]
+        PROJ["Projects<br/>8-card three-up sheet"]
+        ORIGIN["Origin<br/>Baybayin + English name, story"]
+        SKILLS["Skills · Footer"]
         DATA --> EXP
         DATA --> PROJ
-        DATA --> REST
+        DATA --> SKILLS
     end
 
-    subgraph ENGINE["visual engine, shared conventions"]
+    subgraph SCENES["chapter scenes, three.js (lazy)"]
+        SCONV["ResizeObserver sizing, DPR cap 2<br/>IntersectionObserver + visibilitychange gate<br/>own clock, nothing scroll-driven<br/>static frame under reduced motion<br/>full dispose on unmount"]
+        AISLE["AisleScene<br/>rack aisle glide, LED boot wave"]
+        PHONE["PhoneScene<br/>teardown, screen test, close"]
+        RACE["RaceScene<br/>laps, LiDAR fan, map to chase"]
+        ORBIT["OrbitScene<br/>CubeSat above the limb"]
+        SCONV --- AISLE
+        SCONV --- PHONE
+        SCONV --- RACE
+        SCONV --- ORBIT
+    end
+
+    subgraph ENGINE["card visual engine, 2D canvas"]
         CONV["DPR-aware canvas, cap 2x<br/>IntersectionObserver start/stop<br/>30 ms interval loop<br/>seeded RNG for SSR safety<br/>reduced-motion static frame"]
-        SCENES["QuantaRack · UbreakifixScreen<br/>F1Lidar · NasaSatellite"]
         CARDS["DualGame · RoboticArm<br/>ParallelEdge · DnsResolver<br/>SalaryModel · AggiePipeline"]
         DRAFT["DraftMaster<br/>replays real engine output"]
-        CENT["Centavo card"]:::planned
-        CONV --- SCENES
+        CENT["Centavo<br/>reconcile or reject, synthetic fixture"]
         CONV --- CARDS
         CONV --- DRAFT
+        CONV --- CENT
     end
 
     subgraph REPLAY["DraftMaster replay data"]
@@ -66,34 +73,36 @@ flowchart TD
         MATCHES --> LOGIC["draftmaster/replay.ts<br/>pure, unit-tested"]
     end
 
+    HOME --> FILM
+    HOME --> BAR
+    HOME --> HERO
+    HOME --> EXP
+    HOME --> PROJ
+    HOME --> ORIGIN
+    HOME --> SKILLS
     EXP --> SCENES
     PROJ --> CARDS
     PROJ --> DRAFT
+    PROJ --> CENT
     LOGIC --> DRAFT
-    PROJ -.-> CENT
 
     subgraph SHIP["shipping loop"]
-        PROTO["public/prototypes/*.html<br/>local only, untracked"] --> PICK["user picks 1 of 3"]
-        PICK --> PORT["port to React component"]
-        PORT --> PR["branch, PR, merge"]
+        PROTO["sandbox repo + public/prototypes/*.html<br/>local only, untracked"] --> PICK["user picks"]
+        PICK --> PORT["port to React components"]
+        PORT --> PR["branch, PR pair (code + docs), merge"]
         PR --> VERCEL["Vercel deploy from main"]
     end
-
-    HOME --> BACKDROP
-    HOME --> NAV
-
-    classDef planned stroke-dasharray: 5 5,opacity:0.7
 ```
 
-Dashed nodes are planned, not started. The shipping loop is how the visuals on the site were built: three throwaway HTML prototypes, one pick, one port, one PR. DraftMaster is the exception: it went straight from a repo deep-read to a PR, with the PR itself as the review gate.
+The shipping loop is how everything on the page was built: throwaway HTML prototypes (ten whole-site directions for this redesign, three per card visual before it), one pick, one port, one PR pair. The chapter scenes went one step further: each was prototyped as a full-screen page, then tuned inside the chapter layout, then ported to a React component with the same geometry and timings.
 
 ## The three flows that matter
 
-1. **First visit.** The inline `<head>` script in `layout.tsx` runs before paint and finds no `introPlayed` flag, so it stamps `html.intro-on`: the page renders with the hero hidden and the boot overlay up. The overlay plays the decryption sequence (skippable at any time), docks itself into the hero terminal's frame, and the typewriter replays the real session. `sessionStorage.introPlayed` is set, so refreshing skips straight to the finished state.
+1. **First paint and the decrypt.** The hero renders server-side with the real name in per-glyph spans, so there is no layout shift. On mount, each glyph box is measured from its real letter and fixed, and each box gets its slice of one gradient per line (so a wrapped name on a phone still sweeps the whole gradient). Then the glyphs are swapped for cipher characters, drawn only from a per-slot pool of characters narrower than the slot so nothing spills over its neighbour, and lock back in left to right on a time-based schedule (done by about 2.6 s). The current-role line rises after. Under `prefers-reduced-motion` the name simply renders finished.
 
-2. **Returning visitor, or reduced motion.** The same pre-paint script stamps `html.intro-off` before the first frame, so there is no flash of the wrong state: the hero renders with the completed terminal session as static content. Under `prefers-reduced-motion`, additionally, the rain never starts, CSS loops are disabled, and every canvas visual draws its designed static frame once instead of animating.
+2. **The scroll lifecycle.** Each chapter's copy rises in once when it first intersects the viewport. Each chapter scene owns a `requestAnimationFrame` loop that runs only while an IntersectionObserver on its frame says it is on screen (threshold 0.05) and `document.visibilityState` is visible; it keeps its own clock, so leaving and returning resumes mid-cycle rather than replaying. Nothing on the page is driven by scroll position: there is no pinning, no snap, no zoom, and stopping mid-page leaves everything exactly where it is. Project cards use the older `setInterval` skeleton gated the same way.
 
-3. **The scroll lifecycle.** Each visual owns a `setInterval` loop that exists only while its wrapper intersects the viewport (threshold 0.1): scroll away and the loop stops, scroll back and it resumes. The backdrop rain listens to `visibilitychange` and pauses on hidden tabs. Nothing on the page animates unseen.
+3. **Reduced motion.** The name renders finished, the light leaks and grain hold still, every chapter scene draws one designed frame (a representative moment of its loop) and re-draws only on resize, and every card draws its static frame.
 
 ## How one visual renders, end to end
 
@@ -105,48 +114,58 @@ The DualGame card, from server to pixels:
 4. **Game state initializes** in closure variables: two ships, bullet array, score, all client-only.
 5. **First `render()`** paints immediately so the card is never blank, even before it scrolls into view.
 6. **IntersectionObserver** attaches: entering the viewport starts `setInterval(render, 30)`, leaving clears it.
-7. **Each tick** advances the simulation (ships wander and dodge, bullets cross the seam, hits explode and score) and repaints the whole frame.
+7. **Each tick** advances the simulation and repaints the whole frame.
 8. **Cleanup** on unmount: stop the interval, disconnect the observer, remove the resize listener.
 
-Every other visual follows the same skeleton with a different simulation inside.
+A chapter scene follows the same shape with three.js inside: the effect lazily `import("three")`s (a disposed flag guards the import resolving after unmount), builds the scene once, sizes the drawing buffer from the frame with a ResizeObserver, renders a first frame immediately, then runs its gated rAF loop; cleanup cancels the loop, disconnects observers and disposes every geometry, material, texture and the renderer.
 
 ## Subsystem deep dives
 
-### 1. Intro gate and boot state machine
+### 1. Hero: dust and decrypt
 
-The gate must decide before first paint, so it is an inline blocking script in `layout.tsx` (`<html suppressHydrationWarning>` because the class is set outside React). Inputs: `sessionStorage.introPlayed`, a `?intro=play` override for replays, and `prefers-reduced-motion`. The boot overlay in `Hero.tsx` is a timer-driven sequence (typed boot lines, a scrambling hex decrypt, a progress bar, an ACCESS GRANTED glitch) with a persistent skip control; skip and natural completion converge on the same `dock()` path, which animates the overlay into the hero terminal's frame and hands off to the session typewriter. All timers are tracked and cancelled on unmount or skip.
+`chapters/Hero.tsx`. The backdrop is a 900-point three.js particle field (seeded, additive, slow upward drift with a gentle camera sway) over two blurred CSS light leaks; the copy lifts and fades as the hero scrolls away. The decrypt is DOM-driven: the name is `<span class="w">` words of `<span class="c">` glyphs, each glyph carrying `data-ch`. `layout()` measures the real letters, fixes each box's width, groups boxes by line and sets `--gw`/`--gx` so each glyph shows its slice of a continuous gradient, and builds the per-slot cipher pools from measured advances. The rAF loop is purely time-based (hold, then one lock every 95 ms), so a throttled frame rate only skips intermediate scrambles, never the result. three.js is imported lazily so it never enters the first-load bundle.
 
-### 2. Streams-rain backdrop
+### 2. Chapter scenes
 
-`Backdrop.tsx` draws the page-wide rain: sparser and calmer than the intro's boot rain, so the world reads as the same place without repeating the movie moment. Implementation: one full-viewport canvas, a column-per-16px grid of falling glyph heads with alpha-fade trails, stepped at roughly 18 fps via an rAF loop with a time gate. Paused on `visibilitychange`, resized on `resize`, skipped entirely under reduced motion (a flat background plus scanline and vignette overlays remain).
+`chapters/scenes/*.tsx`, one per role, all sharing the contract above and differing in what they simulate:
 
-### 3. The canvas visual engine
+- **AisleScene** (Quanta): two instanced rows of 44 racks, a floor tile texture, ceiling fixtures with additive light cones, a travelling lamp, and 8,800 LED points whose shader runs a PXE boot wave down the hall (dark, amber, cyan test, green pass) on a 14 s cycle. The camera glides from the mouth of the aisle to deep inside and back on a 28 s cosine, with a mild mouse sway.
+- **PhoneScene** (uBreakiFix): a generic phone built from rounded slabs (back glass, aluminium frame, battery, L-shaped board with shield cans and seeded passives and one LED, camera module, speaker, mid-frame, OLED with five soft tiles, front glass). A 22 s loop: 16 s to lift the layers apart on green leader lines (glass first, board last), push in on the lifted display while it lights up, and close again board first and glass last; 3 s hold on the repaired phone; 1 s fade out and in through the tone-mapping exposure.
+- **RaceScene** (F1Tenth): a CatmullRom circuit with additive ribbons and boundary loops, a low-poly car with a lamp, a 61-ray LiDAR fan cast against the boundary segments every frame with hit points, and a 720-particle cloud drawn toward the car. The view alternates between the top-down map and a chase camera behind the car on a 30 s cosine.
+- **OrbitScene** (NASA): a seeded 1,600-star sky, a 60-unit Earth with a day/night/cloud shader and an additive atmosphere shell, and the 3U CubeSat (rails, seams, cells, two wings, four antennas, an IMU marker) drifting in attitude. The camera breathes between a close pass and a wide view with the limb on a 40 s cosine.
 
-Eleven visuals share one skeleton (DPR sizing, IO gating, 30 ms loop, static reduced-motion frame, full cleanup) and differ only in what drives the frame. Conventions that matter:
+The scenes carry no text: every fact lives in the chapter copy beside them. Each buffer is sized to its frame (DPR capped at 2), so only visible pixels are paid for.
 
-- **Seeded randomness for anything SSR-rendered.** Star fields and rack layouts that render as SVG/DOM use `mulberry32` with a fixed seed so hydration matches. Canvas-only state may use `Math.random()` freely because it never renders on the server.
-- **Real mechanics over mood.** Each visual simulates the actual system: the DNS walk really walks root to TLD to authoritative and caches the answer; the edge-detection sweep runs a real Sobel convolution on a procedural scene; the arm solves real two-link inverse kinematics with a fixed elbow branch so it cannot flip solutions.
-- **Replay real output when it exists.** DraftMaster does not re-simulate its engine. `scripts/export-draftmaster-matches.mjs` exports three real sim files from the DotaAnalysis repo, and the card replays them through `draftmaster/replay.ts`, a pure module ported from DraftMaster's own Match Viewer (same map tables, odds constants, marker lifetimes, and hero tags). Every frame is a pure function of (match, clock), so the reduced-motion frame is just the render at 24:12 of seed 42, and the logic is covered by Vitest (`npm test`). It sizes itself with a `ResizeObserver` on the card rather than window `resize`, because a card can change width without the window changing.
-- **HUD numbers are claims.** Anything printed in a visual's HUD (`4,000 particles · 240K rays`, `100 ms · deterministic`, `launch Sept 2026`, `racks 286/400`) must match the resume, same as body copy. When the resume drops a claim, its HUD label goes too.
+### 3. The card visual engine
+
+Eight 2D canvas visuals share one skeleton (DPR sizing, IO gating, 30 ms loop, static reduced-motion frame, full cleanup) and differ only in what drives the frame. Conventions that matter:
+
+- **Seeded randomness for anything SSR-rendered.** Anything that renders as SVG/DOM uses `mulberry32` with a fixed seed so hydration matches. Canvas-only state may use `Math.random()` freely because it never renders on the server.
+- **Real mechanics over mood.** The DNS walk really walks root to TLD to authoritative and caches the answer; the edge-detection sweep runs a real Sobel convolution; the arm solves real two-link inverse kinematics with a fixed elbow branch.
+- **Replay real output when it exists.** DraftMaster replays three real sim files exported from the DotaAnalysis repo through `draftmaster/replay.ts`, a pure module ported from DraftMaster's own Match Viewer and covered by Vitest. Centavo animates the repo's own synthetic statement fixture (`centavo/fixture.ts`): three checks that must reconcile to the cent, and a one-cent-off rejection, also unit-tested.
+- **HUD numbers are claims.** Anything printed in a card's HUD must match the resume or the project's repo, same as body copy.
 
 ### 4. Content pipeline
 
-`src/data/portfolio.ts` is the canonical record (experiences, projects, skills, education, contact). The Experience scenes and Project cards additionally carry curated display copy inline in their components, tuned for the page; the rule is that curated copy and canonical data stay in sync, and both defer to the resume when they disagree. This is a deliberate duplication: the data file holds complete resume-grade bullets, the components hold the short plain-prose cut, written in the same voice as John's LinkedIn entries (experiences reuse that text verbatim).
+`src/data/portfolio.ts` is the canonical record (experiences, projects, skills, education, contact). The chapters and project cards carry curated display copy inline, written in the same voice as John's LinkedIn entries; curated copy and canonical data stay in sync, and both defer to the resume when they disagree. Origin is the one section with copy that is not in the resume: it uses only what John stated directly (the Philippines, poverty, the move to California in 2018) plus resume facts (UC Davis CSE, June 2025; Quanta), and the Baybayin name is a transliteration of the Filipino pronunciation using the modern virama for final consonants.
 
 ### 5. Design system
 
-Tokens live in `src/app/globals.css`: near-black background, ink ramp, phosphor greens, hairline, and the iridescent `--iri` gradient with its `.iri` text helper. Bespoke per-section animation CSS lives in scoped `<style>` blocks inside each component, next to the markup it animates. Two hard copy rules: no em dashes anywhere in visible text (en dashes only for date ranges), and mono type (`JetBrains Mono`) marks the machine voice: eyebrows, terminal, HUD labels, chips.
+Tokens live in `src/app/globals.css`: near-black background, ink ramp, phosphor greens, hairline, the iridescent `--iri` gradient with its `.iri` text helper, and the two layout tokens `--lb` (top bar height) and `--pad` (page gutter). Fonts come through next/font: Inter, JetBrains Mono, and Noto Sans Tagalog for the Baybayin name. Bespoke per-section CSS lives in scoped `<style>` blocks inside each component. Two hard copy rules: no em dashes anywhere in visible text (en dashes only for date ranges), and mono type marks the machine voice: eyebrows, labels, chips.
 
 ## Component inventory
 
 | Component | Depicts | Accent | Where | Status |
 | --- | --- | --- | --- | --- |
-| Backdrop | Ambient streams rain + scanlines + vignette | green | `src/components/Backdrop.tsx` | ✅ |
-| Hero boot + terminal | Decrypt login, docked zsh session | green | `src/components/new/Hero.tsx` | ✅ |
-| QuantaRack | L11 validation wave: PXE boot, test, pass, escalation chips | green/amber | `src/components/new/visuals/QuantaRack.tsx` | ✅ |
-| UbreakifixScreen | Phone screen swap, crack to clean | green | `src/components/new/visuals/UbreakifixScreen.tsx` | ✅ |
-| F1Lidar | Particle-filter localization, LiDAR fan | amber | `src/components/new/visuals/F1Lidar.tsx` | ✅ |
-| NasaSatellite | Satellite over Earth, IMU telemetry | cyan/green | `src/components/new/visuals/NasaSatellite.tsx` | ✅ |
+| Film | Fixed grain + vignette over the page | none | `src/components/chapters/Film.tsx` | ✅ |
+| TopBar | Three centered links, lit by section | green | `src/components/chapters/TopBar.tsx` | ✅ |
+| Hero | Dust field, light leaks, name decrypt, current role | gradient | `src/components/chapters/Hero.tsx` | ✅ |
+| Experience | Four chapters: copy + framed scene | green | `src/components/chapters/Experience.tsx` | ✅ |
+| AisleScene | Rack aisle glide with a PXE boot wave of LEDs | cold white/green | `src/components/chapters/scenes/AisleScene.tsx` | ✅ |
+| PhoneScene | Phone teardown, screen test, reassembly | green | `src/components/chapters/scenes/PhoneScene.tsx` | ✅ |
+| RaceScene | Lapping car, LiDAR fan, map to chase camera | amber/green | `src/components/chapters/scenes/RaceScene.tsx` | ✅ |
+| OrbitScene | 3U CubeSat drifting above the Earth limb | blue/green | `src/components/chapters/scenes/OrbitScene.tsx` | ✅ |
+| Projects | Three-up contact sheet of eight cards | gradient rings | `src/components/chapters/Projects.tsx` | ✅ |
 | DualGame | Two-screen shooter, bullets cross the seam | green/cyan | `src/components/new/visuals/DualGame.tsx` | ✅ |
 | RoboticArm | Serial console + 2-link IK plotter | violet/pink | `src/components/new/visuals/RoboticArm.tsx` | ✅ |
 | ParallelEdge | 8-thread row-chunk Sobel sweep | green | `src/components/new/visuals/ParallelEdge.tsx` | ✅ |
@@ -154,24 +173,30 @@ Tokens live in `src/app/globals.css`: near-black background, ink ramp, phosphor 
 | SalaryModel | Neural-net forward pass, salary count-up | amber/pink | `src/components/new/visuals/SalaryModel.tsx` | ✅ |
 | AggiePipeline | Postgres to cron to SendGrid reminders | rose | `src/components/new/visuals/AggiePipeline.tsx` | ✅ |
 | DraftMaster | Real engine matches replayed: minimap, roster chips, feed, net-worth lead | radiant green/dire red/gold | `src/components/new/visuals/DraftMaster.tsx` | ✅ |
-| Centavo card | Reconcile-or-reject ledger visual | tbd | not started | ⬜ |
+| Centavo | Statement scan, three checks to the cent, one-cent rejection | passbook green/amber/red | `src/components/new/visuals/Centavo.tsx` | ✅ |
+| Origin | Baybayin and English name, the story | green | `src/components/chapters/Origin.tsx` | ✅ |
+| Skills, Footer | Skill groups; one-line footer | green | `src/components/new/` | ✅ |
 
 ## Design decisions
 
 | Decision | Choice | Why |
 | --- | --- | --- |
-| Scene/card visuals | Hand-rolled canvas, no Lottie/video/GIF | Full control over the simulation (real IK, real Sobel, real DNS walk), tiny payload, one drawing vocabulary across all eleven |
-| Data-backed visuals | Replay exported real output (DraftMaster) instead of re-implementing the system | A JS port of the engine would drift from the real one; exported timelines are the engine's own truth, at ~11 KB gzipped for three matches |
-| Testing | Vitest on pure visual logic (`npm test`) plus a browser pass | Replay math, map ownership, and feed text are asserted against real data; the canvas itself is verified visually |
-| Animation timer | `setInterval(render, 30)` gated by IO, not free-running rAF | Uniform pacing, trivially pausable, and the IO gate makes background cost zero; rAF's tab-throttling behavior varies |
-| SSR randomness | Seeded `mulberry32` for anything server-rendered | Identical server/client markup; hydration mismatches were the first bug this repo hit |
-| Reduced motion | Designed static frames, not blank boxes | Accessibility without losing the information the visual carries |
-| DPR handling | Backing store at `devicePixelRatio` capped at 2 | Retina-crisp lines without paying 3x pixel cost on high-DPR phones |
-| Intro gating | Inline pre-paint script + `html` class | The intro decision must precede first paint; anything later flashes the wrong state |
-| Styling | Tokens in `globals.css`, bespoke CSS in scoped `<style>` blocks | Section animations live next to their markup; tokens stay global |
-| Content | Canonical `portfolio.ts` plus curated inline copy | Data file keeps resume-grade completeness; components keep the plain LinkedIn-voice cut; resume wins conflicts |
-| Prototyping | 3 standalone HTML files in `public/prototypes/`, untracked | Compare real motion in the browser before committing to a component; deleted after the pick ships |
-| Shipping | Branch to PR to merge, never direct to main | Merging main deploys to production via Vercel; PRs keep every visual change reviewable |
+| Chapter scenes | three.js, imported lazily inside each component | Real 3D for the four flagship moments without touching first-load JS (~196 kB); each scene is one self-contained file |
+| Scene motion | Self-playing clocks, not scroll scrubbing | The scroll-driven pin, zoom and replay logic was built and rejected: it fought the reader's scroll and could leave frames stuck mid-state. Clocks never do |
+| Scene text | None inside the canvas | Facts belong in the copy; the scene is the proof, not a HUD |
+| Scene lifecycle | IntersectionObserver + `visibilitychange`, ResizeObserver sizing, full dispose | Four WebGL contexts must cost nothing off screen and leak nothing on navigation |
+| Hero intro | Name decrypt in the DOM, no boot overlay | One intro moment, no pre-paint gating, no session flag, no flash risk |
+| Card visuals | Hand-rolled 2D canvas, no Lottie/video/GIF | Full control over the simulation, tiny payload, one drawing vocabulary |
+| Data-backed visuals | Replay exported real output (DraftMaster) instead of re-implementing | Exported timelines are the engine's own truth, at ~11 KB gzipped |
+| Private project | Centavo: synthetic fixture, no repo link | The tracker is personal; the card shows the method, never the data |
+| Testing | Vitest on pure visual logic (`npm test`) plus a browser pass | Replay math and reconcile checks are asserted against data; canvases are verified visually |
+| SSR randomness | Seeded `mulberry32` for anything server-rendered | Identical server/client markup |
+| Reduced motion | Designed static frames, not blank boxes | Accessibility without losing what the visual carries |
+| DPR handling | Backing stores at `devicePixelRatio` capped at 2 | Retina-crisp without 3x pixel cost on phones |
+| Styling | Tokens in `globals.css`, bespoke CSS in scoped `<style>` blocks | Section styles live next to their markup; tokens stay global |
+| Content | Canonical `portfolio.ts` plus curated inline copy | Data file keeps resume-grade completeness; components keep the plain cut; resume wins conflicts |
+| Prototyping | Whole-site HTML templates and per-scene pages in a private sandbox repo | Compare real motion before committing to components; the picked direction is ported, the rest discarded |
+| Shipping | Branch to a PR pair (code + docs) to merge, never direct to main | Merging main deploys to production via Vercel; docs never drift from code |
 | Copy | No em dashes in visible text | House rule: they read as AI-generated |
 
 ## Build stages
@@ -180,11 +205,11 @@ Tokens live in `src/app/globals.css`: near-black background, ink ramp, phosphor 
 | --- | --- | --- |
 | 0 | Light Apple-style redesign (superseded) | ✅ |
 | 1 | Dark Neo/Matrix pivot: tokens, backdrop, dark sections | ✅ |
-| 2 | Decryption boot intro with pre-paint gate | ✅ |
-| 3 | Four Experience scene visuals | ✅ |
+| 2 | Decryption boot intro with pre-paint gate (superseded by the name decrypt) | ✅ |
+| 3 | Four Experience scene visuals (superseded by the chapter scenes) | ✅ |
 | 4 | Six Project card visuals | ✅ |
 | 5 | Structural trims: hero dedup, stats band removal, scroll unpin | ✅ |
 | 6 | Resume sync: every claim reconciled to the Aug 2026 resume, re-synced to the Sept 2026 resume | ✅ |
 | 7 | DraftMaster card replaying real engine output | ✅ |
-| 8 | Centavo card with bespoke visual | ⬜ |
-| 9 | Copy dedup pass (hero sub, repeated tagline) | ⬜ |
+| 8 | Centavo card with the reconcile-or-reject visual | ✅ |
+| 9 | Chapters site: decrypting hero, four three.js chapters, three-up sheet, Origin, Contact dropped | ✅ |
