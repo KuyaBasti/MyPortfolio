@@ -289,6 +289,21 @@ export const projects: Project[] = [
         category: "Simulation & Machine Learning",
     },
     {
+        title: "Centavo",
+        description:
+            "Local-first personal finance tracker: statements and paystubs parsed into a SQLite ledger in integer cents, reconciled to the cent or rejected",
+        technologies: ["Python", "pdfplumber", "SQLite", "SQLAlchemy", "scikit-learn", "FastAPI", "React"],
+        link: null,
+        github: null,
+        details: [
+            "Parses bank statements, paystubs, and CSV exports into a SQLite ledger where money is integer cents, never floats",
+            "Reconcile or reject: every parser proves the document against its own printed totals with exact integer equality; one cent off rejects the import and nothing is written",
+            "Categorizes with regex rules, then a model allowed to label only at 0.9 confidence or above, then merchant-grouped human review; ambiguous merchants always go to a person",
+            "Every ledger row keeps page and line provenance back to the original statement; 222 tests on synthetic fixtures. Private by design, so no public repo",
+        ],
+        category: "Personal Finance",
+    },
+    {
         title: "IR Signal AWS Messaging",
         description:
             "IR remote-based text messaging system for CC3200 with T9 input, OLED display, and AWS cloud integration",

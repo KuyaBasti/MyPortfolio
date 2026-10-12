@@ -21,6 +21,10 @@
 
   /* Cooler / cyber iridescent gradient for headlines */
   --iri: linear-gradient(120deg, #5eead4 0%, #5e7dff 38%, #bf5af2 68%, #ff6680 100%);
+
+  /* Chapters layout: the top bar height and the page gutter */
+  --lb: clamp(30px, 6.5vh, 64px);
+  --pad: clamp(20px, 5vw, 80px);
 }
 
 * {
