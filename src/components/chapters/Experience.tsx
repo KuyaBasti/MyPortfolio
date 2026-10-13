@@ -108,11 +108,15 @@ export default function Experience() {
 
     return (
         <section id="experience" ref={ref}>
+            <div className="exp-head">
+                <span className="num mono">01</span>
+                <h2>Experiences</h2>
+            </div>
             {chapters.map((c) => (
                 <article className="chapter" key={c.num} id={`ch-${c.num}`}>
                     <div className="pin">
                         <div className="dcopy">
-                            <div className="tcard mono"><span>{c.num} · {c.date}</span></div>
+                            <div className="tcard mono"><span>{c.date}</span></div>
                             <div className="drole mono">{c.role} <span>· {c.company}</span></div>
                             <h2 className="ht">{c.titleLead} <span className="iri">{c.titleIri}</span></h2>
                             <p>{c.desc}</p>
@@ -131,13 +135,20 @@ export default function Experience() {
             ))}
 
             <style>{`
+                .exp-head {
+                    max-width: var(--maxw); margin: 0 auto;
+                    display: grid; grid-template-columns: 56px 1fr; align-items: end; gap: 24px;
+                    padding: calc(var(--lb) + 48px) var(--pad) 28px; border-bottom: 1px solid var(--hairline);
+                }
+                .exp-head .num { font-size: 11px; color: var(--green); letter-spacing: .12em; padding-bottom: 10px; }
+                .exp-head h2 { font-size: clamp(36px, 4.2vw, 58px); font-weight: 500; letter-spacing: -.026em; line-height: 1.02; }
                 .chapter { position: relative; }
                 .chapter .pin {
-                    position: relative; min-height: 100vh; min-height: 100svh;
-                    display: grid; grid-template-columns: minmax(0, 11fr) minmax(0, 10fr); gap: clamp(24px, 4vw, 72px); align-items: center;
+                    position: relative; min-height: 100vh; min-height: 100svh; max-width: var(--maxw); margin: 0 auto;
+                    display: grid; grid-template-columns: minmax(0, 10fr) minmax(0, 11fr); gap: clamp(24px, 3vw, 56px); align-items: center;
                     padding: calc(var(--lb) + 24px) var(--pad) 24px; overflow: hidden;
                 }
-                .dcopy { display: flex; flex-direction: column; gap: 18px; max-width: 640px; }
+                .dcopy { display: flex; flex-direction: column; gap: 16px; max-width: 560px; }
                 .dcopy > * { opacity: 0; transform: translateY(22px); transition: opacity 1s ease, transform 1.1s cubic-bezier(.2,.7,.2,1); }
                 .chapter.on .dcopy > * { opacity: 1; transform: none; }
                 .chapter.on .dcopy > :nth-child(1) { transition-delay: .1s; }
@@ -147,19 +158,18 @@ export default function Experience() {
                 .chapter.on .dcopy > :nth-child(5) { transition-delay: 1s; }
                 .chapter.on .dcopy > :nth-child(6) { transition-delay: 1.15s; }
                 .tcard {
-                    font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: var(--green);
+                    font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--green);
                     display: flex; gap: 14px; flex-wrap: wrap; align-items: baseline;
                 }
-                .tcard::before { content: ""; width: 22px; height: 1px; background: var(--green); align-self: center; flex: none; }
                 .drole { font-size: 13px; letter-spacing: .02em; color: var(--ink); }
                 .drole span { color: var(--ink-soft); }
-                .ht { font-size: clamp(28px, 4.6vw, 64px); line-height: 1.04; letter-spacing: -.012em; font-weight: 600; max-width: 15ch; }
-                .dcopy p { color: var(--ink-soft); font-size: clamp(15px, 1.15vw, 18px); line-height: 1.55; max-width: 58ch; }
-                .dots { display: flex; flex-wrap: wrap; gap: 10px 22px; list-style: none; padding: 0; margin: 0; font-size: 14px; color: var(--ink-soft); }
+                .ht { font-size: clamp(26px, 2.6vw, 34px); line-height: 1.12; letter-spacing: -.015em; font-weight: 600; max-width: 15ch; }
+                .dcopy p { color: var(--ink-soft); font-size: clamp(14.5px, 1vw, 15px); line-height: 1.62; max-width: 58ch; }
+                .dots { display: flex; flex-wrap: wrap; gap: 10px 22px; list-style: none; padding: 0; margin: 0; font-size: 13.5px; color: var(--ink-soft); }
                 .dots li { display: flex; align-items: center; gap: 8px; }
                 .dots li::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #8b7bff; box-shadow: 0 0 8px rgba(139,123,255,.6); flex: none; }
-                .lnk { font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--green-bright); display: inline-flex; gap: 8px; align-items: center; width: max-content; transition: color .3s; }
-                .lnk::after { content: "\\2197"; font-size: 13px; }
+                .lnk { font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--green-bright); display: inline-flex; gap: 8px; align-items: center; width: max-content; transition: color .3s; }
+                .lnk::after { content: "\\2197"; font-size: 12px; }
                 .lnk:hover { color: #fff; }
                 .frame {
                     position: relative; z-index: 3; width: 100%; aspect-ratio: 16 / 11; max-height: calc(100svh - var(--lb) - 56px);

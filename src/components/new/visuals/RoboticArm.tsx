@@ -29,9 +29,9 @@ export default function RoboticArm() {
         if (!ctx) return;
         const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-        const L1 = 104,
-            L2 = 92,
-            TW = 170,
+        let L1 = 104,
+            L2 = 92;
+        const TW = 170,
             feed = 1.6;
         let W = 0,
             H = 0,
@@ -87,9 +87,14 @@ export default function RoboticArm() {
             cv!.style.height = H + "px";
             ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
             by = H - 8;
+            // Narrow cards: scale the arm and its toolpath about the base so the
+            // elbow never swings past the card edge. Identity at 390px and wider.
+            const sc = Math.min(1, ((W - TW) / 2 - 10) / 100);
+            L1 = 104 * sc;
+            L2 = 92 * sc;
             const cx = TW + (W - TW) * 0.5;
             bx = cx;
-            path = star(cx, 98, 40, 16);
+            path = star(cx, by - 134 * sc, 40 * sc, 16 * sc);
         }
 
         // fixed elbow branch: continuous by construction, can never flip sides
