@@ -232,8 +232,10 @@ export default function Hero() {
             <style>{`
                 .hero {
                     position: relative; min-height: 100vh; min-height: 100svh; overflow: hidden; isolation: isolate;
-                    display: flex; flex-direction: column; justify-content: center; align-items: flex-start;
-                    padding: calc(var(--lb) + 28px) var(--pad) 28px;
+                    display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start;
+                    /* Content sits in the top quarter of the screen, not centered: the name lands about 25vh down. */
+                    padding: calc(var(--lb) + 15vh) var(--pad) 28px;
+                    padding-top: calc(var(--lb) + 15svh);
                 }
                 .hero .stage {
                     position: absolute; inset: 0; z-index: 0; overflow: hidden;
@@ -252,13 +254,13 @@ export default function Hero() {
                 }
                 @keyframes leak { 0% { transform: translate3d(0,0,0) scale(1); } 100% { transform: translate3d(8vmax,6vmax,0) scale(1.15); } }
                 .hero-body {
-                    position: relative; z-index: 2; width: 100%; max-width: 1320px;
+                    position: relative; z-index: 2; width: 100%; max-width: calc(var(--maxw) - 2 * var(--pad)); margin: 0 auto;
                     display: flex; flex-direction: column; align-items: flex-start; gap: clamp(14px, 2vh, 22px);
                     will-change: transform, opacity;
                 }
-                .pre { font-family: var(--font-mono); font-size: 12px; letter-spacing: .24em; text-transform: uppercase; color: var(--green); }
+                .pre { font-family: var(--font-mono); font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--green); }
                 .name {
-                    font-size: clamp(44px, 8.6vw, 132px); line-height: 1.02; font-weight: 600; letter-spacing: -.035em;
+                    font-size: clamp(44px, 8.6vw, 112px); line-height: 1.02; font-weight: 600; letter-spacing: -.035em;
                     max-width: 100%; margin: 2px 0 6px;
                 }
                 .name .w { display: inline-block; white-space: nowrap; }
@@ -270,7 +272,7 @@ export default function Hero() {
                 }
                 .name .c.scr { color: var(--green); opacity: .78; transition: none; }
                 .name .c.front { color: var(--green-bright); opacity: 1; text-shadow: 0 0 22px rgba(157,255,196,.55); }
-                .l2 { font-size: clamp(16px, 1.6vw, 22px); line-height: 1.3; color: var(--ink-soft); }
+                .l2 { font-size: clamp(16px, 1.5vw, 21px); line-height: 1.3; color: var(--ink-soft); }
                 .l2 a { color: var(--green-bright); border-bottom: 1px solid rgba(157,255,196,.3); transition: color .3s, border-color .3s; }
                 .l2 a:hover { color: #fff; border-color: var(--green); }
                 .hero-body > * { opacity: 0; animation: rise 1.2s cubic-bezier(.2,.7,.2,1) forwards; }

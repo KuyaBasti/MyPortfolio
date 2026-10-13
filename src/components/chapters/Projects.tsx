@@ -112,10 +112,7 @@ export default function Projects() {
     return (
         <section className="sheet" id="projects">
             <div className="sheet-head">
-                <div className="tcard mono">
-                    <span>Chapter 05 · Contact sheet</span>
-                    <span className="date">{cards.length} frames</span>
-                </div>
+                <span className="num mono">02</span>
                 <h2>Projects</h2>
             </div>
 
@@ -149,15 +146,13 @@ export default function Projects() {
             </div>
 
             <style>{`
-                .sheet { position: relative; padding: calc(var(--lb) + 28px) var(--pad) 96px; }
-                .sheet-head { display: flex; flex-direction: column; gap: 16px; margin-bottom: 36px; }
-                .tcard {
-                    font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: var(--green);
-                    display: flex; gap: 14px; flex-wrap: wrap; align-items: baseline;
+                .sheet { position: relative; max-width: var(--maxw); margin: 0 auto; padding: calc(var(--lb) + 28px) var(--pad) 96px; }
+                .sheet-head {
+                    display: grid; grid-template-columns: 56px 1fr; align-items: end; gap: 24px;
+                    padding-bottom: 28px; margin-bottom: 36px; border-bottom: 1px solid var(--hairline);
                 }
-                .tcard::before { content: ""; width: 22px; height: 1px; background: var(--green); align-self: center; flex: none; }
-                .tcard .date { color: var(--ink-soft); letter-spacing: .12em; }
-                .sheet-head h2 { font-size: clamp(28px, 4.6vw, 64px); line-height: 1.04; letter-spacing: -.012em; font-weight: 600; }
+                .sheet-head .num { font-size: 11px; color: var(--green); letter-spacing: .12em; padding-bottom: 10px; }
+                .sheet-head h2 { font-size: clamp(36px, 4.2vw, 58px); font-weight: 500; letter-spacing: -.026em; line-height: 1.02; }
 
                 .sheet-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(14px, 2vw, 28px); }
                 .pj {
@@ -180,12 +175,12 @@ export default function Projects() {
                     position: absolute; top: 10px; left: 12px; z-index: 2; font-size: 10px; letter-spacing: .2em; color: var(--green);
                     background: rgba(0,0,0,.5); padding: 2px 6px; border-radius: 2px;
                 }
-                .pj-body { padding: 22px 24px 26px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+                .pj-body { padding: 20px 22px 24px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
                 .pj-eyebrow { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); font-weight: 500; }
-                .pj-title { font-size: 22px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.25; }
-                .pj-desc { font-size: 14.5px; color: var(--ink-soft); line-height: 1.55; flex: 1; }
+                .pj-title { font-size: 19px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.25; }
+                .pj-desc { font-size: 14.5px; color: var(--ink-soft); line-height: 1.62; flex: 1; }
                 .pj-tech { margin-top: 6px; font-size: 11px; color: var(--ink-faint); line-height: 1.6; }
-                .pj-open { margin-top: 10px; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--green-bright); width: max-content; }
+                .pj-open { margin-top: 10px; font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--green-bright); width: max-content; }
                 .pj-priv {
                     margin-top: 10px; font-size: 10.5px; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-faint);
                     border: 1px dashed var(--hairline); padding: 4px 8px; width: max-content; border-radius: 3px;

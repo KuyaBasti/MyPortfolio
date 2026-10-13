@@ -1,62 +1,56 @@
 "use client";
 
-import { motion } from "motion/react";
 import { skillCategories } from "@/data/portfolio";
 
+// A plain table: category down the left, the tools in one mono line to the
+// right, a hairline between rows. No cards, no chips.
 export default function Skills() {
     return (
-        <section id="skills" className="mx-auto max-w-[1100px] px-[22px] py-28">
-            <div
-                className="mono mb-4 text-[13px] font-medium uppercase tracking-[0.06em]"
-                style={{ color: "var(--accent)" }}
-            >
-                04 · Skills
+        <section id="skills" className="skills">
+            <div className="skills-head">
+                <span className="num mono">04</span>
+                <h2>Skills</h2>
             </div>
-            <h2
-                className="mb-12 font-semibold leading-[1.1] tracking-[-0.025em]"
-                style={{ fontSize: "clamp(32px, 5vw, 56px)" }}
-            >
-                What I <span className="iri">work with.</span>
-            </h2>
 
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                {skillCategories.map((cat, i) => (
-                    <motion.div
-                        key={cat.title}
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, margin: "-60px" }}
-                        transition={{ delay: i * 0.08, duration: 0.6 }}
-                        className="rounded-[24px] p-7"
-                        style={{
-                            background: "rgba(12,16,22,0.55)",
-                            border: "1px solid var(--hairline)",
-                            backdropFilter: "blur(16px)",
-                            WebkitBackdropFilter: "blur(16px)",
-                            boxShadow: "0 0 50px -30px rgba(40,200,90,0.5), 0 20px 50px -30px #000",
-                        }}
-                    >
-                        <h3 className="mb-5 text-[18px] font-semibold tracking-[-0.01em]">
-                            {cat.title}
-                        </h3>
-                        <div className="flex flex-wrap gap-2">
-                            {cat.items.map((item) => (
-                                <span
-                                    key={item}
-                                    className="mono rounded-full px-3 py-1.5 text-[12px]"
-                                    style={{
-                                        background: "rgba(40,200,90,0.08)",
-                                        color: "var(--ink-soft)",
-                                        border: "1px solid rgba(40,200,90,0.2)",
-                                    }}
-                                >
+            <dl className="skills-table">
+                {skillCategories.map((cat) => (
+                    <div className="row" key={cat.title}>
+                        <dt className="mono">{cat.title}</dt>
+                        <dd className="mono">
+                            {cat.items.map((item, i) => (
+                                <span key={item}>
+                                    {i > 0 && <i> / </i>}
                                     {item}
                                 </span>
                             ))}
-                        </div>
-                    </motion.div>
+                        </dd>
+                    </div>
                 ))}
-            </div>
+            </dl>
+
+            <style>{`
+                .skills { max-width: var(--maxw); margin: 0 auto; padding: calc(var(--lb) + 48px) var(--pad) 120px; }
+                .skills-head {
+                    display: grid; grid-template-columns: 56px 1fr; align-items: end; gap: 24px;
+                    padding-bottom: 28px; margin-bottom: 56px; border-bottom: 1px solid var(--hairline);
+                }
+                .skills-head .num { font-size: 11px; color: var(--green); letter-spacing: .12em; padding-bottom: 10px; }
+                .skills-head h2 { font-size: clamp(36px, 4.2vw, 58px); font-weight: 500; letter-spacing: -.026em; line-height: 1.02; }
+
+                .skills-table { margin: 0; border-top: 1px solid var(--hairline); }
+                .row {
+                    display: grid; grid-template-columns: 160px minmax(0, 1fr); gap: 24px; align-items: baseline;
+                    padding: 16px 0; border-bottom: 1px solid var(--hairline);
+                }
+                .row dt { font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--green); }
+                .row dd { margin: 0; font-size: 14px; line-height: 1.7; color: var(--ink-soft); }
+                .row dd i { font-style: normal; color: var(--ink-faint); margin: 0 6px; }
+                @media (max-width: 720px) {
+                    .row { grid-template-columns: minmax(0, 1fr); gap: 8px; padding: 20px 0; }
+                    .row dd { font-size: 13.5px; }
+                    .row dd i { margin: 0 3px; }
+                }
+            `}</style>
         </section>
     );
 }
