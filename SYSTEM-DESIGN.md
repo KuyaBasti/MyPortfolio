@@ -23,7 +23,7 @@ flowchart TD
     subgraph SHELL["page shell"]
         HOME["Home.tsx orchestrator"]
         FILM["Film<br/>fixed grain + vignette"]
-        BAR["TopBar<br/>Experience · Project · Origin"]
+        BAR["TopBar<br/>name · Experience · Project · Origin · Contact"]
     end
 
     subgraph HERO["Hero"]
@@ -39,7 +39,7 @@ flowchart TD
         EXP["Experience<br/>4 chapters: copy + framed scene"]
         PROJ["Projects<br/>8-card three-up sheet"]
         ORIGIN["Origin<br/>Baybayin + English name, story"]
-        SKILLS["Skills · Footer"]
+        SKILLS["Skills table · 05 Contact footer"]
         DATA --> EXP
         DATA --> PROJ
         DATA --> SKILLS
@@ -151,14 +151,14 @@ Eight 2D canvas visuals share one skeleton (DPR sizing, IO gating, 30 ms loop, s
 
 ### 5. Design system
 
-Tokens live in `src/app/globals.css`: near-black background, ink ramp, phosphor greens, hairline, the iridescent `--iri` gradient with its `.iri` text helper, and the two layout tokens `--lb` (top bar height) and `--pad` (page gutter). Fonts come through next/font: Inter, JetBrains Mono, and Noto Sans Tagalog for the Baybayin name. Bespoke per-section CSS lives in scoped `<style>` blocks inside each component. Two hard copy rules: no em dashes anywhere in visible text (en dashes only for date ranges), and mono type marks the machine voice: eyebrows, labels, chips.
+Tokens live in `src/app/globals.css`: near-black background, ink ramp, phosphor greens, hairline, the iridescent `--iri` gradient with its `.iri` text helper, and the three layout tokens `--lb` (the 56px top bar height), `--pad` (page gutter, 40px at desktop) and `--maxw` (the 1200px column every section shares, 1120px of content). The type scale was set from a measured side-by-side with a reference site: 58px/500 section titles under a numbered mono gutter (01 to 05), 34px chapter headlines, 15px body, 21px story, 11px mono eyebrows. Fonts come through next/font: Inter, JetBrains Mono, and Noto Sans Tagalog for the Baybayin name. Bespoke per-section CSS lives in scoped `<style>` blocks inside each component. Two hard copy rules: no em dashes anywhere in visible text (en dashes only for date ranges), and mono type marks the machine voice: eyebrows, labels, chips.
 
 ## Component inventory
 
 | Component | Depicts | Accent | Where | Status |
 | --- | --- | --- | --- | --- |
 | Film | Fixed grain + vignette over the page | none | `src/components/chapters/Film.tsx` | ✅ |
-| TopBar | Three centered links, lit by section | green | `src/components/chapters/TopBar.tsx` | ✅ |
+| TopBar | Translucent 56px bar: name left, three centered links lit by section, Contact right | green | `src/components/chapters/TopBar.tsx` | ✅ |
 | Hero | Dust field, light leaks, name decrypt, current role | gradient | `src/components/chapters/Hero.tsx` | ✅ |
 | Experience | Four chapters: copy + framed scene | green | `src/components/chapters/Experience.tsx` | ✅ |
 | AisleScene | Rack aisle glide with a PXE boot wave of LEDs | cold white/green | `src/components/chapters/scenes/AisleScene.tsx` | ✅ |
@@ -175,7 +175,7 @@ Tokens live in `src/app/globals.css`: near-black background, ink ramp, phosphor 
 | DraftMaster | Real engine matches replayed: minimap, roster chips, feed, net-worth lead | radiant green/dire red/gold | `src/components/new/visuals/DraftMaster.tsx` | ✅ |
 | Centavo | Statement scan, three checks to the cent, one-cent rejection | passbook green/amber/red | `src/components/new/visuals/Centavo.tsx` | ✅ |
 | Origin | Baybayin and English name, the story | green | `src/components/chapters/Origin.tsx` | ✅ |
-| Skills, Footer | Skill groups; one-line footer | green | `src/components/new/` | ✅ |
+| Skills, Footer | Skills table; 05 Contact table (email, GitHub, LinkedIn) and a one-line footer | green | `src/components/new/` | ✅ |
 
 ## Design decisions
 
@@ -198,6 +198,8 @@ Tokens live in `src/app/globals.css`: near-black background, ink ramp, phosphor 
 | Prototyping | Whole-site HTML templates and per-scene pages in a private sandbox repo | Compare real motion before committing to components; the picked direction is ported, the rest discarded |
 | Shipping | Branch to a PR pair (code + docs) to merge, never direct to main | Merging main deploys to production via Vercel; docs never drift from code |
 | Copy | No em dashes in visible text | House rule: they read as AI-generated |
+| Layout | One 1200px column, 58px section titles, 15px body | Matched to a reference site after a measured comparison; the old 1480px column and 84px titles read as zoomed in |
+| Layout | Each experience chapter stays one full screen | Chapters flowing at their own height with 120px gaps were tried and rejected |
 
 ## Build stages
 
@@ -213,3 +215,4 @@ Tokens live in `src/app/globals.css`: near-black background, ink ramp, phosphor 
 | 7 | DraftMaster card replaying real engine output | ✅ |
 | 8 | Centavo card with the reconcile-or-reject visual | ✅ |
 | 9 | Chapters site: decrypting hero, four three.js chapters, three-up sheet, Origin, Contact dropped | ✅ |
+| 10 | Chapters polish: reference type scale on a 1200px column, numbered headers 01 to 05, hero in the top quarter, translucent top bar with Contact, contact-table footer | ✅ |

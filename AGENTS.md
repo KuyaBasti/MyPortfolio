@@ -76,13 +76,19 @@ each chapter scene) · Framer Motion (`motion` pkg) · Inter + JetBrains Mono + 
 - Cooler/cyber iridescent gradient (`--iri`) for big headlines; `.iri` helper.
 - One plain near-black page with a fixed film grain and vignette; the hero adds a drifting
   dust field and two light leaks. No page-wide rain, no boot overlay.
-- The hero **decrypts the name**: cipher glyphs lock in left to right into the gradient.
+- The hero **decrypts the name**: cipher glyphs lock in left to right into the gradient. The
+  hero block sits in the top quarter of the screen, not centered.
 - Each experience chapter pairs copy with a framed **three.js scene that plays on its own
   clock**: never scroll-driven, no pinning, no snap, no text inside the canvas.
 - Project cards keep the iridescent rings, three per row.
+- Type scale and column come from a measured comparison with a reference site: one 1200px
+  column (`--maxw`), 58px/500 section titles under a numbered mono gutter (01 Experiences to
+  05 Contact), 34px chapter headlines, 15px body, 11px eyebrows.
+- Each experience chapter stays **one full screen tall** (`min-height: 100svh`, content
+  centered). Chapters flowing at their own height were tried and rejected; never propose it.
 - Mono terminal accents: eyebrows, labels, chips.
-- Tokens are CSS vars in `src/app/globals.css` (including `--lb` top bar height and `--pad`
-  gutter). Bespoke per-section CSS lives in scoped `<style>` blocks inside each component.
+- Tokens are CSS vars in `src/app/globals.css` (including `--lb` top bar height, `--pad`
+  gutter and `--maxw` column width). Bespoke per-section CSS lives in scoped `<style>` blocks inside each component.
   Gate every animation behind `@media (prefers-reduced-motion: reduce)` and every loop behind
   IntersectionObserver and `visibilitychange`.
 
@@ -96,15 +102,15 @@ src/
     chapters/     Film (grain + vignette), TopBar, Hero (dust + name decrypt),
                   Experience (4 chapters), Projects (three-up sheet), Origin
     chapters/scenes/  AisleScene, PhoneScene, RaceScene, OrbitScene (three.js, one per role)
-    new/          Skills, Footer
+    new/          Skills (table), Footer (05 Contact table + one-line footer)
     new/visuals/  the eight project card visuals (+ draftmaster/ and centavo/ logic, unit-tested)
   data/portfolio.ts   content source (experiences, projects, skills, education, contact)
 scripts/copy-lint.mjs deterministic copy-rule check (em dashes)
 scripts/export-draftmaster-matches.mjs regenerates the DraftMaster replay data
 ```
 
-Section order: TopBar · Hero · Experience (chapters 01 to 04) · Projects (05) · Origin (06) · Skills · Footer.
-There is no Contact section; the footer is one line.
+Section order: TopBar · Hero · 01 Experiences (four chapters) · 02 Projects · 03 Origin · 04 Skills · 05 Contact (the footer).
+The top bar is translucent: name left, three section links centered, Contact right. No PDF is linked from the site.
 
 ## Verification gate
 
