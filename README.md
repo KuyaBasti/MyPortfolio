@@ -17,13 +17,15 @@ The name decrypts out of cipher glyphs over a drifting dust field. Each job is a
 
 ## What It Is
 
-A single-page Next.js 15 (App Router) site: **Top bar · Hero · Experience (chapters 01 to 04) · Projects (05) · Origin (06) · Skills · Footer**, on one plain near-black page with a film grain and vignette over everything.
+A single-page Next.js 15 (App Router) site: **Top bar · Hero · 01 Experiences (four chapters) · 02 Projects · 03 Origin · 04 Skills · 05 Contact**, on one plain near-black page with a film grain and vignette over everything. Every section sits on the same 1200px column (1120px of content) under a numbered 58px title.
 
-- **Top bar**: three centered links, Experience, Project, Origin. The lit one follows the section you are in.
-- **Hero**: the role as a mono eyebrow, the name at display size, and one line for the current role. On load the name is scrambled cipher glyphs that lock in left to right into the iridescent gradient; each glyph slot is sized to its real letter, so nothing jitters.
+- **Top bar**: a 56px translucent bar with a hairline. The name on the left, three centered links (Experience, Project, Origin) whose lit one follows the section you are in, and Contact on the right, which lands on the footer.
+- **Hero**: the role as a mono eyebrow, the name at display size, and one line for the current role. On load the name is scrambled cipher glyphs that lock in left to right into the iridescent gradient; each glyph slot is sized to its real letter, so nothing jitters. The block sits in the top quarter of the screen rather than centered.
 - **Experience**: one chapter per role (Quanta, uBreakiFix, F1Tenth, NASA). Copy on the left, a framed three.js scene on the right that animates by itself: the camera glides down a rack aisle while LEDs boot in a wave; a phone opens into its layers, its screen lights up for the test, and it closes again; a 1/10-scale car laps a track with a 61-ray LiDAR fan while the camera alternates between the map and a chase view; a 3U CubeSat drifts in attitude above the limb. Nothing is tied to scroll: you can stop anywhere and scroll back without replaying anything.
 - **Projects**: a uniform three-up contact sheet of eight cards, every header a live canvas: the DUAL! two-screen shooter, a G-code console plotter, a parallel Sobel row sweep, a recursive DNS walk, a neural-net forward pass, a Postgres-to-SendGrid reminder pipeline, DraftMaster's minimap replaying three real engine-simulated matches, and Centavo's reconcile-or-reject ledger.
 - **Origin**: the name in Baybayin and English, and two paragraphs on growing up in the Philippines, moving to California in 2018, and the rule that came with it.
+- **Skills**: a plain table, category on the left, tools in one mono line, hairlines between rows.
+- **Contact**: email, GitHub and LinkedIn as a three-row table with an arrow per row, then a one-line footer with Back to top. No PDF is linked from the site.
 - **Claims**: every metric shown (**4,000 particles, 240K ray casts per update**, **100 ms deterministic cadence**, **~15x on the CPU engine**, **160 to 400+ racks/mo**) comes from the resume, which is the source of truth.
 
 ## How a Visit Works, End to End
@@ -58,7 +60,7 @@ Under `prefers-reduced-motion`, the name renders finished, the leaks and grain h
 | `src/components/Home.tsx` | Section orchestrator |
 | `src/components/chapters/` | `Film` (grain + vignette), `TopBar`, `Hero` (dust + name decrypt), `Experience` (4 chapters), `Projects` (three-up sheet), `Origin` |
 | `src/components/chapters/scenes/` | The four three.js chapter scenes: `AisleScene`, `PhoneScene`, `RaceScene`, `OrbitScene` |
-| `src/components/new/` | `Skills`, `Footer` |
+| `src/components/new/` | `Skills` (table), `Footer` (05 Contact table + one-line footer) |
 | `src/components/new/visuals/` | The eight bespoke canvas card visuals |
 | `src/components/new/visuals/draftmaster/` | DraftMaster replay: pure, unit-tested logic ported from DraftMaster's Match Viewer (`replay.ts`) and the exported match data (`matches.ts`, generated) |
 | `src/components/new/visuals/centavo/` | Centavo's synthetic statement fixture and its reconcile checks, unit-tested |
