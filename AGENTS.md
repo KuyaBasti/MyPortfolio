@@ -70,9 +70,15 @@ Next.js 15 (App Router) · TypeScript · React 19 · Tailwind v4 · three.js (la
 each chapter scene) · Framer Motion (`motion` pkg) · Inter + JetBrains Mono + Noto Sans Tagalog
 (the Baybayin name) · Vitest · deployed on Vercel.
 
-## Design: dark "Neo / Matrix"
+## Design: dark and iridescent
 
-- Near-black bg `#05070a`, phosphor-green accent `#28c840` / bright `#9dffc4`, light ink `#e6e8ee`.
+- Near-black bg `#05070a`, light ink `#e6e8ee`. **No green anywhere in the page or the scenes.**
+- The one accent is **teal taken from the gradient**: `--accent` `#5eead4` for labels, dates, section
+  numbers and the decrypt glyphs, `--accent-bright` `#b7f6ec` for links. John chose it after a long
+  palette exploration; his original colors stay, the green was the only problem.
+- The chapter scenes share that light: they read `--light`, `--light-bright`, `--light-dim` and
+  `--light-pcb` through `scenes/sceneLight.ts` (LED waves, LiDAR, screen glow, edges). Change the
+  tokens, not the scenes.
 - Cooler/cyber iridescent gradient (`--iri`) for big headlines; `.iri` helper.
 - One plain near-black page with a fixed film grain and vignette; the hero adds a drifting
   dust field and two light leaks. No page-wide rain, no boot overlay.
@@ -80,7 +86,9 @@ each chapter scene) · Framer Motion (`motion` pkg) · Inter + JetBrains Mono + 
   hero block sits in the top quarter of the screen, not centered.
 - Each experience chapter pairs copy with a framed **three.js scene that plays on its own
   clock**: never scroll-driven, no pinning, no snap, no text inside the canvas.
-- Project cards keep the iridescent rings, three per row.
+- Project cards keep the iridescent rings, three per row, with no number badge and no tag line
+  above the title. The chapter scene frames wear the same gradient as a 1px ring.
+- Nothing moves under the cursor: no pointer sway in the scenes, no hover lift on cards.
 - Type scale and column come from a measured comparison with a reference site: one 1200px
   column (`--maxw`), 58px/500 section titles under a numbered mono gutter (01 Experiences to
   05 Contact), 34px chapter headlines, 15px body, 11px eyebrows.
@@ -101,7 +109,8 @@ src/
     Home.tsx      orchestrator
     chapters/     Film (grain + vignette), TopBar, Hero (dust + name decrypt),
                   Experience (4 chapters), Projects (three-up sheet), Origin
-    chapters/scenes/  AisleScene, PhoneScene, RaceScene, OrbitScene (three.js, one per role)
+    chapters/scenes/  AisleScene, PhoneScene, RaceScene, OrbitScene (three.js, one per role),
+                      sceneLight.ts (the scenes' light color, read from the accent tokens)
     new/          Skills (table), Footer (05 Contact table + one-line footer)
     new/visuals/  the eight project card visuals (+ draftmaster/ and centavo/ logic, unit-tested)
   data/portfolio.ts   content source (experiences, projects, skills, education, contact)
