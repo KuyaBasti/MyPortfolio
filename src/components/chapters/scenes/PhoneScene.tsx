@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { readSceneLight } from "./sceneLight";
 
 // Chapter 02 scene: the phone teardown. A 22 s self-playing loop lifts the
 // phone into its layers on leader lines (glass first, board last), pushes in
@@ -40,6 +41,7 @@ export default function PhoneScene() {
 
         const boot = async () => {
             const THREE = await import("three");
+            const SL = readSceneLight();
             if (disposed) return;
 
             const mulberry32 = (a: number) => () => {
@@ -82,7 +84,7 @@ export default function PhoneScene() {
             key.shadow.bias = -0.0004;
             key.shadow.normalBias = 0.02;
             scene.add(key);
-            const rim = new THREE.DirectionalLight(0x28c840, 0.9);
+            const rim = new THREE.DirectionalLight(SL.deep, 0.9);
             rim.position.set(-1.5, 0.9, -3.4);
             scene.add(rim);
             const fill = new THREE.DirectionalLight(0x6f7f9f, 0.6);
@@ -93,18 +95,18 @@ export default function PhoneScene() {
                 alu: new THREE.MeshStandardMaterial({ color: 0x8d939c, metalness: 0.92, roughness: 0.34 }),
                 glass: new THREE.MeshPhysicalMaterial({ color: 0x0b0e13, metalness: 0, roughness: 0.06, clearcoat: 1, clearcoatRoughness: 0.05, transparent: true, opacity: 0.86 }),
                 backglass: new THREE.MeshPhysicalMaterial({ color: 0x14181f, metalness: 0.1, roughness: 0.1, clearcoat: 1, clearcoatRoughness: 0.08 }),
-                oled: new THREE.MeshStandardMaterial({ color: 0x07090d, metalness: 0.25, roughness: 0.28, emissive: 0x28c840, emissiveIntensity: 0 }),
+                oled: new THREE.MeshStandardMaterial({ color: 0x07090d, metalness: 0.25, roughness: 0.28, emissive: SL.deep, emissiveIntensity: 0 }),
                 mid: new THREE.MeshStandardMaterial({ color: 0x3b4049, metalness: 0.8, roughness: 0.5 }),
                 batt: new THREE.MeshStandardMaterial({ color: 0x2a2d33, metalness: 0.35, roughness: 0.6 }),
                 label: new THREE.MeshStandardMaterial({ color: 0x33363c, metalness: 0.1, roughness: 0.85 }),
                 tab: new THREE.MeshStandardMaterial({ color: 0xc9ccd3, metalness: 0.95, roughness: 0.3 }),
-                pcb: new THREE.MeshStandardMaterial({ color: 0x0e2416, metalness: 0.1, roughness: 0.55 }),
+                pcb: new THREE.MeshStandardMaterial({ color: SL.pcb, metalness: 0.1, roughness: 0.55 }),
                 can: new THREE.MeshStandardMaterial({ color: 0x9ea4ac, metalness: 0.9, roughness: 0.32 }),
                 dark: new THREE.MeshStandardMaterial({ color: 0x1a1d23, metalness: 0.4, roughness: 0.5 }),
                 chip: new THREE.MeshStandardMaterial({ color: 0x3a3e46, metalness: 0.6, roughness: 0.45 }),
                 lens: new THREE.MeshPhysicalMaterial({ color: 0x05070a, metalness: 0, roughness: 0.03, clearcoat: 1, clearcoatRoughness: 0.02 }),
-                led: new THREE.MeshStandardMaterial({ color: 0x9dffc4, emissive: 0x9dffc4, emissiveIntensity: 2.5, roughness: 0.3 }),
-                tile: new THREE.MeshBasicMaterial({ color: 0x9dffc4, transparent: true, opacity: 0, depthWrite: false }),
+                led: new THREE.MeshStandardMaterial({ color: SL.bright, emissive: SL.bright, emissiveIntensity: 2.5, roughness: 0.3 }),
+                tile: new THREE.MeshBasicMaterial({ color: SL.bright, transparent: true, opacity: 0, depthWrite: false }),
                 bench: new THREE.MeshStandardMaterial({ color: 0x0a0d12, metalness: 0.15, roughness: 0.92 }),
                 mat: new THREE.MeshStandardMaterial({ color: 0x0e1218, metalness: 0.05, roughness: 1 }),
             };
@@ -183,7 +185,7 @@ export default function PhoneScene() {
             function layer(group: Group, x: number, z: number, seatY: number, start: number, h: number, anchors: [number, number][]): Layer {
                 group.position.set(x, seatY, z);
                 phone.add(group);
-                const o: Layer = { g: group, seatY, start, h, anchors, lines: anchors.map(() => mkLine(0x28c840)), lift: 0, k: 0 };
+                const o: Layer = { g: group, seatY, start, h, anchors, lines: anchors.map(() => mkLine(SL.deep)), lift: 0, k: 0 };
                 layers.push(o);
                 return o;
             }
@@ -261,7 +263,7 @@ export default function PhoneScene() {
             const led = part(new THREE.BoxGeometry(0.02, 0.006, 0.016), M.led, false);
             led.position.set(-0.12, BT + 0.003, 0.18);
             bgp.add(led);
-            const ledLight = new THREE.PointLight(0x28c840, 0.5, 0.4, 2);
+            const ledLight = new THREE.PointLight(SL.deep, 0.5, 0.4, 2);
             ledLight.position.set(-0.12, BT + 0.03, 0.18);
             bgp.add(ledLight);
             layer(bgp, 0, -0.46, 0.024, 0.38, 0.56, [[0.315, 0.22]]);
@@ -299,7 +301,7 @@ export default function PhoneScene() {
                 m.position.y = 0.006;
                 og.add(m);
             });
-            const screenLight = new THREE.PointLight(0x28c840, 0, 1.4, 2);
+            const screenLight = new THREE.PointLight(SL.deep, 0, 1.4, 2);
             screenLight.position.set(0, 0.12, 0);
             og.add(screenLight);
             const oled = layer(og, 0, 0, 0.105, 0.19, 1.05, [[0.34, 0.73]]);
@@ -323,7 +325,7 @@ export default function PhoneScene() {
             }
             const seats = new THREE.Points(
                 new THREE.BufferGeometry().setAttribute("position", new THREE.BufferAttribute(new Float32Array(seatArr), 3)),
-                new THREE.PointsMaterial({ color: 0x9dffc4, size: 3, sizeAttenuation: false, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthTest: false, depthWrite: false })
+                new THREE.PointsMaterial({ color: SL.bright, size: 3, sizeAttenuation: false, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthTest: false, depthWrite: false })
             );
             seats.renderOrder = 11;
             seats.frustumCulled = false;
@@ -338,7 +340,7 @@ export default function PhoneScene() {
             }
             const dust = new THREE.Points(
                 new THREE.BufferGeometry().setAttribute("position", new THREE.BufferAttribute(dpos, 3)),
-                new THREE.PointsMaterial({ color: 0x9dffc4, size: 0.014, transparent: true, opacity: 0.2, blending: THREE.AdditiveBlending, depthWrite: false })
+                new THREE.PointsMaterial({ color: SL.bright, size: 0.014, transparent: true, opacity: 0.2, blending: THREE.AdditiveBlending, depthWrite: false })
             );
             scene.add(dust);
 
@@ -461,18 +463,6 @@ export default function PhoneScene() {
                 return;
             }
 
-            // Pointer sway: mouse only, normalized to -1..1 and smoothed per frame.
-            let dmx = 0,
-                dmy = 0,
-                tmx = 0,
-                tmy = 0;
-            const onPointer = (e: PointerEvent) => {
-                if (e.pointerType === "touch") return;
-                tmx = (e.clientX / window.innerWidth) * 2 - 1;
-                tmy = (e.clientY / window.innerHeight) * 2 - 1;
-            };
-            window.addEventListener("pointermove", onPointer, { passive: true });
-
             // Play time accumulates only while the loop runs, so leaving and
             // returning resumes the phone where it was instead of jumping.
             let raf = 0,
@@ -484,9 +474,8 @@ export default function PhoneScene() {
                 if (disposed) return;
                 if (last >= 0) clock += now - last;
                 last = now;
-                dmx += (tmx - dmx) * 0.05;
-                dmy += (tmy - dmy) * 0.05;
-                play(clock, dmx, dmy);
+                // No pointer sway: the phone never reacts to the cursor.
+                play(clock, 0, 0);
                 raf = requestAnimationFrame(tick);
             };
             const start = () => {
@@ -514,7 +503,6 @@ export default function PhoneScene() {
                 stop();
                 io.disconnect();
                 ro.disconnect();
-                window.removeEventListener("pointermove", onPointer);
                 document.removeEventListener("visibilitychange", onVis);
                 dispose();
             };

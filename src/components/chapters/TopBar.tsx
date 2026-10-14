@@ -57,7 +57,7 @@ export default function TopBar() {
             <style>{`
                 .topbar {
                     position: fixed; left: 0; right: 0; top: 0; height: var(--lb); z-index: 60;
-                    background: rgba(5, 7, 10, 0.78);
+                    background: var(--bar);
                     -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
                     border-bottom: 1px solid var(--hairline);
                 }
@@ -69,18 +69,18 @@ export default function TopBar() {
                     grid-column: 1; justify-self: start; font-size: 14px; font-weight: 600; letter-spacing: -.01em; color: var(--ink);
                     white-space: nowrap; transition: color .3s;
                 }
-                .brand:hover { color: var(--green-bright); }
+                .brand:hover { color: var(--accent-bright); }
                 .topbar nav {
                     grid-column: 2; display: flex; gap: clamp(12px, 2.4vw, 30px); white-space: nowrap;
                     font-family: var(--font-mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
                 }
-                .topbar nav a { color: var(--ink-soft); opacity: .6; transition: opacity .3s, color .3s; }
-                .topbar nav a:hover, .topbar nav a.is-cur { opacity: 1; color: var(--ink); }
+                .topbar nav a { color: var(--ink-faint); transition: color .3s; }
+                .topbar nav a:hover, .topbar nav a.is-cur { color: var(--ink); }
                 .cta {
                     grid-column: 3; justify-self: end; font-size: 14px; font-weight: 600; letter-spacing: -.01em; color: var(--ink);
                     white-space: nowrap; transition: color .3s;
                 }
-                .cta:hover { color: var(--green-bright); }
+                .cta:hover { color: var(--accent-bright); }
                 @media (max-width: 700px) {
                     .topbar nav { font-size: 10px; letter-spacing: .1em; }
                     .brand { font-size: 13px; }
