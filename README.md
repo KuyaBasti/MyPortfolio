@@ -1,6 +1,6 @@
 # John Sebastian Solon · Portfolio
 
-**A dark Neo/Matrix portfolio told in chapters, that proves its claims like a resume.** Live at [johnsolon.com](https://johnsolon.com).
+**A dark, iridescent portfolio told in chapters, that proves its claims like a resume.** Live at [johnsolon.com](https://johnsolon.com).
 
 The name decrypts out of cipher glyphs over a drifting dust field. Each job is a chapter: curated copy on the left, a real-time 3D scene on the right that plays on its own clock, built from the actual work: a server aisle with a PXE boot wave, a phone taken apart and tested, a race car lapping with its LiDAR fan, a CubeSat drifting above the Earth limb. Every project card is a live canvas depicting the real system. An Origin chapter tells the story from the Philippines to California, in Baybayin and English. No stock art, no screenshots, no template.
 
@@ -59,7 +59,7 @@ Under `prefers-reduced-motion`, the name renders finished, the leaks and grain h
 | `src/app/` | `globals.css` (design tokens, `.iri`, layout tokens), `layout.tsx` (Inter, JetBrains Mono and Noto Sans Tagalog via next/font), `page.tsx` |
 | `src/components/Home.tsx` | Section orchestrator |
 | `src/components/chapters/` | `Film` (grain + vignette), `TopBar`, `Hero` (dust + name decrypt), `Experience` (4 chapters), `Projects` (three-up sheet), `Origin` |
-| `src/components/chapters/scenes/` | The four three.js chapter scenes: `AisleScene`, `PhoneScene`, `RaceScene`, `OrbitScene` |
+| `src/components/chapters/scenes/` | The four three.js chapter scenes: `AisleScene`, `PhoneScene`, `RaceScene`, `OrbitScene`, plus `sceneLight.ts`, which gives them the page's accent as their light color |
 | `src/components/new/` | `Skills` (table), `Footer` (05 Contact table + one-line footer) |
 | `src/components/new/visuals/` | The eight bespoke canvas card visuals |
 | `src/components/new/visuals/draftmaster/` | DraftMaster replay: pure, unit-tested logic ported from DraftMaster's Match Viewer (`replay.ts`) and the exported match data (`matches.ts`, generated) |
@@ -71,7 +71,8 @@ Under `prefers-reduced-motion`, the name renders finished, the leaks and grain h
 
 ## Design Principles
 
-- **One dark world.** Near-black `#05070a`, phosphor green `#28c840`/`#9dffc4`, a cooler iridescent gradient for display type and the card rings. No theme flips, no white flashes.
+- **One dark world.** Near-black `#05070a` and one iridescent gradient for the name, the headline phrases, the card rings and the scene frames. The single accent is teal taken from that gradient (`#5eead4`, links `#b7f6ec`), and it is also the light inside the chapter scenes. No green, no theme flips, no white flashes.
+- **Nothing moves under the cursor.** Scenes play on their own clocks and never follow the pointer; cards do not lift on hover.
 - **The visuals are the proof.** Each scene and card depicts the actual work (the real protocol, the real pipeline), not decoration. The chapter scenes carry no text at all; the facts sit in the copy beside them.
 - **Animation earns its frame.** Every loop is gated by IntersectionObserver and `visibilitychange`, paused off-screen or on hidden tabs, and resolves to a designed static frame under `prefers-reduced-motion`. Scenes play on their own clocks; nothing hijacks scroll.
 - **SSR-safe by construction.** Any render-time randomness uses a seeded RNG (mulberry32) so server and client markup match.
@@ -89,6 +90,7 @@ Under `prefers-reduced-motion`, the name renders finished, the leaks and grain h
 | DraftMaster card | Dota 2 draft simulator card, replaying real engine output on a minimap | ✅ |
 | Centavo card | Reconcile-or-reject ledger visual, synthetic fixture, no repo link | ✅ |
 | Chapters site | Decrypting hero, four self-playing three.js chapters, three-up project sheet, Origin | ✅ |
+| Teal, not green | Every green in the page and the scenes becomes teal from the gradient; gradient scene frames; quieter cards; no pointer sway | ✅ |
 
 ## Documentation
 

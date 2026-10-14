@@ -127,10 +127,10 @@ A chapter scene follows the same shape with three.js inside: the effect lazily `
 
 ### 2. Chapter scenes
 
-`chapters/scenes/*.tsx`, one per role, all sharing the contract above and differing in what they simulate:
+`chapters/scenes/*.tsx`, one per role, all sharing the contract above and differing in what they simulate. Every light that used to be green (LEDs, leader lines, the screen test, LiDAR rays and hits, the CubeSat's edges) reads the page accent through `scenes/sceneLight.ts`, which parses `--light`, `--light-bright`, `--light-dim` and `--light-pcb` once when a scene starts:
 
-- **AisleScene** (Quanta): two instanced rows of 44 racks, a floor tile texture, ceiling fixtures with additive light cones, a travelling lamp, and 8,800 LED points whose shader runs a PXE boot wave down the hall (dark, amber, cyan test, green pass) on a 14 s cycle. The camera glides from the mouth of the aisle to deep inside and back on a 28 s cosine, with a mild mouse sway.
-- **PhoneScene** (uBreakiFix): a generic phone built from rounded slabs (back glass, aluminium frame, battery, L-shaped board with shield cans and seeded passives and one LED, camera module, speaker, mid-frame, OLED with five soft tiles, front glass). A 22 s loop: 16 s to lift the layers apart on green leader lines (glass first, board last), push in on the lifted display while it lights up, and close again board first and glass last; 3 s hold on the repaired phone; 1 s fade out and in through the tone-mapping exposure.
+- **AisleScene** (Quanta): two instanced rows of 44 racks, a floor tile texture, ceiling fixtures with additive light cones, a travelling lamp, and 8,800 LED points whose shader runs a PXE boot wave down the hall (dark, amber, cyan test, then the accent color for pass) on a 14 s cycle. The camera glides from the mouth of the aisle to deep inside and back on a 28 s cosine; it never follows the pointer.
+- **PhoneScene** (uBreakiFix): a generic phone built from rounded slabs (back glass, aluminium frame, battery, L-shaped board with shield cans and seeded passives and one LED, camera module, speaker, mid-frame, OLED with five soft tiles, front glass). A 22 s loop: 16 s to lift the layers apart on leader lines in the accent color (glass first, board last), push in on the lifted display while it lights up, and close again board first and glass last; 3 s hold on the repaired phone; 1 s fade out and in through the tone-mapping exposure.
 - **RaceScene** (F1Tenth): a CatmullRom circuit with additive ribbons and boundary loops, a low-poly car with a lamp, a 61-ray LiDAR fan cast against the boundary segments every frame with hit points, and a 720-particle cloud drawn toward the car. The view alternates between the top-down map and a chase camera behind the car on a 30 s cosine.
 - **OrbitScene** (NASA): a seeded 1,600-star sky, a 60-unit Earth with a day/night/cloud shader and an additive atmosphere shell, and the 3U CubeSat (rails, seams, cells, two wings, four antennas, an IMU marker) drifting in attitude. The camera breathes between a close pass and a wide view with the limb on a 40 s cosine.
 
@@ -151,20 +151,20 @@ Eight 2D canvas visuals share one skeleton (DPR sizing, IO gating, 30 ms loop, s
 
 ### 5. Design system
 
-Tokens live in `src/app/globals.css`: near-black background, ink ramp, phosphor greens, hairline, the iridescent `--iri` gradient with its `.iri` text helper, and the three layout tokens `--lb` (the 56px top bar height), `--pad` (page gutter, 40px at desktop) and `--maxw` (the 1200px column every section shares, 1120px of content). The type scale was set from a measured side-by-side with a reference site: 58px/500 section titles under a numbered mono gutter (01 to 05), 34px chapter headlines, 15px body, 21px story, 11px mono eyebrows. Fonts come through next/font: Inter, JetBrains Mono, and Noto Sans Tagalog for the Baybayin name. Bespoke per-section CSS lives in scoped `<style>` blocks inside each component. Two hard copy rules: no em dashes anywhere in visible text (en dashes only for date ranges), and mono type marks the machine voice: eyebrows, labels, chips.
+Tokens live in `src/app/globals.css`: near-black background, ink ramp, the teal accent (`--accent` `#5eead4`, `--accent-bright` `#b7f6ec`, `--accent-dim`) and the scene light tokens built from it, hairline, the chrome colors the components used to hard-code (top bar, hero stage and leaks, ring, glows), the iridescent `--iri` gradient with its `.iri` text helper, and the three layout tokens `--lb` (the 56px top bar height), `--pad` (page gutter, 40px at desktop) and `--maxw` (the 1200px column every section shares, 1120px of content). The type scale was set from a measured side-by-side with a reference site: 58px/500 section titles under a numbered mono gutter (01 to 05), 34px chapter headlines, 15px body, 21px story, 11px mono eyebrows. Fonts come through next/font: Inter, JetBrains Mono, and Noto Sans Tagalog for the Baybayin name. Bespoke per-section CSS lives in scoped `<style>` blocks inside each component. Two hard copy rules: no em dashes anywhere in visible text (en dashes only for date ranges), and mono type marks the machine voice: eyebrows, labels, chips.
 
 ## Component inventory
 
 | Component | Depicts | Accent | Where | Status |
 | --- | --- | --- | --- | --- |
 | Film | Fixed grain + vignette over the page | none | `src/components/chapters/Film.tsx` | ✅ |
-| TopBar | Translucent 56px bar: name left, three centered links lit by section, Contact right | green | `src/components/chapters/TopBar.tsx` | ✅ |
+| TopBar | Translucent 56px bar: name left, three centered links lit by section, Contact right | teal | `src/components/chapters/TopBar.tsx` | ✅ |
 | Hero | Dust field, light leaks, name decrypt, current role | gradient | `src/components/chapters/Hero.tsx` | ✅ |
-| Experience | Four chapters: copy + framed scene | green | `src/components/chapters/Experience.tsx` | ✅ |
-| AisleScene | Rack aisle glide with a PXE boot wave of LEDs | cold white/green | `src/components/chapters/scenes/AisleScene.tsx` | ✅ |
-| PhoneScene | Phone teardown, screen test, reassembly | green | `src/components/chapters/scenes/PhoneScene.tsx` | ✅ |
-| RaceScene | Lapping car, LiDAR fan, map to chase camera | amber/green | `src/components/chapters/scenes/RaceScene.tsx` | ✅ |
-| OrbitScene | 3U CubeSat drifting above the Earth limb | blue/green | `src/components/chapters/scenes/OrbitScene.tsx` | ✅ |
+| Experience | Four chapters: copy + scene in a gradient-ringed frame | teal | `src/components/chapters/Experience.tsx` | ✅ |
+| AisleScene | Rack aisle glide with a PXE boot wave of LEDs | cold white/teal | `src/components/chapters/scenes/AisleScene.tsx` | ✅ |
+| PhoneScene | Phone teardown, screen test, reassembly | teal | `src/components/chapters/scenes/PhoneScene.tsx` | ✅ |
+| RaceScene | Lapping car, LiDAR fan, map to chase camera | amber/teal | `src/components/chapters/scenes/RaceScene.tsx` | ✅ |
+| OrbitScene | 3U CubeSat drifting above the Earth limb | blue/teal | `src/components/chapters/scenes/OrbitScene.tsx` | ✅ |
 | Projects | Three-up contact sheet of eight cards | gradient rings | `src/components/chapters/Projects.tsx` | ✅ |
 | DualGame | Two-screen shooter, bullets cross the seam | green/cyan | `src/components/new/visuals/DualGame.tsx` | ✅ |
 | RoboticArm | Serial console + 2-link IK plotter | violet/pink | `src/components/new/visuals/RoboticArm.tsx` | ✅ |
@@ -174,8 +174,8 @@ Tokens live in `src/app/globals.css`: near-black background, ink ramp, phosphor 
 | AggiePipeline | Postgres to cron to SendGrid reminders | rose | `src/components/new/visuals/AggiePipeline.tsx` | ✅ |
 | DraftMaster | Real engine matches replayed: minimap, roster chips, feed, net-worth lead | radiant green/dire red/gold | `src/components/new/visuals/DraftMaster.tsx` | ✅ |
 | Centavo | Statement scan, three checks to the cent, one-cent rejection | passbook green/amber/red | `src/components/new/visuals/Centavo.tsx` | ✅ |
-| Origin | Baybayin and English name, the story | green | `src/components/chapters/Origin.tsx` | ✅ |
-| Skills, Footer | Skills table; 05 Contact table (email, GitHub, LinkedIn) and a one-line footer | green | `src/components/new/` | ✅ |
+| Origin | Baybayin and English name, the story | teal | `src/components/chapters/Origin.tsx` | ✅ |
+| Skills, Footer | Skills table; 05 Contact table (email, GitHub, LinkedIn) and a one-line footer | teal | `src/components/new/` | ✅ |
 
 ## Design decisions
 
@@ -200,6 +200,10 @@ Tokens live in `src/app/globals.css`: near-black background, ink ramp, phosphor 
 | Copy | No em dashes in visible text | House rule: they read as AI-generated |
 | Layout | One 1200px column, 58px section titles, 15px body | Matched to a reference site after a measured comparison; the old 1480px column and 84px titles read as zoomed in |
 | Layout | Each experience chapter stays one full screen | Chapters flowing at their own height with 120px gaps were tried and rejected |
+| Accent | Teal from the gradient, never green | A friend read the site as AI-generated; after trying new palettes John kept his original colors and the one fix was the acid green, which also blended into the scenes |
+| Scene light | Scenes read the accent from CSS tokens | The page and the scenes can never drift apart; a new accent is a token change |
+| Pointer | No sway in the scenes, no hover lift on cards | Movement that follows the cursor read as gimmicky |
+| Card chrome | No number badge, no tag line above the title | The visual and the title carry the card; the extra labels were noise |
 
 ## Build stages
 
@@ -216,3 +220,4 @@ Tokens live in `src/app/globals.css`: near-black background, ink ramp, phosphor 
 | 8 | Centavo card with the reconcile-or-reject visual | ✅ |
 | 9 | Chapters site: decrypting hero, four three.js chapters, three-up sheet, Origin, Contact dropped | ✅ |
 | 10 | Chapters polish: reference type scale on a 1200px column, numbered headers 01 to 05, hero in the top quarter, translucent top bar with Contact, contact-table footer | ✅ |
+| 11 | Teal, not green: the accent and the scene lights from the gradient, gradient scene frames, quieter cards, no pointer sway | ✅ |
