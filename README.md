@@ -1,6 +1,6 @@
 # John Sebastian Solon · Portfolio
 
-**A dark Neo/Matrix portfolio told in chapters, that proves its claims like a resume.** Live at [johnsolon.com](https://johnsolon.com).
+**A dark steel-and-gold portfolio told in chapters, that proves its claims like a resume.** Live at [johnsolon.com](https://johnsolon.com).
 
 The name decrypts out of cipher glyphs over a drifting dust field. Each job is a chapter: curated copy on the left, a real-time 3D scene on the right that plays on its own clock, built from the actual work: a server aisle with a PXE boot wave, a phone taken apart and tested, a race car lapping with its LiDAR fan, a CubeSat drifting above the Earth limb. Every project card is a live canvas depicting the real system. An Origin chapter tells the story from the Philippines to California, in Baybayin and English. No stock art, no screenshots, no template.
 
@@ -20,7 +20,7 @@ The name decrypts out of cipher glyphs over a drifting dust field. Each job is a
 A single-page Next.js 15 (App Router) site: **Top bar · Hero · 01 Experiences (four chapters) · 02 Projects · 03 Origin · 04 Skills · 05 Contact**, on one plain near-black page with a film grain and vignette over everything. Every section sits on the same 1200px column (1120px of content) under a numbered 58px title.
 
 - **Top bar**: a 56px translucent bar with a hairline. The name on the left, three centered links (Experience, Project, Origin) whose lit one follows the section you are in, and Contact on the right, which lands on the footer.
-- **Hero**: the role as a mono eyebrow, the name at display size, and one line for the current role. On load the name is scrambled cipher glyphs that lock in left to right into the iridescent gradient; each glyph slot is sized to its real letter, so nothing jitters. The block sits in the top quarter of the screen rather than centered.
+- **Hero**: the role as a mono eyebrow, the name at display size, and one line for the current role. On load the name is scrambled cipher glyphs that lock in left to right into the finished off-white name; each glyph slot is sized to its real letter, so nothing jitters. The block sits in the top quarter of the screen rather than centered.
 - **Experience**: one chapter per role (Quanta, uBreakiFix, F1Tenth, NASA). Copy on the left, a framed three.js scene on the right that animates by itself: the camera glides down a rack aisle while LEDs boot in a wave; a phone opens into its layers, its screen lights up for the test, and it closes again; a 1/10-scale car laps a track with a 61-ray LiDAR fan while the camera alternates between the map and a chase view; a 3U CubeSat drifts in attitude above the limb. Nothing is tied to scroll: you can stop anywhere and scroll back without replaying anything.
 - **Projects**: a uniform three-up contact sheet of eight cards, every header a live canvas: the DUAL! two-screen shooter, a G-code console plotter, a parallel Sobel row sweep, a recursive DNS walk, a neural-net forward pass, a Postgres-to-SendGrid reminder pipeline, DraftMaster's minimap replaying three real engine-simulated matches, and Centavo's reconcile-or-reject ledger.
 - **Origin**: the name in Baybayin and English, and two paragraphs on growing up in the Philippines, moving to California in 2018, and the rule that came with it.
@@ -37,8 +37,8 @@ URL hit
 hero renders: eyebrow, the name as cipher glyphs, no layout shift
   |  (glyph boxes are measured from the real letters first)
   v
-decrypt: glyphs lock in left to right (~2.6 s), the gradient
-         appears per letter, then the current-role line rises
+decrypt: glyphs lock in left to right (~2.6 s), each letter
+         settles to off-white, then the current-role line rises
   |
   v
 scroll: each chapter's copy rises in once (IntersectionObserver);
@@ -50,13 +50,13 @@ project cards: each canvas wakes only while on-screen, pauses
         off-screen, and renders a static frame under reduced-motion
 ```
 
-Under `prefers-reduced-motion`, the name renders finished, the leaks and grain hold still, and every scene and card draws one designed static frame.
+Under `prefers-reduced-motion`, the name renders finished, the grain holds still, and every scene and card draws one designed static frame.
 
 ## Repository Map
 
 | Path | What |
 | --- | --- |
-| `src/app/` | `globals.css` (design tokens, `.iri`, layout tokens), `layout.tsx` (Inter, JetBrains Mono and Noto Sans Tagalog via next/font), `page.tsx` |
+| `src/app/` | `globals.css` (color and layout tokens), `layout.tsx` (Inter, JetBrains Mono and Noto Sans Tagalog via next/font), `page.tsx` |
 | `src/components/Home.tsx` | Section orchestrator |
 | `src/components/chapters/` | `Film` (grain + vignette), `TopBar`, `Hero` (dust + name decrypt), `Experience` (4 chapters), `Projects` (three-up sheet), `Origin` |
 | `src/components/chapters/scenes/` | The four three.js chapter scenes: `AisleScene`, `PhoneScene`, `RaceScene`, `OrbitScene` |
@@ -71,7 +71,8 @@ Under `prefers-reduced-motion`, the name renders finished, the leaks and grain h
 
 ## Design Principles
 
-- **One dark world.** Near-black `#05070a`, phosphor green `#28c840`/`#9dffc4`, a cooler iridescent gradient for display type and the card rings. No theme flips, no white flashes.
+- **One base, one color.** Blue-steel grey `#1c202a` with straw gold `#dfc57e` for labels, dates, links and the card rings; every grey is a step of the base. Solids only, no glows, no theme flips. The scenes and card visuals keep their own colors and are the only thing on the page that is colorful.
+- **Nothing moves under the cursor.** Scenes play on their own clocks and do not sway with the pointer; cards do not lift on hover.
 - **The visuals are the proof.** Each scene and card depicts the actual work (the real protocol, the real pipeline), not decoration. The chapter scenes carry no text at all; the facts sit in the copy beside them.
 - **Animation earns its frame.** Every loop is gated by IntersectionObserver and `visibilitychange`, paused off-screen or on hidden tabs, and resolves to a designed static frame under `prefers-reduced-motion`. Scenes play on their own clocks; nothing hijacks scroll.
 - **SSR-safe by construction.** Any render-time randomness uses a seeded RNG (mulberry32) so server and client markup match.
@@ -89,6 +90,7 @@ Under `prefers-reduced-motion`, the name renders finished, the leaks and grain h
 | DraftMaster card | Dota 2 draft simulator card, replaying real engine output on a minimap | ✅ |
 | Centavo card | Reconcile-or-reject ledger visual, synthetic fixture, no repo link | ✅ |
 | Chapters site | Decrypting hero, four self-playing three.js chapters, three-up project sheet, Origin | ✅ |
+| Steel and Straw | One base and one color in solids, chosen by a naive screenshot review; no pointer sway or hover lift | ✅ |
 
 ## Documentation
 

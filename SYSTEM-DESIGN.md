@@ -98,11 +98,11 @@ The shipping loop is how everything on the page was built: throwaway HTML protot
 
 ## The three flows that matter
 
-1. **First paint and the decrypt.** The hero renders server-side with the real name in per-glyph spans, so there is no layout shift. On mount, each glyph box is measured from its real letter and fixed, and each box gets its slice of one gradient per line (so a wrapped name on a phone still sweeps the whole gradient). Then the glyphs are swapped for cipher characters, drawn only from a per-slot pool of characters narrower than the slot so nothing spills over its neighbour, and lock back in left to right on a time-based schedule (done by about 2.6 s). The current-role line rises after. Under `prefers-reduced-motion` the name simply renders finished.
+1. **First paint and the decrypt.** The hero renders server-side with the real name in per-glyph spans, so there is no layout shift. On mount, each glyph box is measured from its real letter and fixed, and each box gets its slice of the `--iri` fill per line (solid off-white today; if a gradient returns, a wrapped name on a phone still sweeps all of it). Then the glyphs are swapped for cipher characters, drawn only from a per-slot pool of characters narrower than the slot so nothing spills over its neighbour, and lock back in left to right on a time-based schedule (done by about 2.6 s). The current-role line rises after. Under `prefers-reduced-motion` the name simply renders finished.
 
 2. **The scroll lifecycle.** Each chapter's copy rises in once when it first intersects the viewport. Each chapter scene owns a `requestAnimationFrame` loop that runs only while an IntersectionObserver on its frame says it is on screen (threshold 0.05) and `document.visibilityState` is visible; it keeps its own clock, so leaving and returning resumes mid-cycle rather than replaying. Nothing on the page is driven by scroll position: there is no pinning, no snap, no zoom, and stopping mid-page leaves everything exactly where it is. Project cards use the older `setInterval` skeleton gated the same way.
 
-3. **Reduced motion.** The name renders finished, the light leaks and grain hold still, every chapter scene draws one designed frame (a representative moment of its loop) and re-draws only on resize, and every card draws its static frame.
+3. **Reduced motion.** The name renders finished, the grain holds still, every chapter scene draws one designed frame (a representative moment of its loop) and re-draws only on resize, and every card draws its static frame.
 
 ## How one visual renders, end to end
 
@@ -123,7 +123,7 @@ A chapter scene follows the same shape with three.js inside: the effect lazily `
 
 ### 1. Hero: dust and decrypt
 
-`chapters/Hero.tsx`. The backdrop is a 900-point three.js particle field (seeded, additive, slow upward drift with a gentle camera sway) over two blurred CSS light leaks; the copy lifts and fades as the hero scrolls away. The decrypt is DOM-driven: the name is `<span class="w">` words of `<span class="c">` glyphs, each glyph carrying `data-ch`. `layout()` measures the real letters, fixes each box's width, groups boxes by line and sets `--gw`/`--gx` so each glyph shows its slice of a continuous gradient, and builds the per-slot cipher pools from measured advances. The rAF loop is purely time-based (hold, then one lock every 95 ms), so a throttled frame rate only skips intermediate scrambles, never the result. three.js is imported lazily so it never enters the first-load bundle.
+`chapters/Hero.tsx`. The backdrop is a 900-point three.js particle field (seeded, additive, one off-white from the `--dust` token, slow upward drift with a gentle camera drift) on a flat steel stage; the copy lifts and fades as the hero scrolls away. The decrypt is DOM-driven: the name is `<span class="w">` words of `<span class="c">` glyphs, each glyph carrying `data-ch`. `layout()` measures the real letters, fixes each box's width, groups boxes by line and sets `--gw`/`--gx` so each glyph shows its slice of a continuous gradient, and builds the per-slot cipher pools from measured advances. The rAF loop is purely time-based (hold, then one lock every 95 ms), so a throttled frame rate only skips intermediate scrambles, never the result. three.js is imported lazily so it never enters the first-load bundle.
 
 ### 2. Chapter scenes
 
@@ -151,21 +151,21 @@ Eight 2D canvas visuals share one skeleton (DPR sizing, IO gating, 30 ms loop, s
 
 ### 5. Design system
 
-Tokens live in `src/app/globals.css`: near-black background, ink ramp, phosphor greens, hairline, the iridescent `--iri` gradient with its `.iri` text helper, and the three layout tokens `--lb` (the 56px top bar height), `--pad` (page gutter, 40px at desktop) and `--maxw` (the 1200px column every section shares, 1120px of content). The type scale was set from a measured side-by-side with a reference site: 58px/500 section titles under a numbered mono gutter (01 to 05), 34px chapter headlines, 15px body, 21px story, 11px mono eyebrows. Fonts come through next/font: Inter, JetBrains Mono, and Noto Sans Tagalog for the Baybayin name. Bespoke per-section CSS lives in scoped `<style>` blocks inside each component. Two hard copy rules: no em dashes anywhere in visible text (en dashes only for date ranges), and mono type marks the machine voice: eyebrows, labels, chips.
+Tokens live in `src/app/globals.css`: the Steel and Straw palette (base `#1c202a`, cards `#12161e`, an ink ramp stepped from the base, hairline, straw gold `--accent` `#dfc57e` with `--accent-bright` `#f2e5b4` for links), the name fill `--iri` and card ring `--ring` (both solid today), the top bar, frame edge and dust colors, and the three layout tokens `--lb` (the 56px top bar height), `--pad` (page gutter, 40px at desktop) and `--maxw` (the 1200px column every section shares, 1120px of content). The type scale was set from a measured side-by-side with a reference site: 58px/500 section titles under a numbered mono gutter (01 to 05), 34px chapter headlines, 15px body, 21px story, 11px mono eyebrows. Fonts come through next/font: Inter, JetBrains Mono, and Noto Sans Tagalog for the Baybayin name. Bespoke per-section CSS lives in scoped `<style>` blocks inside each component. Two hard copy rules: no em dashes anywhere in visible text (en dashes only for date ranges), and mono type marks the machine voice: eyebrows, labels, chips.
 
 ## Component inventory
 
 | Component | Depicts | Accent | Where | Status |
 | --- | --- | --- | --- | --- |
 | Film | Fixed grain + vignette over the page | none | `src/components/chapters/Film.tsx` | ✅ |
-| TopBar | Translucent 56px bar: name left, three centered links lit by section, Contact right | green | `src/components/chapters/TopBar.tsx` | ✅ |
-| Hero | Dust field, light leaks, name decrypt, current role | gradient | `src/components/chapters/Hero.tsx` | ✅ |
-| Experience | Four chapters: copy + framed scene | green | `src/components/chapters/Experience.tsx` | ✅ |
+| TopBar | Translucent 56px bar: name left, three centered links lit by section, Contact right | grey, lit link off-white | `src/components/chapters/TopBar.tsx` | ✅ |
+| Hero | Dust field, name decrypt, current role | gold eyebrow and link, off-white name | `src/components/chapters/Hero.tsx` | ✅ |
+| Experience | Four chapters: copy + framed scene | gold dates and dots | `src/components/chapters/Experience.tsx` | ✅ |
 | AisleScene | Rack aisle glide with a PXE boot wave of LEDs | cold white/green | `src/components/chapters/scenes/AisleScene.tsx` | ✅ |
 | PhoneScene | Phone teardown, screen test, reassembly | green | `src/components/chapters/scenes/PhoneScene.tsx` | ✅ |
 | RaceScene | Lapping car, LiDAR fan, map to chase camera | amber/green | `src/components/chapters/scenes/RaceScene.tsx` | ✅ |
 | OrbitScene | 3U CubeSat drifting above the Earth limb | blue/green | `src/components/chapters/scenes/OrbitScene.tsx` | ✅ |
-| Projects | Three-up contact sheet of eight cards | gradient rings | `src/components/chapters/Projects.tsx` | ✅ |
+| Projects | Three-up contact sheet of eight cards | gold rings and tags | `src/components/chapters/Projects.tsx` | ✅ |
 | DualGame | Two-screen shooter, bullets cross the seam | green/cyan | `src/components/new/visuals/DualGame.tsx` | ✅ |
 | RoboticArm | Serial console + 2-link IK plotter | violet/pink | `src/components/new/visuals/RoboticArm.tsx` | ✅ |
 | ParallelEdge | 8-thread row-chunk Sobel sweep | green | `src/components/new/visuals/ParallelEdge.tsx` | ✅ |
@@ -174,8 +174,8 @@ Tokens live in `src/app/globals.css`: near-black background, ink ramp, phosphor 
 | AggiePipeline | Postgres to cron to SendGrid reminders | rose | `src/components/new/visuals/AggiePipeline.tsx` | ✅ |
 | DraftMaster | Real engine matches replayed: minimap, roster chips, feed, net-worth lead | radiant green/dire red/gold | `src/components/new/visuals/DraftMaster.tsx` | ✅ |
 | Centavo | Statement scan, three checks to the cent, one-cent rejection | passbook green/amber/red | `src/components/new/visuals/Centavo.tsx` | ✅ |
-| Origin | Baybayin and English name, the story | green | `src/components/chapters/Origin.tsx` | ✅ |
-| Skills, Footer | Skills table; 05 Contact table (email, GitHub, LinkedIn) and a one-line footer | green | `src/components/new/` | ✅ |
+| Origin | Baybayin and English name, the story | off-white and grey | `src/components/chapters/Origin.tsx` | ✅ |
+| Skills, Footer | Skills table; 05 Contact table (email, GitHub, LinkedIn) and a one-line footer | gold labels | `src/components/new/` | ✅ |
 
 ## Design decisions
 
@@ -200,6 +200,9 @@ Tokens live in `src/app/globals.css`: near-black background, ink ramp, phosphor 
 | Copy | No em dashes in visible text | House rule: they read as AI-generated |
 | Layout | One 1200px column, 58px section titles, 15px body | Matched to a reference site after a measured comparison; the old 1480px column and 84px titles read as zoomed in |
 | Layout | Each experience chapter stays one full screen | Chapters flowing at their own height with 120px gaps were tried and rejected |
+| Palette | Steel and Straw: one base, one color, solids | Fresh agents with no project context flagged the acid green, the rainbow gradient and four unrelated accents as AI-generated; three more picked this solid version from four rendered on the real site |
+| Color roles | Gold only on labels, dates, links and the ring; structure in greys; no glows | Spending the one color on structure or on non-links blurs what it means |
+| Pointer | No sway in the scenes, no hover lift on cards | Movement that follows the cursor read as gimmicky; the scenes keep their own clocks |
 
 ## Build stages
 
@@ -216,3 +219,4 @@ Tokens live in `src/app/globals.css`: near-black background, ink ramp, phosphor 
 | 8 | Centavo card with the reconcile-or-reject visual | ✅ |
 | 9 | Chapters site: decrypting hero, four three.js chapters, three-up sheet, Origin, Contact dropped | ✅ |
 | 10 | Chapters polish: reference type scale on a 1200px column, numbered headers 01 to 05, hero in the top quarter, translucent top bar with Contact, contact-table footer | ✅ |
+| 11 | Steel and Straw: one base and one color in solids from a naive screenshot review; no pointer sway or hover lift | ✅ |

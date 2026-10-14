@@ -29,8 +29,9 @@ points here. Workflow playbooks live in `.claude/skills/`, subagent definitions 
 2. **No AI co-author trailers** in commit messages.
 3. **One change at a time, John picks.** Design and copy changes are proposed as
    options (usually 3 prototypes); never a bundled sweep or wholesale redesign.
-4. **The iridescent card rings stay.** The gradient borders on project cards are
-   core identity, never propose removing them.
+4. **The card rings stay.** The borders on project cards are core identity, never
+   propose removing them. In Steel and Straw they are a solid gold line; a steel-to-gold
+   gradient can return through `--ring`.
 5. **No visitor typing.** The site never asks visitors to type; the terminal is
    theatrical, not interactive.
 6. **No em dashes (U+2014) in visible text.** They read as AI-generated. Use commas,
@@ -70,17 +71,27 @@ Next.js 15 (App Router) · TypeScript · React 19 · Tailwind v4 · three.js (la
 each chapter scene) · Framer Motion (`motion` pkg) · Inter + JetBrains Mono + Noto Sans Tagalog
 (the Baybayin name) · Vitest · deployed on Vercel.
 
-## Design: dark "Neo / Matrix"
+## Design: dark "Steel and Straw"
 
-- Near-black bg `#05070a`, phosphor-green accent `#28c840` / bright `#9dffc4`, light ink `#e6e8ee`.
-- Cooler/cyber iridescent gradient (`--iri`) for big headlines; `.iri` helper.
-- One plain near-black page with a fixed film grain and vignette; the hero adds a drifting
-  dust field and two light leaks. No page-wide rain, no boot overlay.
-- The hero **decrypts the name**: cipher glyphs lock in left to right into the gradient. The
-  hero block sits in the top quarter of the screen, not centered.
+- **One base, one color, solids.** Blue-steel grey page `#1c202a`, cards `#12161e`, greys stepped
+  from the base (text `#efece7`, body `#babec6`, captions `#91959f`). Straw gold `#dfc57e` is the
+  one color: labels, dates, dots and the card ring. Pale gold `#f2e5b4` for links. Nothing else
+  gets a color. Every text role clears 4.5:1 on page, card and hero.
+- Chosen by a naive review: fresh agents with no project context
+  judged screenshots of the live site and then four solid-only versions. The old acid green,
+  rainbow gradient and four unrelated accent colors read as AI-generated.
+- Gradients only after the solids: the hero name fill reads `--iri` and the card ring `--ring`,
+  both solid today. If a gradient returns, it is built from the steel and the gold only.
+- Structure does not spend the gold: section numbers and card badges are caption grey, chapter
+  headlines are plain text, the romanized Origin name is body grey. No colored glows.
+- One plain steel page with a fixed film grain and vignette; the hero adds a drifting off-white
+  dust field. No light leaks, no page-wide rain, no boot overlay.
+- Nothing moves under the cursor: no pointer sway in the scenes, no hover lift on cards.
+- The hero **decrypts the name**: cipher glyphs lock in left to right into the off-white name.
+  The hero block sits in the top quarter of the screen, not centered.
 - Each experience chapter pairs copy with a framed **three.js scene that plays on its own
   clock**: never scroll-driven, no pinning, no snap, no text inside the canvas.
-- Project cards keep the iridescent rings, three per row.
+- Project cards keep their rings (solid gold), three per row.
 - Type scale and column come from a measured comparison with a reference site: one 1200px
   column (`--maxw`), 58px/500 section titles under a numbered mono gutter (01 Experiences to
   05 Contact), 34px chapter headlines, 15px body, 11px eyebrows.
@@ -96,7 +107,7 @@ each chapter scene) · Framer Motion (`motion` pkg) · Inter + JetBrains Mono + 
 
 ```
 src/
-  app/            globals.css (tokens, .iri, layout tokens), layout.tsx (fonts via next/font), page.tsx
+  app/            globals.css (color and layout tokens), layout.tsx (fonts via next/font), page.tsx
   components/
     Home.tsx      orchestrator
     chapters/     Film (grain + vignette), TopBar, Hero (dust + name decrypt),
