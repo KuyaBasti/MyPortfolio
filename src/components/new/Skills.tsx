@@ -34,7 +34,7 @@ export default function Skills() {
                     display: grid; grid-template-columns: 56px 1fr; align-items: end; gap: 24px;
                     padding-bottom: 28px; margin-bottom: 56px; border-bottom: 1px solid var(--hairline);
                 }
-                .skills-head .num { font-size: 11px; color: var(--green); letter-spacing: .12em; padding-bottom: 10px; }
+                .skills-head .num { font-size: 11px; color: var(--accent); letter-spacing: .12em; padding-bottom: 10px; }
                 .skills-head h2 { font-size: clamp(36px, 4.2vw, 58px); font-weight: 500; letter-spacing: -.026em; line-height: 1.02; }
 
                 .skills-table { margin: 0; border-top: 1px solid var(--hairline); }
@@ -42,7 +42,7 @@ export default function Skills() {
                     display: grid; grid-template-columns: 160px minmax(0, 1fr); gap: 24px; align-items: baseline;
                     padding: 16px 0; border-bottom: 1px solid var(--hairline);
                 }
-                .row dt { font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--green); }
+                .row dt { font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--accent); }
                 .row dd { margin: 0; font-size: 14px; line-height: 1.7; color: var(--ink-soft); }
                 .row dd i { font-style: normal; color: var(--ink-faint); margin: 0 6px; }
                 @media (max-width: 720px) {

@@ -239,17 +239,17 @@ export default function Hero() {
                 }
                 .hero .stage {
                     position: absolute; inset: 0; z-index: 0; overflow: hidden;
-                    background: radial-gradient(ellipse at 50% 60%, #0a0f1a 0%, var(--bg) 70%);
+                    background: radial-gradient(ellipse at 50% 60%, var(--hero-stage) 0%, var(--bg) 70%);
                 }
                 .hero .dust { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
                 .leak {
                     position: absolute; width: 70vmax; height: 70vmax; left: -22vmax; top: -32vmax; border-radius: 50%; pointer-events: none;
-                    background: radial-gradient(circle, rgba(94,125,255,.22), rgba(191,90,242,.1) 40%, transparent 70%);
+                    background: radial-gradient(circle, var(--leak-a1), var(--leak-a2) 40%, transparent 70%);
                     filter: blur(40px); animation: leak 18s ease-in-out infinite alternate;
                 }
                 .leak.b {
                     left: auto; right: -30vmax; top: auto; bottom: -32vmax;
-                    background: radial-gradient(circle, rgba(94,234,212,.16), rgba(255,102,128,.08) 45%, transparent 70%);
+                    background: radial-gradient(circle, var(--leak-b1), var(--leak-b2) 45%, transparent 70%);
                     animation-duration: 24s;
                 }
                 @keyframes leak { 0% { transform: translate3d(0,0,0) scale(1); } 100% { transform: translate3d(8vmax,6vmax,0) scale(1.15); } }
@@ -258,7 +258,7 @@ export default function Hero() {
                     display: flex; flex-direction: column; align-items: flex-start; gap: clamp(14px, 2vh, 22px);
                     will-change: transform, opacity;
                 }
-                .pre { font-family: var(--font-mono); font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--green); }
+                .pre { font-family: var(--font-mono); font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--accent); }
                 .name {
                     font-size: clamp(44px, 8.6vw, 112px); line-height: 1.02; font-weight: 600; letter-spacing: -.035em;
                     max-width: 100%; margin: 2px 0 6px;
@@ -270,11 +270,11 @@ export default function Hero() {
                     -webkit-background-clip: text; background-clip: text; color: transparent;
                     transition: color .45s ease, opacity .45s ease, text-shadow .45s ease;
                 }
-                .name .c.scr { color: var(--green); opacity: .78; transition: none; }
-                .name .c.front { color: var(--green-bright); opacity: 1; text-shadow: 0 0 22px rgba(157,255,196,.55); }
+                .name .c.scr { color: var(--accent); opacity: .78; transition: none; }
+                .name .c.front { color: var(--accent-bright); opacity: 1; text-shadow: 0 0 22px var(--accent-glow); }
                 .l2 { font-size: clamp(16px, 1.5vw, 21px); line-height: 1.3; color: var(--ink-soft); }
-                .l2 a { color: var(--green-bright); border-bottom: 1px solid rgba(157,255,196,.3); transition: color .3s, border-color .3s; }
-                .l2 a:hover { color: #fff; border-color: var(--green); }
+                .l2 a { color: var(--accent-bright); border-bottom: 1px solid var(--accent-line); transition: color .3s, border-color .3s; }
+                .l2 a:hover { color: #fff; border-color: var(--accent); }
                 .hero-body > * { opacity: 0; animation: rise 1.2s cubic-bezier(.2,.7,.2,1) forwards; }
                 .hero-body > .pre { animation-delay: .2s; }
                 .hero-body > .name { animation-delay: .4s; }

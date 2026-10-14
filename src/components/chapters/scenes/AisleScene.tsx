@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { readSceneLight } from "./sceneLight";
 
 // Chapter 01 aisle: a hall of instanced racks whose LEDs run a PXE boot wave
 // (dark, amber, cyan, green) while the camera dollies down the aisle and back
@@ -22,6 +23,7 @@ export default function AisleScene() {
 
         const boot = async () => {
             const THREE = await import("three");
+            const SL = readSceneLight();
             if (disposed) return;
 
             const tile = document.createElement("canvas");
@@ -133,7 +135,7 @@ export default function AisleScene() {
             ceil.rotation.x = Math.PI / 2;
             ceil.position.set(0, 2.95, ZC);
             scene.add(ceil);
-            const tape = new THREE.MeshBasicMaterial({ color: 0x1d6e2c });
+            const tape = new THREE.MeshBasicMaterial({ color: SL.dim });
             for (const x of [-1.05, 1.05]) {
                 const t = new THREE.Mesh(new THREE.PlaneGeometry(0.03, LEN), tape);
                 t.rotation.x = -Math.PI / 2;
@@ -206,6 +208,8 @@ export default function AisleScene() {
                 uPR: { value: renderer.getPixelRatio() },
                 uProj: { value: 1 },
                 uFog: { value: FOG },
+                GREEN: { value: new THREE.Vector3(...SL.deepRGB) },
+                BRIGHT: { value: new THREE.Vector3(...SL.brightRGB) },
             };
             const leds = new THREE.Points(
                 ledGeo,
@@ -220,8 +224,7 @@ export default function AisleScene() {
                         varying vec3 vColor; varying float vI;
                         const vec3 AMBER = vec3(1.0, 0.70, 0.25);
                         const vec3 CYAN = vec3(0.35, 0.82, 1.0);
-                        const vec3 GREEN = vec3(0.16, 0.78, 0.25);
-                        const vec3 BRIGHT = vec3(0.62, 1.0, 0.77);
+                        uniform vec3 GREEN; uniform vec3 BRIGHT; // the scene light (see sceneLight.ts)
                         const vec3 DARK = vec3(0.12, 0.14, 0.17);
                         void main(){
                             vec4 mv = modelViewMatrix * vec4(position, 1.0);
@@ -291,16 +294,11 @@ export default function AisleScene() {
             // The aisle glides down the hall and back on a 28 s loop; the LED boot
             // wave runs on its own 14 s cycle inside the shader.
             let raf = 0,
-                onScreen = false,
-                tmx = 0,
-                tmy = 0,
-                dmx = 0,
-                dmy = 0;
+                onScreen = false;
             const frame = (now: number) => {
                 raf = 0;
-                dmx += (tmx - dmx) * 0.05;
-                dmy += (tmy - dmy) * 0.05;
-                render(0.5 - 0.5 * Math.cos((now * 0.001 * Math.PI * 2) / 28), now, dmx, dmy);
+                // The camera holds its framing: no pointer sway, the scene never reacts to the cursor.
+                render(0.5 - 0.5 * Math.cos((now * 0.001 * Math.PI * 2) / 28), now, 0, 0);
                 raf = requestAnimationFrame(frame);
             };
             const sync = () => {
@@ -310,11 +308,6 @@ export default function AisleScene() {
                     cancelAnimationFrame(raf);
                     raf = 0;
                 }
-            };
-            const onMove = (e: PointerEvent) => {
-                if (e.pointerType === "touch") return;
-                tmx = (e.clientX / window.innerWidth) * 2 - 1;
-                tmy = (e.clientY / window.innerHeight) * 2 - 1;
             };
             let io: IntersectionObserver | null = null;
             if (!reduce) {
@@ -326,7 +319,6 @@ export default function AisleScene() {
                     { threshold: 0.05 },
                 );
                 io.observe(stage);
-                window.addEventListener("pointermove", onMove, { passive: true });
                 document.addEventListener("visibilitychange", sync);
             }
 
@@ -334,7 +326,6 @@ export default function AisleScene() {
                 if (raf) cancelAnimationFrame(raf);
                 io?.disconnect();
                 ro.disconnect();
-                window.removeEventListener("pointermove", onMove);
                 document.removeEventListener("visibilitychange", sync);
                 scene.traverse((obj) => {
                     if (obj instanceof THREE.Mesh || obj instanceof THREE.Points) {

@@ -36,14 +36,14 @@ export default function Origin() {
                     display: grid; grid-template-columns: 56px 1fr auto; align-items: end; gap: 24px;
                     padding-bottom: 28px; border-bottom: 1px solid var(--hairline);
                 }
-                .origin-head .num { font-size: 11px; color: var(--green); letter-spacing: .12em; padding-bottom: 10px; }
+                .origin-head .num { font-size: 11px; color: var(--accent); letter-spacing: .12em; padding-bottom: 10px; }
                 .origin-head h2 { font-size: clamp(36px, 4.2vw, 58px); font-weight: 500; letter-spacing: -.026em; line-height: 1.02; }
                 .origin-head .route { font-size: 11px; letter-spacing: .12em; color: var(--ink-faint); padding-bottom: 10px; }
 
                 .origin-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: clamp(32px, 4vw, 64px); padding-top: 56px; }
                 .who { display: flex; flex-direction: column; gap: 14px; }
                 .baybayin { font-family: var(--font-baybayin), "Noto Sans Tagalog", "Segoe UI Historic", sans-serif; font-size: clamp(28px, 2.6vw, 36px); line-height: 1.3; color: var(--ink); }
-                .english { font-size: clamp(18px, 1.5vw, 22px); font-weight: 500; letter-spacing: -.01em; color: var(--green-bright); }
+                .english { font-size: clamp(18px, 1.5vw, 22px); font-weight: 500; letter-spacing: -.01em; color: var(--accent-bright); }
                 .story { display: flex; flex-direction: column; gap: 22px; max-width: 52ch; }
                 .story p { font-size: clamp(17px, 1.4vw, 21px); line-height: 1.52; color: var(--ink-soft); }
                 .story strong { font-weight: 600; color: var(--ink); }

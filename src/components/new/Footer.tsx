@@ -37,7 +37,7 @@ export default function Footer() {
                     display: grid; grid-template-columns: 56px 1fr; align-items: end; gap: 24px;
                     padding-bottom: 28px; margin-bottom: 56px; border-bottom: 1px solid var(--hairline);
                 }
-                .foot-head .num { font-size: 11px; color: var(--green); letter-spacing: .12em; padding-bottom: 10px; }
+                .foot-head .num { font-size: 11px; color: var(--accent); letter-spacing: .12em; padding-bottom: 10px; }
                 .foot-head h2 { font-size: clamp(36px, 4.2vw, 58px); font-weight: 500; letter-spacing: -.026em; line-height: 1.02; }
                 .contact-table { margin: 0; border-top: 1px solid var(--hairline); }
                 .crow {
@@ -45,11 +45,10 @@ export default function Footer() {
                     padding: 24px 0; border-bottom: 1px solid var(--hairline); color: inherit; text-decoration: none;
                     transition: color .3s;
                 }
-                .crow .k { font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--green); }
+                .crow .k { font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--accent); }
                 .crow .v { font-size: 17px; color: var(--ink); letter-spacing: -.005em; transition: color .3s; }
                 .crow .arrow { font-size: 14px; color: var(--ink-faint); transition: color .3s, transform .3s; }
-                .crow:hover .v, .crow:hover .arrow { color: var(--green-bright); }
-                .crow:hover .arrow { transform: translate(2px, -2px); }
+                .crow:hover .v, .crow:hover .arrow { color: var(--accent-bright); }
 
                 .foot-line {
                     display: flex; justify-content: space-between; align-items: center; gap: 16px;
@@ -66,7 +65,6 @@ export default function Footer() {
                 }
                 @media (prefers-reduced-motion: reduce) {
                     .crow, .crow .v, .crow .arrow, .foot-line a { transition: none; }
-                    .crow:hover .arrow { transform: none; }
                 }
             `}</style>
         </footer>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { readSceneLight } from "./sceneLight";
 
 // Chapter 04 orbit scene: the 3U CubeSat drifting in attitude above a dark
 // Earth limb while the camera breathes between a close pass and a wide view
@@ -113,6 +114,7 @@ export default function OrbitScene() {
 
         (async () => {
             const THREE = await import("three");
+            const SL = readSceneLight();
             if (disposed) return;
             const rnd = mulberry32(20260901);
             const pixelRatio = () => Math.min(window.devicePixelRatio || 1, 2);
@@ -211,7 +213,7 @@ export default function OrbitScene() {
                 emissive: 0x05102a,
                 emissiveIntensity: 0.6,
             });
-            const edgeMat = new THREE.LineBasicMaterial({ color: 0x9dffc4, transparent: true, opacity: 0.35 });
+            const edgeMat = new THREE.LineBasicMaterial({ color: SL.bright, transparent: true, opacity: 0.35 });
             sat.add(new THREE.Mesh(new THREE.BoxGeometry(1, 1, 3), anod));
             const corners: [number, number][] = [[-0.5, -0.5], [0.5, -0.5], [-0.5, 0.5], [0.5, 0.5]];
             for (const [x, y] of corners) {
@@ -259,7 +261,7 @@ export default function OrbitScene() {
                 ant.position.set(Math.cos(a) * 0.3, Math.sin(a) * 0.3, 1.5).addScaledVector(dir, 1.1);
                 sat.add(ant);
             }
-            const imu = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.04, 0.12), new THREE.MeshBasicMaterial({ color: 0x9dffc4 }));
+            const imu = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.04, 0.12), new THREE.MeshBasicMaterial({ color: SL.bright }));
             imu.position.set(0.3, 0.52, 0.2);
             sat.add(imu);
             sat.add(new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(1.02, 1.02, 3.02)), edgeMat));

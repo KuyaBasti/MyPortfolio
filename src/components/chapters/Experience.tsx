@@ -140,7 +140,7 @@ export default function Experience() {
                     display: grid; grid-template-columns: 56px 1fr; align-items: end; gap: 24px;
                     padding: calc(var(--lb) + 48px) var(--pad) 28px; border-bottom: 1px solid var(--hairline);
                 }
-                .exp-head .num { font-size: 11px; color: var(--green); letter-spacing: .12em; padding-bottom: 10px; }
+                .exp-head .num { font-size: 11px; color: var(--accent); letter-spacing: .12em; padding-bottom: 10px; }
                 .exp-head h2 { font-size: clamp(36px, 4.2vw, 58px); font-weight: 500; letter-spacing: -.026em; line-height: 1.02; }
                 .chapter { position: relative; }
                 .chapter .pin {
@@ -158,7 +158,7 @@ export default function Experience() {
                 .chapter.on .dcopy > :nth-child(5) { transition-delay: 1s; }
                 .chapter.on .dcopy > :nth-child(6) { transition-delay: 1.15s; }
                 .tcard {
-                    font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--green);
+                    font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--accent);
                     display: flex; gap: 14px; flex-wrap: wrap; align-items: baseline;
                 }
                 .drole { font-size: 13px; letter-spacing: .02em; color: var(--ink); }
@@ -167,16 +167,22 @@ export default function Experience() {
                 .dcopy p { color: var(--ink-soft); font-size: clamp(14.5px, 1vw, 15px); line-height: 1.62; max-width: 58ch; }
                 .dots { display: flex; flex-wrap: wrap; gap: 10px 22px; list-style: none; padding: 0; margin: 0; font-size: 13.5px; color: var(--ink-soft); }
                 .dots li { display: flex; align-items: center; gap: 8px; }
-                .dots li::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #8b7bff; box-shadow: 0 0 8px rgba(139,123,255,.6); flex: none; }
-                .lnk { font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--green-bright); display: inline-flex; gap: 8px; align-items: center; width: max-content; transition: color .3s; }
+                .dots li::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--dot); box-shadow: 0 0 8px var(--dot-glow); flex: none; }
+                .lnk { font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--accent-bright); display: inline-flex; gap: 8px; align-items: center; width: max-content; transition: color .3s; }
                 .lnk::after { content: "\\2197"; font-size: 12px; }
                 .lnk:hover { color: #fff; }
                 .frame {
                     position: relative; z-index: 3; width: 100%; aspect-ratio: 16 / 11; max-height: calc(100svh - var(--lb) - 56px);
-                    border-radius: 16px; overflow: hidden; background: var(--bg); border: 1px solid rgba(157,255,196,.16);
-                    box-shadow: 0 0 0 1px rgba(40,200,64,.05), 0 30px 80px rgba(0,0,0,.6), 0 0 70px rgba(40,200,64,.07);
+                    border-radius: 16px; overflow: hidden; background: var(--bg);
+                    box-shadow: 0 0 0 1px var(--frame-glow-a), 0 30px 80px rgba(0,0,0,.6), 0 0 70px var(--frame-glow-b);
                 }
                 .frame .scene-gl { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+                .frame::before {
+                    content: ""; position: absolute; inset: 0; z-index: 2; padding: 1px; border-radius: 16px; pointer-events: none;
+                    background: var(--iri); opacity: .55;
+                    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+                    -webkit-mask-composite: xor; mask-composite: exclude;
+                }
                 @media (max-width: 860px) {
                     .chapter .pin { display: flex; flex-direction: column; justify-content: center; gap: 24px; padding-bottom: 32px; }
                     .frame { order: -1; aspect-ratio: 16 / 10; max-height: 40svh; }

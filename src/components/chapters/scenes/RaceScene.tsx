@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { readSceneLight } from "./sceneLight";
 
 // Chapter 03 scene: the F1Tenth raceline. A low-poly car laps a closed CatmullRom
 // circuit on its own clock while a 61-ray LiDAR fan is cast against the track
@@ -22,6 +23,7 @@ export default function RaceScene() {
 
         const setup = async () => {
             const THREE = await import("three");
+            const SL = readSceneLight();
             if (disposed) return;
 
             const mulberry32 = (seed: number) => {
@@ -137,7 +139,7 @@ export default function RaceScene() {
             const nose = new THREE.Mesh(new THREE.BoxGeometry(0.36, 0.1, 0.3), bodyMat);
             nose.position.set(0, 0.17, 0.62);
             car.add(nose);
-            const puck = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 0.1, 12), new THREE.MeshBasicMaterial({ color: 0x9dffc4 }));
+            const puck = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 0.1, 12), new THREE.MeshBasicMaterial({ color: SL.bright }));
             puck.position.set(0, 0.38, 0.15);
             car.add(puck);
             const wheelMat = new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.9 });
@@ -164,7 +166,7 @@ export default function RaceScene() {
                 new THREE.LineSegments(
                     rg,
                     new THREE.LineBasicMaterial({
-                        color: 0x28c840,
+                        color: SL.deep,
                         transparent: true,
                         opacity: 0.32,
                         blending: THREE.AdditiveBlending,
@@ -175,7 +177,7 @@ export default function RaceScene() {
             const hitAttr = new THREE.BufferAttribute(hitPos, 3);
             const hg = new THREE.BufferGeometry();
             hg.setAttribute("position", hitAttr);
-            scene.add(new THREE.Points(hg, new THREE.PointsMaterial({ color: 0x9dffc4, size: 0.16, transparent: true, opacity: 0.95, depthWrite: false })));
+            scene.add(new THREE.Points(hg, new THREE.PointsMaterial({ color: SL.bright, size: 0.16, transparent: true, opacity: 0.95, depthWrite: false })));
             const castRay = (ox: number, oz: number, dx: number, dz: number) => {
                 let best = RANGE;
                 for (let s = 0; s < segs.length; s++) {
@@ -204,7 +206,7 @@ export default function RaceScene() {
             };
             for (let i = 0; i < PN; i++) {
                 respawn(i);
-                pcol.set(rand() < 0.4 ? [0.16, 0.78, 0.25] : [1, 0.7, 0.25], i * 3);
+                pcol.set(rand() < 0.4 ? SL.deepRGB : [1, 0.7, 0.25], i * 3);
             }
             const pAttr = new THREE.BufferAttribute(ppos, 3);
             const pg = new THREE.BufferGeometry();

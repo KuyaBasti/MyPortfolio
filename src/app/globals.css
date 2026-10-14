@@ -9,18 +9,37 @@
   --ink: #e6e8ee;
   --ink-soft: #9aa0a8;
   --ink-muted: #7d8590;
-  --ink-faint: #6b7280;
+  --ink-faint: #7d8590;
   --hairline: rgba(255, 255, 255, 0.08);
 
-  /* Phosphor-green accent (terminal labels, CTAs, glows) */
-  --accent: #28c840;
-  --accent-hover: #3ee05a;
-  --green: #28c840;
-  --green-bright: #9dffc4;
-  --green-dim: rgba(40, 200, 90, 0.55);
+  /* The one accent is a color from the gradient, never green. It marks labels, dates, numbers
+     and links, and it is the light inside the chapter scenes (LEDs, rays, the screen test). */
+  --accent: #5eead4;
+  --accent-bright: #b7f6ec;
+  --accent-dim: rgba(94, 234, 212, 0.55);
+  --light: #5eead4;
+  --light-bright: #b7f6ec;
+  --light-dim: #2a695f;
+  --light-pcb: #102222;
 
   /* Cooler / cyber iridescent gradient for headlines */
   --iri: linear-gradient(120deg, #5eead4 0%, #5e7dff 38%, #bf5af2 68%, #ff6680 100%);
+
+  /* Chrome colors the components used to hard-code. A palette overrides these as one block. */
+  --bar: rgba(5, 7, 10, 0.78);
+  --hero-stage: #0a0f1a;
+  --leak-a1: rgba(94, 125, 255, 0.22);
+  --leak-a2: rgba(191, 90, 242, 0.1);
+  --leak-b1: rgba(94, 234, 212, 0.16);
+  --leak-b2: rgba(255, 102, 128, 0.08);
+  --accent-glow: rgba(183, 246, 236, 0.55);
+  --accent-line: rgba(183, 246, 236, 0.3);
+  --ring: linear-gradient(120deg, rgba(94, 235, 212, 0.3), rgba(94, 125, 255, 0.3), rgba(191, 90, 242, 0.25), rgba(40, 200, 90, 0.35));
+  --glow: rgba(94, 234, 212, 0.4);
+  --frame-glow-a: rgba(94, 234, 212, 0.05);
+  --frame-glow-b: rgba(94, 234, 212, 0.07);
+  --dot: #8b7bff;
+  --dot-glow: rgba(139, 123, 255, 0.6);
 
   /* Chapters layout: the top bar height, the page gutter, and the one content column every section shares */
   --lb: 56px;
@@ -81,14 +100,14 @@ a {
   font-family: var(--font-mono);
   font-size: 13px;
   letter-spacing: 0.04em;
-  color: var(--green);
+  color: var(--accent);
   display: inline-flex;
   align-items: center;
 }
-.cmd-eyebrow .p { color: var(--green-dim); margin-right: 8px; }
+.cmd-eyebrow .p { color: var(--accent-dim); margin-right: 8px; }
 .cur {
   display: inline-block; width: 8px; height: 1em; margin-left: 6px;
-  vertical-align: -2px; background: var(--green-bright);
+  vertical-align: -2px; background: var(--accent-bright);
   animation: curBlink 1.05s steps(1) infinite;
 }
 @keyframes curBlink { 50% { opacity: 0; } }
