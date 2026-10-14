@@ -151,28 +151,28 @@ export default function Projects() {
                     display: grid; grid-template-columns: 56px 1fr; align-items: end; gap: 24px;
                     padding-bottom: 28px; margin-bottom: 36px; border-bottom: 1px solid var(--hairline);
                 }
-                .sheet-head .num { font-size: 11px; color: var(--green); letter-spacing: .12em; padding-bottom: 10px; }
+                .sheet-head .num { font-size: 11px; color: var(--ink-faint); letter-spacing: .12em; padding-bottom: 10px; }
                 .sheet-head h2 { font-size: clamp(36px, 4.2vw, 58px); font-weight: 500; letter-spacing: -.026em; line-height: 1.02; }
 
                 .sheet-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(14px, 2vw, 28px); }
                 .pj {
                     display: flex; flex-direction: column; color: inherit; text-decoration: none;
-                    background: rgba(12,16,22,0.55); border: 1px solid var(--hairline);
+                    background: var(--panel); border: 1px solid var(--hairline);
                     border-radius: 28px; overflow: hidden; position: relative;
-                    transition: transform .5s cubic-bezier(0.28,0.16,0.22,1), box-shadow .5s, border-color .3s;
+                    transition: box-shadow .5s, border-color .3s;
                 }
                 .pj::before {
                     content: ""; position: absolute; inset: 0; padding: 1px; border-radius: 28px;
-                    background: linear-gradient(120deg, rgba(94,235,212,0.3), rgba(94,125,255,0.3), rgba(191,90,242,0.25), rgba(40,200,90,0.35));
+                    background: var(--ring);
                     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
                     -webkit-mask-composite: xor; mask-composite: exclude; opacity: 0.45; pointer-events: none; z-index: 3;
                 }
-                .pj:hover { transform: translateY(-6px); border-color: var(--green-dim); box-shadow: 0 0 40px -16px rgba(40,200,90,0.4), 0 30px 60px -24px #000; }
+                .pj:hover { border-color: var(--accent-dim); box-shadow: 0 30px 60px -24px #000; }
                 .pj-static { cursor: default; }
                 .pj-stage { position: relative; height: 240px; border-bottom: 1px solid var(--hairline); }
                 .pj-img { position: absolute; inset: 0; overflow: hidden; }
                 .fnum {
-                    position: absolute; top: 10px; left: 12px; z-index: 2; font-size: 10px; letter-spacing: .2em; color: var(--green);
+                    position: absolute; top: 10px; left: 12px; z-index: 2; font-size: 10px; letter-spacing: .2em; color: var(--ink-faint);
                     background: rgba(0,0,0,.5); padding: 2px 6px; border-radius: 2px;
                 }
                 .pj-body { padding: 20px 22px 24px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
@@ -180,7 +180,7 @@ export default function Projects() {
                 .pj-title { font-size: 19px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.25; }
                 .pj-desc { font-size: 14.5px; color: var(--ink-soft); line-height: 1.62; flex: 1; }
                 .pj-tech { margin-top: 6px; font-size: 11px; color: var(--ink-faint); line-height: 1.6; }
-                .pj-open { margin-top: 10px; font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--green-bright); width: max-content; }
+                .pj-open { margin-top: 10px; font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--accent-bright); width: max-content; }
                 .pj-priv {
                     margin-top: 10px; font-size: 10.5px; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-faint);
                     border: 1px dashed var(--hairline); padding: 4px 8px; width: max-content; border-radius: 3px;

@@ -10,7 +10,7 @@ export default function Film() {
             <style>{`
                 .film-vig {
                     position: fixed; inset: 0; z-index: 39; pointer-events: none;
-                    background: radial-gradient(ellipse at center, transparent 52%, rgba(0,0,0,.6) 100%);
+                    background: radial-gradient(ellipse at center, transparent 52%, rgba(0,0,0,var(--vignette, .6)) 100%);
                 }
                 .film-grain {
                     position: fixed; top: -50%; left: -50%; width: 200%; height: 200%; z-index: 40; pointer-events: none;

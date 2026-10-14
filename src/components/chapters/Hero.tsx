@@ -131,8 +131,11 @@ export default function Hero() {
                 const geo = new THREE.BufferGeometry();
                 geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
                 geo.setAttribute("aSeed", new THREE.BufferAttribute(seed, 1));
+                // The dust color comes from the --dust token (raw sRGB, no color management).
+                const hex3 = (v: string, d: string) => { const h = (/^#[0-9a-f]{6}$/i.test(v) ? v : d).slice(1); return new THREE.Vector3(parseInt(h.slice(0, 2), 16) / 255, parseInt(h.slice(2, 4), 16) / 255, parseInt(h.slice(4, 6), 16) / 255); };
+                const dustColor = hex3(getComputedStyle(document.documentElement).getPropertyValue("--dust").trim(), "#efece7");
                 const mat = new THREE.ShaderMaterial({
-                    uniforms: { uTime: { value: 0 }, uDpr: { value: renderer.getPixelRatio() } },
+                    uniforms: { uTime: { value: 0 }, uDpr: { value: renderer.getPixelRatio() }, uColor: { value: dustColor } },
                     vertexShader: `
                         attribute float aSeed; uniform float uTime; uniform float uDpr; varying float vA; varying float vS;
                         void main(){
@@ -150,13 +153,11 @@ export default function Hero() {
                             gl_Position = projectionMatrix * mv;
                         }`,
                     fragmentShader: `
-                        precision mediump float; varying float vA; varying float vS;
+                        precision mediump float; varying float vA; varying float vS; uniform vec3 uColor;
                         void main(){
                             float d = length(gl_PointCoord - 0.5);
                             float a = smoothstep(0.5, 0.08, d) * vA;
-                            vec3 c1 = vec3(0.37, 0.92, 0.83), c2 = vec3(0.37, 0.49, 1.0), c3 = vec3(0.75, 0.35, 0.95);
-                            vec3 col = mix(mix(c1, c2, smoothstep(0.0, 0.5, vS)), c3, smoothstep(0.5, 1.0, vS));
-                            col = mix(col, vec3(0.9, 0.91, 0.93), 0.35);
+                            vec3 col = uColor;
                             gl_FragColor = vec4(col, a);
                         }`,
                     transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
@@ -209,8 +210,6 @@ export default function Hero() {
         <section className="hero" id="top">
             <div className="stage" ref={stageRef} aria-hidden="true">
                 <canvas className="dust" ref={dustRef} />
-                <div className="leak a" />
-                <div className="leak b" />
             </div>
             <div className="hero-body" ref={bodyRef}>
                 <p className="pre">{ROLE}</p>
@@ -239,26 +238,15 @@ export default function Hero() {
                 }
                 .hero .stage {
                     position: absolute; inset: 0; z-index: 0; overflow: hidden;
-                    background: radial-gradient(ellipse at 50% 60%, #0a0f1a 0%, var(--bg) 70%);
+                    background: var(--bg);
                 }
                 .hero .dust { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
-                .leak {
-                    position: absolute; width: 70vmax; height: 70vmax; left: -22vmax; top: -32vmax; border-radius: 50%; pointer-events: none;
-                    background: radial-gradient(circle, rgba(94,125,255,.22), rgba(191,90,242,.1) 40%, transparent 70%);
-                    filter: blur(40px); animation: leak 18s ease-in-out infinite alternate;
-                }
-                .leak.b {
-                    left: auto; right: -30vmax; top: auto; bottom: -32vmax;
-                    background: radial-gradient(circle, rgba(94,234,212,.16), rgba(255,102,128,.08) 45%, transparent 70%);
-                    animation-duration: 24s;
-                }
-                @keyframes leak { 0% { transform: translate3d(0,0,0) scale(1); } 100% { transform: translate3d(8vmax,6vmax,0) scale(1.15); } }
                 .hero-body {
                     position: relative; z-index: 2; width: 100%; max-width: calc(var(--maxw) - 2 * var(--pad)); margin: 0 auto;
                     display: flex; flex-direction: column; align-items: flex-start; gap: clamp(14px, 2vh, 22px);
                     will-change: transform, opacity;
                 }
-                .pre { font-family: var(--font-mono); font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--green); }
+                .pre { font-family: var(--font-mono); font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--accent); }
                 .name {
                     font-size: clamp(44px, 8.6vw, 112px); line-height: 1.02; font-weight: 600; letter-spacing: -.035em;
                     max-width: 100%; margin: 2px 0 6px;
@@ -270,18 +258,17 @@ export default function Hero() {
                     -webkit-background-clip: text; background-clip: text; color: transparent;
                     transition: color .45s ease, opacity .45s ease, text-shadow .45s ease;
                 }
-                .name .c.scr { color: var(--green); opacity: .78; transition: none; }
-                .name .c.front { color: var(--green-bright); opacity: 1; text-shadow: 0 0 22px rgba(157,255,196,.55); }
+                .name .c.scr { color: var(--accent); opacity: .78; transition: none; }
+                .name .c.front { color: var(--accent-bright); opacity: 1; text-shadow: 0 0 22px var(--accent-glow); }
                 .l2 { font-size: clamp(16px, 1.5vw, 21px); line-height: 1.3; color: var(--ink-soft); }
-                .l2 a { color: var(--green-bright); border-bottom: 1px solid rgba(157,255,196,.3); transition: color .3s, border-color .3s; }
-                .l2 a:hover { color: #fff; border-color: var(--green); }
+                .l2 a { color: var(--accent-bright); border-bottom: 1px solid var(--accent-line); transition: color .3s, border-color .3s; }
+                .l2 a:hover { color: #fff; border-color: var(--accent); }
                 .hero-body > * { opacity: 0; animation: rise 1.2s cubic-bezier(.2,.7,.2,1) forwards; }
                 .hero-body > .pre { animation-delay: .2s; }
                 .hero-body > .name { animation-delay: .4s; }
                 .hero-body > .l2 { animation-delay: 2.95s; }
                 @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
                 @media (prefers-reduced-motion: reduce) {
-                    .leak { animation: none; }
                     .hero-body > * { animation: none; opacity: 1; transform: none; }
                     .name .c { transition: none; }
                 }

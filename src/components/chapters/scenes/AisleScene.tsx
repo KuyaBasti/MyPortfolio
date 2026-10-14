@@ -291,16 +291,11 @@ export default function AisleScene() {
             // The aisle glides down the hall and back on a 28 s loop; the LED boot
             // wave runs on its own 14 s cycle inside the shader.
             let raf = 0,
-                onScreen = false,
-                tmx = 0,
-                tmy = 0,
-                dmx = 0,
-                dmy = 0;
+                onScreen = false;
             const frame = (now: number) => {
                 raf = 0;
-                dmx += (tmx - dmx) * 0.05;
-                dmy += (tmy - dmy) * 0.05;
-                render(0.5 - 0.5 * Math.cos((now * 0.001 * Math.PI * 2) / 28), now, dmx, dmy);
+                // The camera holds its framing: no pointer sway, the scene never reacts to the cursor.
+                render(0.5 - 0.5 * Math.cos((now * 0.001 * Math.PI * 2) / 28), now, 0, 0);
                 raf = requestAnimationFrame(frame);
             };
             const sync = () => {
@@ -310,11 +305,6 @@ export default function AisleScene() {
                     cancelAnimationFrame(raf);
                     raf = 0;
                 }
-            };
-            const onMove = (e: PointerEvent) => {
-                if (e.pointerType === "touch") return;
-                tmx = (e.clientX / window.innerWidth) * 2 - 1;
-                tmy = (e.clientY / window.innerHeight) * 2 - 1;
             };
             let io: IntersectionObserver | null = null;
             if (!reduce) {
@@ -326,7 +316,6 @@ export default function AisleScene() {
                     { threshold: 0.05 },
                 );
                 io.observe(stage);
-                window.addEventListener("pointermove", onMove, { passive: true });
                 document.addEventListener("visibilitychange", sync);
             }
 
@@ -334,7 +323,6 @@ export default function AisleScene() {
                 if (raf) cancelAnimationFrame(raf);
                 io?.disconnect();
                 ro.disconnect();
-                window.removeEventListener("pointermove", onMove);
                 document.removeEventListener("visibilitychange", sync);
                 scene.traverse((obj) => {
                     if (obj instanceof THREE.Mesh || obj instanceof THREE.Points) {

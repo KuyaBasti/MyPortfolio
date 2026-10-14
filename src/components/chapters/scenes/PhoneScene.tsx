@@ -461,18 +461,6 @@ export default function PhoneScene() {
                 return;
             }
 
-            // Pointer sway: mouse only, normalized to -1..1 and smoothed per frame.
-            let dmx = 0,
-                dmy = 0,
-                tmx = 0,
-                tmy = 0;
-            const onPointer = (e: PointerEvent) => {
-                if (e.pointerType === "touch") return;
-                tmx = (e.clientX / window.innerWidth) * 2 - 1;
-                tmy = (e.clientY / window.innerHeight) * 2 - 1;
-            };
-            window.addEventListener("pointermove", onPointer, { passive: true });
-
             // Play time accumulates only while the loop runs, so leaving and
             // returning resumes the phone where it was instead of jumping.
             let raf = 0,
@@ -484,9 +472,8 @@ export default function PhoneScene() {
                 if (disposed) return;
                 if (last >= 0) clock += now - last;
                 last = now;
-                dmx += (tmx - dmx) * 0.05;
-                dmy += (tmy - dmy) * 0.05;
-                play(clock, dmx, dmy);
+                // No pointer sway: the phone never reacts to the cursor.
+                play(clock, 0, 0);
                 raf = requestAnimationFrame(tick);
             };
             const start = () => {
@@ -514,7 +501,6 @@ export default function PhoneScene() {
                 stop();
                 io.disconnect();
                 ro.disconnect();
-                window.removeEventListener("pointermove", onPointer);
                 document.removeEventListener("visibilitychange", onVis);
                 dispose();
             };
