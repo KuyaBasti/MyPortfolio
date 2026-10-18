@@ -104,7 +104,8 @@ each chapter scene) · Framer Motion (`motion` pkg) · Inter + JetBrains Mono + 
 
 ```
 src/
-  app/            globals.css (tokens, .iri, layout tokens), layout.tsx (fonts via next/font), page.tsx
+  app/            globals.css (tokens, .iri, layout tokens), layout.tsx (fonts via next/font), page.tsx,
+                  icon.svg + favicon.ico + apple-icon.png (the JS tab icon in the gradient)
   components/
     Home.tsx      orchestrator
     chapters/     Film (grain + vignette), TopBar, Hero (dust + name decrypt),

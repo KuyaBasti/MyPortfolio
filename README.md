@@ -56,7 +56,7 @@ Under `prefers-reduced-motion`, the name renders finished, the leaks and grain h
 
 | Path | What |
 | --- | --- |
-| `src/app/` | `globals.css` (design tokens, `.iri`, layout tokens), `layout.tsx` (Inter, JetBrains Mono and Noto Sans Tagalog via next/font), `page.tsx` |
+| `src/app/` | `globals.css` (design tokens, `.iri`, layout tokens), `layout.tsx` (Inter, JetBrains Mono and Noto Sans Tagalog via next/font), `page.tsx`, and the JS tab icon (`icon.svg`, `favicon.ico`, `apple-icon.png`) |
 | `src/components/Home.tsx` | Section orchestrator |
 | `src/components/chapters/` | `Film` (grain + vignette), `TopBar`, `Hero` (dust + name decrypt), `Experience` (4 chapters), `Projects` (three-up sheet), `Origin` |
 | `src/components/chapters/scenes/` | The four three.js chapter scenes: `AisleScene`, `PhoneScene`, `RaceScene`, `OrbitScene`, plus `sceneLight.ts`, which gives them the page's accent as their light color |
@@ -91,6 +91,7 @@ Under `prefers-reduced-motion`, the name renders finished, the leaks and grain h
 | Centavo card | Reconcile-or-reject ledger visual, synthetic fixture, no repo link | ✅ |
 | Chapters site | Decrypting hero, four self-playing three.js chapters, three-up project sheet, Origin | ✅ |
 | Teal, not green | Every green in the page and the scenes becomes teal from the gradient; gradient scene frames; quieter cards; no pointer sway | ✅ |
+| JS tab icon | A JS mark in the gradient replaces the default Next.js favicon | ✅ |
 
 ## Documentation
 
