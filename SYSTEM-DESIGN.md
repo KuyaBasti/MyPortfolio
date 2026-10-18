@@ -176,6 +176,7 @@ Tokens live in `src/app/globals.css`: near-black background, ink ramp, the teal 
 | Centavo | Statement scan, three checks to the cent, one-cent rejection | passbook green/amber/red | `src/components/new/visuals/Centavo.tsx` | ✅ |
 | Origin | Baybayin and English name, the story | teal | `src/components/chapters/Origin.tsx` | ✅ |
 | Skills, Footer | Skills table; 05 Contact table (email, GitHub, LinkedIn) and a one-line footer | teal | `src/components/new/` | ✅ |
+| Tab icon | Hand-drawn monospace JS on the near-black rounded square: `icon.svg`, `favicon.ico` (16/32/48, transparent corners), `apple-icon.png` (180, full square for iOS) | gradient | `src/app/` | ✅ |
 
 ## Design decisions
 
@@ -221,3 +222,4 @@ Tokens live in `src/app/globals.css`: near-black background, ink ramp, the teal 
 | 9 | Chapters site: decrypting hero, four three.js chapters, three-up sheet, Origin, Contact dropped | ✅ |
 | 10 | Chapters polish: reference type scale on a 1200px column, numbered headers 01 to 05, hero in the top quarter, translucent top bar with Contact, contact-table footer | ✅ |
 | 11 | Teal, not green: the accent and the scene lights from the gradient, gradient scene frames, quieter cards, no pointer sway | ✅ |
+| 12 | JS tab icon in the gradient, replacing the default Next.js favicon | ✅ |
